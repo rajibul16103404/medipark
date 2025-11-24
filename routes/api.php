@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{role}', [RoleController::class, 'destroy'])->middleware('privilege:delete-roles');
         Route::post('/{role}/privileges', [RoleController::class, 'assignPrivileges'])->middleware('privilege:assign-privileges-to-roles');
         Route::delete('/{role}/privileges', [RoleController::class, 'removePrivileges'])->middleware('privilege:assign-privileges-to-roles');
+        Route::delete('/{role}/privileges/{privilege}', [RoleController::class, 'removePrivilege'])->middleware('privilege:assign-privileges-to-roles');
     });
 
     // User routes

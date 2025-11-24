@@ -7,6 +7,7 @@ use App\Http\Requests\Role\AssignPrivilegesRequest;
 use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
+use App\Models\Privilege;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -115,7 +116,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Remove privileges from a role.
+     * Remove all privileges from a role.
      */
     public function removePrivileges(Role $role): JsonResponse
     {
@@ -131,6 +132,33 @@ class RoleController extends Controller
 
         return response()->json([
             'message' => 'All privileges removed from role successfully',
+            'role' => new RoleResource($role),
+        ]);
+    }
+
+    /**
+     * Remove a single privilege from a role.
+     */
+    public function removePrivilege(Role $role, Privilege $privilege): JsonResponse
+    {
+        if ($role->isAdmin()) {
+            return response()->json([
+                'message' => 'Cannot remove privileges from the admin role. Admin role automatically has all privileges.',
+            ], 403);
+        }
+
+        if (! $role->privileges()->where('privileges.id', $privilege->id)->exists()) {
+            return response()->json([
+                'message' => 'This privilege is not assigned to the role',
+            ], 400);
+        }
+
+        $role->privileges()->detach($privilege->id);
+
+        $role->load('privileges');
+
+        return response()->json([
+            'message' => 'Privilege removed from role successfully',
             'role' => new RoleResource($role),
         ]);
     }
