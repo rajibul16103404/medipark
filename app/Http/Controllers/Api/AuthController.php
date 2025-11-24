@@ -57,6 +57,7 @@ class AuthController extends Controller
             ], 401);
         }
 
+        /** @var User|null $user */
         $user = Auth::guard('api')->user();
 
         // Double check after authentication
@@ -77,9 +78,16 @@ class AuthController extends Controller
      */
     public function me(): JsonResponse
     {
+        /** @var User|null $user */
         $user = auth('api')->user();
 
-        if ($user && $user->isSuspended()) {
+        if (! $user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        if ($user->isSuspended()) {
             return response()->json([
                 'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
             ], 403);
@@ -107,9 +115,16 @@ class AuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
+        /** @var User|null $user */
         $user = auth('api')->user();
 
-        if ($user && $user->isSuspended()) {
+        if (! $user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        if ($user->isSuspended()) {
             JWTAuth::invalidate(JWTAuth::getToken());
 
             return response()->json([
@@ -122,12 +137,17 @@ class AuthController extends Controller
 
     /**
      * Get the token array structure.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken(string $token): JsonResponse
     {
+        /** @var User|null $user */
         $user = auth('api')->user();
+
+        if (! $user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
 
         return response()->json([
             'message' => 'Login successful',
