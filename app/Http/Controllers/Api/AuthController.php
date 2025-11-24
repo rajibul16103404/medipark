@@ -47,7 +47,8 @@ class AuthController extends Controller
 
         if ($user && $user->isSuspended()) {
             return response()->json([
-                'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
+                'message' => 'Your account has been suspended',
+                'suspension_reason' => $user->suspension_reason,
             ], 403);
         }
 
