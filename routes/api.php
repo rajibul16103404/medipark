@@ -46,6 +46,10 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->middleware('privilege:read-roles,assign-privileges-to-roles');
         Route::get('/{role}', [RoleController::class, 'show'])->middleware('privilege:read-roles,assign-privileges-to-roles');
+        Route::post('/', [RoleController::class, 'store'])->middleware('privilege:create-roles');
+        Route::put('/{role}', [RoleController::class, 'update'])->middleware('privilege:update-roles');
+        Route::patch('/{role}', [RoleController::class, 'update'])->middleware('privilege:update-roles');
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->middleware('privilege:delete-roles');
         Route::post('/{role}/privileges', [RoleController::class, 'assignPrivileges'])->middleware('privilege:assign-privileges-to-roles');
         Route::delete('/{role}/privileges', [RoleController::class, 'removePrivileges'])->middleware('privilege:assign-privileges-to-roles');
     });
@@ -58,4 +62,3 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{user}/unsuspend', [UserController::class, 'unsuspend'])->middleware('privilege:suspend-users');
     });
 });
-
