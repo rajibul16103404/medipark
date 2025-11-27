@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Mail\OtpMail;
 use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class PasswordResetController extends Controller
 {
@@ -45,8 +47,10 @@ class PasswordResetController extends Controller
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        // TODO: Send OTP via email/SMS
-        // For now, we'll return it in development (remove in production)
+        // Send OTP via email
+        Mail::to($email)->send(new OtpMail($otp, 'password_reset', 15));
+
+        // In development mode, also return OTP in response for testing
         if (config('app.debug')) {
             return response()->json([
                 'message' => 'Password reset OTP sent successfully',

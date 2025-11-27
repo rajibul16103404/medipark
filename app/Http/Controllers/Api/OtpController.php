@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\SendOtpRequest;
 use App\Http\Requests\Auth\VerifyOtpRequest;
+use App\Mail\OtpMail;
 use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class OtpController extends Controller
 {
@@ -48,8 +50,11 @@ class OtpController extends Controller
             'expires_at' => $expiresAt,
         ]);
 
-        // TODO: Send OTP via email/SMS
-        // For now, we'll return it in development (remove in production)
+        // Send OTP via email
+        $expiresInMinutes = $request->expires_in ?? 10;
+        Mail::to($email)->send(new OtpMail($otp, $type, $expiresInMinutes));
+
+        // In development mode, also return OTP in response for testing
         if (config('app.debug')) {
             return response()->json([
                 'message' => 'OTP sent successfully',
