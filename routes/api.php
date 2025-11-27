@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HomepageController;
 use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
@@ -27,6 +28,9 @@ Route::prefix('auth')->group(function () {
         Route::post('/refresh', [AuthController::class, 'refresh']);
     });
 });
+
+// Public Homepage Route
+Route::get('/homepages/active', [HomepageController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -61,5 +65,16 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{user}', [UserController::class, 'show'])->middleware('privilege:read-users');
         Route::post('/{user}/suspend', [UserController::class, 'suspend'])->middleware('privilege:suspend-users');
         Route::post('/{user}/unsuspend', [UserController::class, 'unsuspend'])->middleware('privilege:suspend-users');
+    });
+
+    // Homepage routes (Admin)
+    Route::prefix('homepages')->group(function () {
+        Route::get('/', [HomepageController::class, 'index'])->middleware('privilege:read-homepages');
+        Route::get('/{homepage}', [HomepageController::class, 'showById'])->middleware('privilege:read-homepages');
+        Route::post('/', [HomepageController::class, 'store'])->middleware('privilege:create-homepages');
+        Route::put('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
+        Route::patch('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
+        Route::delete('/{homepage}', [HomepageController::class, 'destroy'])->middleware('privilege:delete-homepages');
+        Route::post('/{homepage}/set-active', [HomepageController::class, 'setActive'])->middleware('privilege:update-homepages');
     });
 });
