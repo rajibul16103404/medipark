@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,6 @@ class PrivilegeMiddleware
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  ...$privileges
      */
     public function handle(Request $request, Closure $next, string ...$privileges): Response
     {
@@ -22,9 +22,10 @@ class PrivilegeMiddleware
             ], 401);
         }
 
+        /** @var User|null $user */
         $user = auth('api')->user();
 
-        if ($user->isSuspended()) {
+        if ($user && $user->isSuspended()) {
             return response()->json([
                 'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
             ], 403);
@@ -37,7 +38,7 @@ class PrivilegeMiddleware
         // Check if user has any of the required privileges
         $hasPrivilege = false;
         foreach ($privileges as $privilege) {
-            if ($user->hasPrivilege($privilege)) {
+            if ($user && $user->hasPrivilege($privilege)) {
                 $hasPrivilege = true;
                 break;
             }

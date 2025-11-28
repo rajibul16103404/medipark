@@ -21,7 +21,7 @@ class CheckSuspendedUser
 
         $user = auth('api')->user();
 
-        if ($user && $user->isSuspended()) {
+        if ($user && $user->status === 'suspended') {
             return response()->json([
                 'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
             ], 403);

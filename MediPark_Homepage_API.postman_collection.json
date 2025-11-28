@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "homepage-api-collection",
+		"name": "MediPark - Homepage API",
+		"description": "Postman collection for MediPark Homepage API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Routes",
+			"item": [
+				{
+					"name": "Get Active Homepage",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/homepages/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"active"
+							]
+						},
+						"description": "Get the currently active homepage. This is a public route that doesn't require authentication."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Routes (Authenticated)",
+			"item": [
+				{
+					"name": "List All Homepages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/homepages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages"
+							]
+						},
+						"description": "Get a list of all homepages. Requires authentication and 'read-homepages' privilege."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Homepage by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/homepages/{{homepage_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"{{homepage_id}}"
+							]
+						},
+						"description": "Get a specific homepage by ID. Requires authentication and 'read-homepages' privilege."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Homepage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hero_title\": \"Trusted Medical Care\",\n    \"hero_subtitle\": \"Personalized Results\",\n    \"hero_background_image\": \"/images/hero-bg.jpg\",\n    \"about_title\": \"About Us\",\n    \"about_content\": \"At Medipark, our mission is simple: to provide the highest quality medical care in an environment of genuine compassion and respect. We believe that true health care goes beyond treating symptoms—it involves understanding the person.\",\n    \"about_images\": [\n        \"/images/about-1.jpg\",\n        \"/images/about-2.jpg\",\n        \"/images/about-3.jpg\"\n    ],\n    \"doctors_title\": \"Our Doctors\",\n    \"doctors_description\": \"Meet our experienced team of medical professionals\",\n    \"pricing_title\": \"Pricing\",\n    \"pricing_description\": \"Choose the plan that suits your needs\",\n    \"news_title\": \"News & Media\",\n    \"news_description\": \"Stay updated with our latest news and announcements\",\n    \"ask_title\": \"Ask Medipark\",\n    \"ask_subtitle\": \"Looking for world class care, we are here to support you.\",\n    \"ask_button_text\": \"Send Query\",\n    \"blog_title\": \"Blog\",\n    \"blog_description\": \"Read our latest articles and health tips\",\n    \"investor_title\": \"Investor\",\n    \"investor_description\": \"Meet our investors and board members\",\n    \"footer_contact\": {\n        \"phone\": \"80080\",\n        \"email\": \"info@medipark.com\",\n        \"address\": \"MediPark Specialized Hospital\"\n    },\n    \"footer_links\": {\n        \"services\": [\"Services\", \"Solution\", \"Contact Us\", \"Careers\"],\n        \"about\": [\"About Us\", \"Gallery\", \"Blogs\", \"Team\"],\n        \"faqs\": [\"FAQs\", \"Benefits\", \"Privacy & Policy\", \"Terms & Conditions\"]\n    },\n    \"footer_social_links\": {\n        \"facebook\": \"https://facebook.com/medipark\",\n        \"twitter\": \"https://twitter.com/medipark\",\n        \"youtube\": \"https://youtube.com/medipark\",\n        \"linkedin\": \"https://linkedin.com/company/medipark\"\n    },\n    \"footer_copyright\": \"© 2025 softinglobal. All rights reserved.\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/homepages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages"
+							]
+						},
+						"description": "Create a new homepage. Requires authentication and 'create-homepages' privilege. Setting is_active to true will deactivate all other homepages."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Homepage (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hero_title\": \"Updated Trusted Medical Care\",\n    \"hero_subtitle\": \"Updated Personalized Results\",\n    \"about_content\": \"Updated content about Medipark...\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/homepages/{{homepage_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"{{homepage_id}}"
+							]
+						},
+						"description": "Update a homepage (full update). Requires authentication and 'update-homepages' privilege."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Homepage (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hero_title\": \"Updated Hero Title Only\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/homepages/{{homepage_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"{{homepage_id}}"
+							]
+						},
+						"description": "Partially update a homepage. Requires authentication and 'update-homepages' privilege."
+					},
+					"response": []
+				},
+				{
+					"name": "Set Homepage as Active",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/homepages/{{homepage_id}}/set-active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"{{homepage_id}}",
+								"set-active"
+							]
+						},
+						"description": "Set a homepage as active. This will automatically deactivate all other homepages. Requires authentication and 'update-homepages' privilege."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Homepage",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/homepages/{{homepage_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"homepages",
+								"{{homepage_id}}"
+							]
+						},
+						"description": "Delete a homepage. Requires authentication and 'delete-homepages' privilege."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string",
+			"description": "JWT token obtained from login endpoint"
+		},
+		{
+			"key": "homepage_id",
+			"value": "1",
+			"type": "string",
+			"description": "Homepage ID for testing"
+		}
+	]
+}
+
