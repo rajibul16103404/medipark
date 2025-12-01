@@ -14,6 +14,11 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Ensure roles are loaded
+        if (! $this->relationLoaded('roles')) {
+            $this->load('roles');
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -22,13 +27,11 @@ class UserResource extends JsonResource
             'suspended_at' => $this->suspended_at,
             'suspension_reason' => $this->suspension_reason,
             'is_suspended' => $this->isSuspended(),
-            'roles' => $this->whenLoaded('roles', function () {
-                return $this->roles->map(fn ($role) => [
-                    'id' => $role->id,
-                    'name' => $role->name,
-                    'slug' => $role->slug,
-                ]);
-            }),
+            'roles' => $this->roles->map(fn ($role) => [
+                'id' => $role->id,
+                'name' => $role->name,
+                'slug' => $role->slug,
+            ]),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

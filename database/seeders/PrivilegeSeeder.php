@@ -84,6 +84,48 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'read-privileges',
                 'description' => 'Can view privileges list and details',
             ],
+            // Homepage privileges
+            [
+                'name' => 'Read Homepages',
+                'slug' => 'read-homepages',
+                'description' => 'Can view homepage list and details',
+            ],
+            [
+                'name' => 'Create Homepages',
+                'slug' => 'create-homepages',
+                'description' => 'Can create new homepages',
+            ],
+            [
+                'name' => 'Update Homepages',
+                'slug' => 'update-homepages',
+                'description' => 'Can modify homepage information',
+            ],
+            [
+                'name' => 'Delete Homepages',
+                'slug' => 'delete-homepages',
+                'description' => 'Can delete homepages',
+            ],
+            // About Us privileges
+            [
+                'name' => 'Read About Us',
+                'slug' => 'read-about-us',
+                'description' => 'Can view about us page list and details',
+            ],
+            [
+                'name' => 'Create About Us',
+                'slug' => 'create-about-us',
+                'description' => 'Can create new about us pages',
+            ],
+            [
+                'name' => 'Update About Us',
+                'slug' => 'update-about-us',
+                'description' => 'Can modify about us page information',
+            ],
+            [
+                'name' => 'Delete About Us',
+                'slug' => 'delete-about-us',
+                'description' => 'Can delete about us pages',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

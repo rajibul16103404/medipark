@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AboutUsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HomepageController;
 use App\Http\Controllers\Api\OtpController;
@@ -29,8 +30,9 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-// Public Homepage Route
+// Public Routes
 Route::get('/homepages/active', [HomepageController::class, 'show']);
+Route::get('/about-us/active', [AboutUsController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -70,11 +72,21 @@ Route::middleware('auth:api')->group(function () {
     // Homepage routes (Admin)
     Route::prefix('homepages')->group(function () {
         Route::get('/', [HomepageController::class, 'index'])->middleware('privilege:read-homepages');
-        Route::get('/{homepage}', [HomepageController::class, 'showById'])->middleware('privilege:read-homepages');
+        // Route::get('/{homepage}', [HomepageController::class, 'showById'])->middleware('privilege:read-homepages');
         Route::post('/', [HomepageController::class, 'store'])->middleware('privilege:create-homepages');
         Route::put('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
-        Route::patch('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
+        // Route::patch('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
         Route::delete('/{homepage}', [HomepageController::class, 'destroy'])->middleware('privilege:delete-homepages');
-        Route::post('/{homepage}/set-active', [HomepageController::class, 'setActive'])->middleware('privilege:update-homepages');
+        // Route::post('/{homepage}/set-active', [HomepageController::class, 'setActive'])->middleware('privilege:update-homepages');
+    });
+
+    // About Us routes (Admin)
+    Route::prefix('about-us')->group(function () {
+        Route::get('/', [AboutUsController::class, 'index'])->middleware('privilege:read-about-us');
+        // Route::get('/{aboutUs}', [AboutUsController::class, 'showById'])->middleware('privilege:read-about-us');
+        Route::post('/', [AboutUsController::class, 'store'])->middleware('privilege:create-about-us');
+        Route::put('/{aboutUs}', [AboutUsController::class, 'update'])->middleware('privilege:update-about-us');
+        Route::delete('/{aboutUs}', [AboutUsController::class, 'destroy'])->middleware('privilege:delete-about-us');
+        // Route::post('/{aboutUs}/set-active', [AboutUsController::class, 'setActive'])->middleware('privilege:update-about-us');
     });
 });

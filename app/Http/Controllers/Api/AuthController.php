@@ -27,6 +27,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Load roles for the response
+        $user->load('roles');
+
         // Send welcome email
         Mail::to($user->email)->send(new WelcomeMail($user));
 
@@ -76,6 +79,11 @@ class AuthController extends Controller
             ], 403);
         }
 
+        // Load roles for the response
+        if ($user) {
+            $user->load('roles');
+        }
+
         return $this->respondWithToken($token);
     }
 
@@ -98,6 +106,9 @@ class AuthController extends Controller
                 'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
             ], 403);
         }
+
+        // Load roles for the response
+        $user->load('roles');
 
         return response()->json([
             'user' => new UserResource($user),
@@ -154,6 +165,9 @@ class AuthController extends Controller
                 'message' => 'Unauthenticated',
             ], 401);
         }
+
+        // Load roles for the response
+        $user->load('roles');
 
         return response()->json([
             'message' => 'Login successful',
