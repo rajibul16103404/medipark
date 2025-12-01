@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HomepageHeroSection extends Model
+class HomepageCtaSection extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
-        'subtitle',
-        'background_image',
-        'opacity',
-        'serial',
+        'sub_title',
+        'content',
+        'button_text',
+        'button_link',
         'status',
     ];
 
@@ -29,7 +29,7 @@ class HomepageHeroSection extends Model
     }
 
     /**
-     * Get the active homepage hero section.
+     * Get the active homepage CTA section.
      */
     public static function active(): ?self
     {

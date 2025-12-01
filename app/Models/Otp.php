@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Otp extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'email',
@@ -22,6 +23,7 @@ class Otp extends Model
         return [
             'expires_at' => 'datetime',
             'used' => 'boolean',
+            'deleted_at' => 'datetime',
         ];
     }
 

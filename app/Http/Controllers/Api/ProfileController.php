@@ -29,15 +29,36 @@ class ProfileController extends Controller
     {
         $user = auth('api')->user();
 
-        $user->update($request->only(['name', 'email']));
+        // Get validated data - this ensures all fields that passed validation are included
+        $validated = $request->validated();
 
+        // Get all fillable fields from request directly
+        $data = [];
+
+        // Get name if provided
+        if (array_key_exists('name', $request->all())) {
+            $data['name'] = $request->input('name');
+        }
+
+        // Get email if provided
+        if (array_key_exists('email', $request->all())) {
+            $data['email'] = $request->input('email');
+        }
+
+        // Update name and email if provided
+        if (! empty($data)) {
+            $user->update($data);
+        }
+
+        // Update password if provided (handle separately as it needs hashing)
         if ($request->filled('password')) {
             $user->update([
                 'password' => Hash::make($request->password),
             ]);
         }
 
-        $user->load('roles');
+        // Reload user with roles
+        $user = $user->fresh()->load('roles');
 
         return response()->json([
             'message' => 'Profile updated successfully',

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('homepage_hero_sections', function (Blueprint $table) {
+        Schema::create('homepage_about_us_sections', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('subtitle')->nullable();
-            $table->string('background_image')->nullable();
-            $table->string('opacity')->nullable();
-            $table->string('serial')->nullable();
+            $table->string('sub_title')->nullable();
+            $table->text('content')->nullable();
+            $table->string('image_1')->nullable();
+            $table->string('image_2')->nullable();
+            $table->string('image_3')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->softDeletes();
             $table->timestamps();
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('homepage_hero_sections');
+        Schema::dropIfExists('homepage_about_us_sections');
     }
 };

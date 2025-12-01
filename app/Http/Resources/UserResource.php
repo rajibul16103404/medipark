@@ -28,9 +28,9 @@ class UserResource extends JsonResource
             'suspension_reason' => $this->suspension_reason,
             'is_suspended' => $this->isSuspended(),
             'roles' => $this->roles->map(fn ($role) => [
-                'id' => $role->id,
-                'name' => $role->name,
-                'slug' => $role->slug,
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'slug' => $role->slug,
             ]),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

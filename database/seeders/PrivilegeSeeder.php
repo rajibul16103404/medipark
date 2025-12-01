@@ -126,6 +126,69 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-about-us',
                 'description' => 'Can delete about us pages',
             ],
+            // Homepage Hero Section privileges
+            [
+                'name' => 'Read Homepage Hero Sections',
+                'slug' => 'read-homepage-hero-sections',
+                'description' => 'Can view homepage hero section list and details',
+            ],
+            [
+                'name' => 'Create Homepage Hero Sections',
+                'slug' => 'create-homepage-hero-sections',
+                'description' => 'Can create new homepage hero sections',
+            ],
+            [
+                'name' => 'Update Homepage Hero Sections',
+                'slug' => 'update-homepage-hero-sections',
+                'description' => 'Can modify homepage hero section information',
+            ],
+            [
+                'name' => 'Delete Homepage Hero Sections',
+                'slug' => 'delete-homepage-hero-sections',
+                'description' => 'Can delete homepage hero sections',
+            ],
+            // Homepage About Us Section privileges
+            [
+                'name' => 'Read Homepage About Us Sections',
+                'slug' => 'read-homepage-about-us-sections',
+                'description' => 'Can view homepage about us section list and details',
+            ],
+            [
+                'name' => 'Create Homepage About Us Sections',
+                'slug' => 'create-homepage-about-us-sections',
+                'description' => 'Can create new homepage about us sections',
+            ],
+            [
+                'name' => 'Update Homepage About Us Sections',
+                'slug' => 'update-homepage-about-us-sections',
+                'description' => 'Can modify homepage about us section information',
+            ],
+            [
+                'name' => 'Delete Homepage About Us Sections',
+                'slug' => 'delete-homepage-about-us-sections',
+                'description' => 'Can delete homepage about us sections',
+            ],
+            // Homepage CTA Section privileges
+            [
+                'name' => 'Read Homepage CTA Sections',
+                'slug' => 'read-homepage-cta-sections',
+                'description' => 'Can view homepage CTA section list and details',
+            ],
+            [
+                'name' => 'Create Homepage CTA Sections',
+                'slug' => 'create-homepage-cta-sections',
+                'description' => 'Can create new homepage CTA sections',
+            ],
+            [
+                'name' => 'Update Homepage CTA Sections',
+                'slug' => 'update-homepage-cta-sections',
+                'description' => 'Can modify homepage CTA section information',
+            ],
+            [
+                'name' => 'Delete Homepage CTA Sections',
+                'slug' => 'delete-homepage-cta-sections',
+                'description' => 'Can delete homepage CTA sections',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

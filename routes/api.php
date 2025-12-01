@@ -3,6 +3,9 @@
 use App\Http\Controllers\Api\AboutUsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HomepageController;
+use App\Http\Controllers\Api\HomepageAboutUsSectionController;
+use App\Http\Controllers\Api\HomepageCtaSectionController;
+use App\Http\Controllers\Api\HomepageHeroSectionController;
 use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
@@ -31,15 +34,15 @@ Route::prefix('auth')->group(function () {
 });
 
 // Public Routes
-Route::get('/homepages/active', [HomepageController::class, 'show']);
-Route::get('/about-us/active', [AboutUsController::class, 'show']);
+Route::get('/homepage-hero-sections/active', [HomepageHeroSectionController::class, 'show']);
+Route::get('/homepage-about-us-sections/active', [HomepageAboutUsSectionController::class, 'show']);
+Route::get('/homepage-cta-sections/active', [HomepageCtaSectionController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->middleware('privilege:read-profile');
         Route::put('/', [ProfileController::class, 'update'])->middleware('privilege:update-profile');
-        Route::patch('/', [ProfileController::class, 'update'])->middleware('privilege:update-profile');
     });
 
     // Privilege routes
@@ -69,24 +72,34 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{user}/unsuspend', [UserController::class, 'unsuspend'])->middleware('privilege:suspend-users');
     });
 
-    // Homepage routes (Admin)
-    Route::prefix('homepages')->group(function () {
-        Route::get('/', [HomepageController::class, 'index'])->middleware('privilege:read-homepages');
-        // Route::get('/{homepage}', [HomepageController::class, 'showById'])->middleware('privilege:read-homepages');
-        Route::post('/', [HomepageController::class, 'store'])->middleware('privilege:create-homepages');
-        Route::put('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
-        // Route::patch('/{homepage}', [HomepageController::class, 'update'])->middleware('privilege:update-homepages');
-        Route::delete('/{homepage}', [HomepageController::class, 'destroy'])->middleware('privilege:delete-homepages');
-        // Route::post('/{homepage}/set-active', [HomepageController::class, 'setActive'])->middleware('privilege:update-homepages');
+
+    // Homepage Hero Section routes (Admin)
+    Route::prefix('homepage-hero-sections')->group(function () {
+        Route::get('/', [HomepageHeroSectionController::class, 'index'])->middleware('privilege:read-homepage-hero-sections');
+        Route::get('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'showById'])->middleware('privilege:read-homepage-hero-sections');
+        Route::post('/', [HomepageHeroSectionController::class, 'store'])->middleware('privilege:create-homepage-hero-sections');
+        Route::put('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'update'])->middleware('privilege:update-homepage-hero-sections');
+        Route::delete('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-hero-sections');
+        Route::post('/{homepageHeroSection}/set-active', [HomepageHeroSectionController::class, 'setActive'])->middleware('privilege:update-homepage-hero-sections');
     });
 
-    // About Us routes (Admin)
-    Route::prefix('about-us')->group(function () {
-        Route::get('/', [AboutUsController::class, 'index'])->middleware('privilege:read-about-us');
-        // Route::get('/{aboutUs}', [AboutUsController::class, 'showById'])->middleware('privilege:read-about-us');
-        Route::post('/', [AboutUsController::class, 'store'])->middleware('privilege:create-about-us');
-        Route::put('/{aboutUs}', [AboutUsController::class, 'update'])->middleware('privilege:update-about-us');
-        Route::delete('/{aboutUs}', [AboutUsController::class, 'destroy'])->middleware('privilege:delete-about-us');
-        // Route::post('/{aboutUs}/set-active', [AboutUsController::class, 'setActive'])->middleware('privilege:update-about-us');
+    // Homepage About Us Section routes (Admin)
+    Route::prefix('homepage-about-us-sections')->group(function () {
+        Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
+        Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
+        Route::post('/', [HomepageAboutUsSectionController::class, 'store'])->middleware('privilege:create-homepage-about-us-sections');
+        Route::put('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'update'])->middleware('privilege:update-homepage-about-us-sections');
+        Route::delete('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-about-us-sections');
+        Route::post('/{homepageAboutUsSection}/set-active', [HomepageAboutUsSectionController::class, 'setActive'])->middleware('privilege:update-homepage-about-us-sections');
+    });
+
+    // Homepage CTA Section routes (Admin)
+    Route::prefix('homepage-cta-sections')->group(function () {
+        Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
+        Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
+        Route::post('/', [HomepageCtaSectionController::class, 'store'])->middleware('privilege:create-homepage-cta-sections');
+        Route::put('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
+        Route::delete('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-cta-sections');
+        Route::post('/{homepageCtaSection}/set-active', [HomepageCtaSectionController::class, 'setActive'])->middleware('privilege:update-homepage-cta-sections');
     });
 });
