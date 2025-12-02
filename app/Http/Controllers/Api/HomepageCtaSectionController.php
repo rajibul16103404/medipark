@@ -9,31 +9,30 @@ use App\Http\Resources\HomepageCtaSectionResource;
 use App\Models\HomepageCtaSection;
 use App\Status;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class HomepageCtaSectionController extends Controller
 {
     /**
-     * List all homepage CTA sections.
+     * Get the single homepage CTA section.
      */
-    public function index(): JsonResponse|AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $ctaSections = HomepageCtaSection::all();
+        $ctaSection = HomepageCtaSection::first();
 
-        if ($ctaSections->isEmpty()) {
+        if (! $ctaSection) {
             return response()->json([
-                'message' => 'No homepage CTA sections found. You can create one using POST /api/homepage-cta-sections',
-                'data' => [],
+                'message' => 'No homepage CTA section found. You can create one using POST /api/homepage-cta-sections',
+                'data' => null,
             ]);
         }
 
         return response()->json([
-            'data' => HomepageCtaSectionResource::collection($ctaSections),
+            'data' => new HomepageCtaSectionResource($ctaSection),
         ]);
     }
 
     /**
-     * Show the active homepage CTA section.
+     * Show the homepage CTA section (if active).
      */
     public function show(): JsonResponse
     {
@@ -61,17 +60,27 @@ class HomepageCtaSectionController extends Controller
     }
 
     /**
-     * Create a new homepage CTA section.
+     * Create or update the single homepage CTA section.
      */
     public function store(CreateHomepageCtaSectionRequest $request): JsonResponse
     {
-        // If setting as active, deactivate all other CTA sections
-        if ($request->input('status') === Status::Active->value) {
-            HomepageCtaSection::where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
+        // Check if a record already exists
+        $ctaSection = HomepageCtaSection::first();
+
+        $data = $request->validated();
+
+        if ($ctaSection) {
+            // Update existing record
+            $ctaSection->update($data);
+
+            return response()->json([
+                'message' => 'Homepage CTA section updated successfully',
+                'cta_section' => new HomepageCtaSectionResource($ctaSection->fresh()),
+            ]);
         }
 
-        $ctaSection = HomepageCtaSection::create($request->validated());
+        // Create new record
+        $ctaSection = HomepageCtaSection::create($data);
 
         return response()->json([
             'message' => 'Homepage CTA section created successfully',
@@ -84,13 +93,6 @@ class HomepageCtaSectionController extends Controller
      */
     public function update(UpdateHomepageCtaSectionRequest $request, HomepageCtaSection $homepageCtaSection): JsonResponse
     {
-        // If setting as active, deactivate all other CTA sections
-        if ($request->input('status') === Status::Active->value && $homepageCtaSection->status !== Status::Active) {
-            HomepageCtaSection::where('id', '!=', $homepageCtaSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
-
         // Get all fillable fields from request - get directly from input to ensure all data is captured
         $data = [];
         $fillableFields = ['title', 'sub_title', 'content', 'button_text', 'button_link', 'status'];
@@ -130,13 +132,6 @@ class HomepageCtaSectionController extends Controller
         $newStatus = $homepageCtaSection->status === Status::Active
             ? Status::Inactive
             : Status::Active;
-
-        // If setting as active, deactivate all other CTA sections
-        if ($newStatus === Status::Active) {
-            HomepageCtaSection::where('id', '!=', $homepageCtaSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
 
         $homepageCtaSection->update(['status' => $newStatus->value]);
 

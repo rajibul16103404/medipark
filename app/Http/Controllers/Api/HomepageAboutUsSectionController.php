@@ -9,32 +9,31 @@ use App\Http\Resources\HomepageAboutUsSectionResource;
 use App\Models\HomepageAboutUsSection;
 use App\Status;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 
 class HomepageAboutUsSectionController extends Controller
 {
     /**
-     * List all homepage about us sections.
+     * Get the single homepage about us section.
      */
-    public function index(): JsonResponse|AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $aboutUsSections = HomepageAboutUsSection::all();
+        $aboutUsSection = HomepageAboutUsSection::first();
 
-        if ($aboutUsSections->isEmpty()) {
+        if (! $aboutUsSection) {
             return response()->json([
-                'message' => 'No homepage about us sections found. You can create one using POST /api/homepage-about-us-sections',
-                'data' => [],
+                'message' => 'No homepage about us section found. You can create one using POST /api/homepage-about-us-sections',
+                'data' => null,
             ]);
         }
 
         return response()->json([
-            'data' => HomepageAboutUsSectionResource::collection($aboutUsSections),
+            'data' => new HomepageAboutUsSectionResource($aboutUsSection),
         ]);
     }
 
     /**
-     * Show the active homepage about us section.
+     * Show the homepage about us section (if active).
      */
     public function show(): JsonResponse
     {
@@ -62,18 +61,26 @@ class HomepageAboutUsSectionController extends Controller
     }
 
     /**
-     * Create a new homepage about us section.
+     * Create or update the single homepage about us section.
      */
     public function store(CreateHomepageAboutUsSectionRequest $request): JsonResponse
     {
-        // If setting as active, deactivate all other about us sections
-        if ($request->input('status') === Status::Active->value) {
-            HomepageAboutUsSection::where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
+        // Check if a record already exists
+        $aboutUsSection = HomepageAboutUsSection::first();
+
+        $data = $this->processFileUploads($request->validated(), $request, $aboutUsSection);
+
+        if ($aboutUsSection) {
+            // Update existing record
+            $aboutUsSection->update($data);
+
+            return response()->json([
+                'message' => 'Homepage about us section updated successfully',
+                'about_us_section' => new HomepageAboutUsSectionResource($aboutUsSection->fresh()),
+            ]);
         }
 
-        $data = $this->processFileUploads($request->validated(), $request);
-
+        // Create new record
         $aboutUsSection = HomepageAboutUsSection::create($data);
 
         return response()->json([
@@ -87,13 +94,6 @@ class HomepageAboutUsSectionController extends Controller
      */
     public function update(UpdateHomepageAboutUsSectionRequest $request, HomepageAboutUsSection $homepageAboutUsSection): JsonResponse
     {
-        // If setting as active, deactivate all other about us sections
-        if ($request->input('status') === Status::Active->value && $homepageAboutUsSection->status !== Status::Active) {
-            HomepageAboutUsSection::where('id', '!=', $homepageAboutUsSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
-
         // Get all fillable fields from request - get directly from input to ensure all data is captured
         $data = [];
         $fillableFields = ['title', 'sub_title', 'content', 'image_1', 'image_2', 'image_3', 'status'];
@@ -136,13 +136,6 @@ class HomepageAboutUsSectionController extends Controller
         $newStatus = $homepageAboutUsSection->status === Status::Active
             ? Status::Inactive
             : Status::Active;
-
-        // If setting as active, deactivate all other about us sections
-        if ($newStatus === Status::Active) {
-            HomepageAboutUsSection::where('id', '!=', $homepageAboutUsSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
 
         $homepageAboutUsSection->update(['status' => $newStatus->value]);
 
