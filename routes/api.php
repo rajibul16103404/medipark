@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AboutUsPageOurMissionSectionController;
 use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
 use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
@@ -47,6 +48,9 @@ Route::get('/about-us-page-our-mission-sections/active', [AboutUsPageOurMissionS
 Route::get('/about-us-page-our-vision-sections/active', [AboutUsPageOurVisionSectionController::class, 'show']);
 Route::get('/about-us-page-after-our-vision-sections/active', [AboutUsPageAfterOurVisionSectionController::class, 'show']);
 Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'show']);
+
+// Contact routes (Public submission)
+Route::post('/contacts', [ContactController::class, 'store']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -176,5 +180,12 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
         Route::delete('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-2nd-after-our-vision-sections');
         Route::post('/{section}/set-active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
+    });
+
+    // Contact routes (Admin)
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
+        Route::get('/{contact}', [ContactController::class, 'show'])->middleware('privilege:read-contacts');
+        Route::delete('/{contact}', [ContactController::class, 'destroy'])->middleware('privilege:delete-contacts');
     });
 });

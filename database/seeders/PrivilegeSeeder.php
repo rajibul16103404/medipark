@@ -315,6 +315,17 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-about-us-page-2nd-after-our-vision-sections',
                 'description' => 'Can delete about us page 2nd after our vision sections',
             ],
+            // Contact privileges
+            [
+                'name' => 'Read Contacts',
+                'slug' => 'read-contacts',
+                'description' => 'Can view contact list and details',
+            ],
+            [
+                'name' => 'Delete Contacts',
+                'slug' => 'delete-contacts',
+                'description' => 'Can delete contacts',
+            ],
         ];
 
         foreach ($privileges as $privilege) {
