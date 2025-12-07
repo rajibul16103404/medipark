@@ -11,6 +11,8 @@ class AboutUsPage2ndAfterOurVisionSection extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'about_us_page_2nd_after_our_vision_sections';
+
     protected $fillable = [
         'title',
         'paragraph',

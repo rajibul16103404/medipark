@@ -170,11 +170,11 @@ Route::middleware('auth:api')->group(function () {
     // About Us Page 2nd After Our Vision Section routes (Admin)
     Route::prefix('about-us-page-2nd-after-our-vision-sections')->group(function () {
         Route::get('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
-        Route::get('/{aboutUsPage2ndAfterOurVisionSection}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
+        Route::get('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
         Route::post('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-2nd-after-our-vision-sections');
-        Route::post('/{aboutUsPage2ndAfterOurVisionSection}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
-        Route::patch('/{aboutUsPage2ndAfterOurVisionSection}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
-        Route::delete('/{aboutUsPage2ndAfterOurVisionSection}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-2nd-after-our-vision-sections');
-        Route::post('/{aboutUsPage2ndAfterOurVisionSection}/set-active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
+        Route::post('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
+        Route::patch('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
+        Route::delete('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-2nd-after-our-vision-sections');
+        Route::post('/{section}/set-active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
     });
 });

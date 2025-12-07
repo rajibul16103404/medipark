@@ -53,10 +53,10 @@ class AboutUsPage2ndAfterOurVisionSectionController extends Controller
     /**
      * Show a specific about us page 2nd after our vision section.
      */
-    public function showById(AboutUsPage2ndAfterOurVisionSection $aboutUsPage2ndAfterOurVisionSection): JsonResponse
+    public function showById(AboutUsPage2ndAfterOurVisionSection $section): JsonResponse
     {
         return response()->json([
-            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($aboutUsPage2ndAfterOurVisionSection),
+            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($section),
         ]);
     }
 
@@ -92,7 +92,7 @@ class AboutUsPage2ndAfterOurVisionSectionController extends Controller
     /**
      * Update a about us page 2nd after our vision section by ID.
      */
-    public function update(UpdateAboutUsPage2ndAfterOurVisionSectionRequest $request, AboutUsPage2ndAfterOurVisionSection $aboutUsPage2ndAfterOurVisionSection): JsonResponse
+    public function update(UpdateAboutUsPage2ndAfterOurVisionSectionRequest $request, AboutUsPage2ndAfterOurVisionSection $section): JsonResponse
     {
         // Get all fillable fields from request - check each field individually for form data
         $data = [];
@@ -106,25 +106,25 @@ class AboutUsPage2ndAfterOurVisionSectionController extends Controller
         }
 
         // Process file uploads and handle image
-        $data = $this->processFileUploads($data, $request, $aboutUsPage2ndAfterOurVisionSection);
+        $data = $this->processFileUploads($data, $request, $section);
 
         // Only update if we have data to update
         if (! empty($data)) {
-            $aboutUsPage2ndAfterOurVisionSection->update($data);
+            $section->update($data);
         }
 
         return response()->json([
             'message' => 'About us page 2nd after our vision section updated successfully',
-            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($aboutUsPage2ndAfterOurVisionSection->fresh()),
+            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($section->fresh()),
         ]);
     }
 
     /**
      * Delete a about us page 2nd after our vision section.
      */
-    public function destroy(AboutUsPage2ndAfterOurVisionSection $aboutUsPage2ndAfterOurVisionSection): JsonResponse
+    public function destroy(AboutUsPage2ndAfterOurVisionSection $section): JsonResponse
     {
-        $aboutUsPage2ndAfterOurVisionSection->delete();
+        $section->delete();
 
         return response()->json([
             'message' => 'About us page 2nd after our vision section deleted successfully',
@@ -134,14 +134,14 @@ class AboutUsPage2ndAfterOurVisionSectionController extends Controller
     /**
      * Toggle about us page 2nd after our vision section status between active and inactive.
      */
-    public function setActive(AboutUsPage2ndAfterOurVisionSection $aboutUsPage2ndAfterOurVisionSection): JsonResponse
+    public function setActive(AboutUsPage2ndAfterOurVisionSection $section): JsonResponse
     {
         // Toggle status: if active, make inactive; if inactive, make active
-        $newStatus = $aboutUsPage2ndAfterOurVisionSection->status === Status::Active
+        $newStatus = $section->status === Status::Active
             ? Status::Inactive
             : Status::Active;
 
-        $aboutUsPage2ndAfterOurVisionSection->update(['status' => $newStatus->value]);
+        $section->update(['status' => $newStatus->value]);
 
         $statusMessage = $newStatus === Status::Active
             ? 'About us page 2nd after our vision section set as active successfully'
@@ -149,7 +149,7 @@ class AboutUsPage2ndAfterOurVisionSectionController extends Controller
 
         return response()->json([
             'message' => $statusMessage,
-            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($aboutUsPage2ndAfterOurVisionSection->fresh()),
+            '2nd_after_our_vision_section' => new AboutUsPage2ndAfterOurVisionSectionResource($section->fresh()),
         ]);
     }
 
