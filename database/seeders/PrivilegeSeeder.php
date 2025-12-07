@@ -294,6 +294,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-about-us-page-after-our-vision-sections',
                 'description' => 'Can delete about us page after our vision sections',
             ],
+            // About Us Page 2nd After Our Vision Section privileges
+            [
+                'name' => 'Read About Us Page 2nd After Our Vision Sections',
+                'slug' => 'read-about-us-page-2nd-after-our-vision-sections',
+                'description' => 'Can view about us page 2nd after our vision section list and details',
+            ],
+            [
+                'name' => 'Create About Us Page 2nd After Our Vision Sections',
+                'slug' => 'create-about-us-page-2nd-after-our-vision-sections',
+                'description' => 'Can create new about us page 2nd after our vision sections',
+            ],
+            [
+                'name' => 'Update About Us Page 2nd After Our Vision Sections',
+                'slug' => 'update-about-us-page-2nd-after-our-vision-sections',
+                'description' => 'Can modify about us page 2nd after our vision section information',
+            ],
+            [
+                'name' => 'Delete About Us Page 2nd After Our Vision Sections',
+                'slug' => 'delete-about-us-page-2nd-after-our-vision-sections',
+                'description' => 'Can delete about us page 2nd after our vision sections',
+            ],
         ];
 
         foreach ($privileges as $privilege) {
