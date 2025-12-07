@@ -189,6 +189,90 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-homepage-cta-sections',
                 'description' => 'Can delete homepage CTA sections',
             ],
+            // About Us Page Banner Section privileges
+            [
+                'name' => 'Read About Us Page Banner Sections',
+                'slug' => 'read-about-us-page-banner-sections',
+                'description' => 'Can view about us page banner section list and details',
+            ],
+            [
+                'name' => 'Create About Us Page Banner Sections',
+                'slug' => 'create-about-us-page-banner-sections',
+                'description' => 'Can create new about us page banner sections',
+            ],
+            [
+                'name' => 'Update About Us Page Banner Sections',
+                'slug' => 'update-about-us-page-banner-sections',
+                'description' => 'Can modify about us page banner section information',
+            ],
+            [
+                'name' => 'Delete About Us Page Banner Sections',
+                'slug' => 'delete-about-us-page-banner-sections',
+                'description' => 'Can delete about us page banner sections',
+            ],
+            // About Us Page Who We Are Section privileges
+            [
+                'name' => 'Read About Us Page Who We Are Sections',
+                'slug' => 'read-about-us-page-who-we-are-sections',
+                'description' => 'Can view about us page who we are section list and details',
+            ],
+            [
+                'name' => 'Create About Us Page Who We Are Sections',
+                'slug' => 'create-about-us-page-who-we-are-sections',
+                'description' => 'Can create new about us page who we are sections',
+            ],
+            [
+                'name' => 'Update About Us Page Who We Are Sections',
+                'slug' => 'update-about-us-page-who-we-are-sections',
+                'description' => 'Can modify about us page who we are section information',
+            ],
+            [
+                'name' => 'Delete About Us Page Who We Are Sections',
+                'slug' => 'delete-about-us-page-who-we-are-sections',
+                'description' => 'Can delete about us page who we are sections',
+            ],
+            // About Us Page Our Mission Section privileges
+            [
+                'name' => 'Read About Us Page Our Mission Sections',
+                'slug' => 'read-about-us-page-our-mission-sections',
+                'description' => 'Can view about us page our mission section list and details',
+            ],
+            [
+                'name' => 'Create About Us Page Our Mission Sections',
+                'slug' => 'create-about-us-page-our-mission-sections',
+                'description' => 'Can create new about us page our mission sections',
+            ],
+            [
+                'name' => 'Update About Us Page Our Mission Sections',
+                'slug' => 'update-about-us-page-our-mission-sections',
+                'description' => 'Can modify about us page our mission section information',
+            ],
+            [
+                'name' => 'Delete About Us Page Our Mission Sections',
+                'slug' => 'delete-about-us-page-our-mission-sections',
+                'description' => 'Can delete about us page our mission sections',
+            ],
+            // About Us Page Our Vision Section privileges
+            [
+                'name' => 'Read About Us Page Our Vision Sections',
+                'slug' => 'read-about-us-page-our-vision-sections',
+                'description' => 'Can view about us page our vision section list and details',
+            ],
+            [
+                'name' => 'Create About Us Page Our Vision Sections',
+                'slug' => 'create-about-us-page-our-vision-sections',
+                'description' => 'Can create new about us page our vision sections',
+            ],
+            [
+                'name' => 'Update About Us Page Our Vision Sections',
+                'slug' => 'update-about-us-page-our-vision-sections',
+                'description' => 'Can modify about us page our vision section information',
+            ],
+            [
+                'name' => 'Delete About Us Page Our Vision Sections',
+                'slug' => 'delete-about-us-page-our-vision-sections',
+                'description' => 'Can delete about us page our vision sections',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

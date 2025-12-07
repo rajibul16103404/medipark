@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AboutUsController;
+use App\Http\Controllers\Api\AboutUsPageBannerSectionController;
+use App\Http\Controllers\Api\AboutUsPageOurMissionSectionController;
+use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
+use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\HomepageController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
@@ -37,6 +39,10 @@ Route::prefix('auth')->group(function () {
 Route::get('/homepage-hero-sections/active', [HomepageHeroSectionController::class, 'show']);
 Route::get('/homepage-about-us-sections/active', [HomepageAboutUsSectionController::class, 'show']);
 Route::get('/homepage-cta-sections/active', [HomepageCtaSectionController::class, 'show']);
+Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
+Route::get('/about-us-page-who-we-are-sections/active', [AboutUsPageWhoWeAreSectionController::class, 'show']);
+Route::get('/about-us-page-our-mission-sections/active', [AboutUsPageOurMissionSectionController::class, 'show']);
+Route::get('/about-us-page-our-vision-sections/active', [AboutUsPageOurVisionSectionController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -72,13 +78,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{user}/unsuspend', [UserController::class, 'unsuspend'])->middleware('privilege:suspend-users');
     });
 
-
     // Homepage Hero Section routes (Admin)
     Route::prefix('homepage-hero-sections')->group(function () {
         Route::get('/', [HomepageHeroSectionController::class, 'index'])->middleware('privilege:read-homepage-hero-sections');
         Route::get('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'showById'])->middleware('privilege:read-homepage-hero-sections');
         Route::post('/', [HomepageHeroSectionController::class, 'store'])->middleware('privilege:create-homepage-hero-sections');
-        Route::put('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'update'])->middleware('privilege:update-homepage-hero-sections');
+        Route::post('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'update'])->middleware('privilege:update-homepage-hero-sections');
         Route::delete('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-hero-sections');
         Route::post('/{homepageHeroSection}/set-active', [HomepageHeroSectionController::class, 'setActive'])->middleware('privilege:update-homepage-hero-sections');
     });
@@ -88,7 +93,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
         Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
         Route::post('/', [HomepageAboutUsSectionController::class, 'store'])->middleware('privilege:create-homepage-about-us-sections');
-        Route::put('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'update'])->middleware('privilege:update-homepage-about-us-sections');
+        Route::post('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'update'])->middleware('privilege:update-homepage-about-us-sections');
         Route::delete('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-about-us-sections');
         Route::post('/{homepageAboutUsSection}/set-active', [HomepageAboutUsSectionController::class, 'setActive'])->middleware('privilege:update-homepage-about-us-sections');
     });
@@ -101,5 +106,49 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
         Route::delete('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-cta-sections');
         Route::post('/{homepageCtaSection}/set-active', [HomepageCtaSectionController::class, 'setActive'])->middleware('privilege:update-homepage-cta-sections');
+    });
+
+    // About Us Page Banner Section routes (Admin)
+    Route::prefix('about-us-page-banner-sections')->group(function () {
+        Route::get('/', [AboutUsPageBannerSectionController::class, 'index'])->middleware('privilege:read-about-us-page-banner-sections');
+        Route::get('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-banner-sections');
+        Route::post('/', [AboutUsPageBannerSectionController::class, 'store'])->middleware('privilege:create-about-us-page-banner-sections');
+        Route::put('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
+        Route::patch('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
+        Route::delete('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-banner-sections');
+        Route::post('/{aboutUsPageBannerSection}/set-active', [AboutUsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-banner-sections');
+    });
+
+    // About Us Page Who We Are Section routes (Admin)
+    Route::prefix('about-us-page-who-we-are-sections')->group(function () {
+        Route::get('/', [AboutUsPageWhoWeAreSectionController::class, 'index'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        Route::get('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        Route::post('/', [AboutUsPageWhoWeAreSectionController::class, 'store'])->middleware('privilege:create-about-us-page-who-we-are-sections');
+        Route::post('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
+        Route::patch('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
+        Route::delete('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-who-we-are-sections');
+        Route::post('/{aboutUsPageWhoWeAreSection}/set-active', [AboutUsPageWhoWeAreSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-who-we-are-sections');
+    });
+
+    // About Us Page Our Mission Section routes (Admin)
+    Route::prefix('about-us-page-our-mission-sections')->group(function () {
+        Route::get('/', [AboutUsPageOurMissionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        Route::get('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        Route::post('/', [AboutUsPageOurMissionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-mission-sections');
+        Route::post('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
+        Route::patch('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
+        Route::delete('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-our-mission-sections');
+        Route::post('/{aboutUsPageOurMissionSection}/set-active', [AboutUsPageOurMissionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-our-mission-sections');
+    });
+
+    // About Us Page Our Vision Section routes (Admin)
+    Route::prefix('about-us-page-our-vision-sections')->group(function () {
+        Route::get('/', [AboutUsPageOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        Route::get('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        Route::post('/', [AboutUsPageOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-vision-sections');
+        Route::post('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
+        Route::patch('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
+        Route::delete('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-our-vision-sections');
+        Route::post('/{aboutUsPageOurVisionSection}/set-active', [AboutUsPageOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-our-vision-sections');
     });
 });

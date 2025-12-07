@@ -82,7 +82,6 @@ class HomepageHeroSectionController extends Controller
         ], 201);
     }
 
-
     /**
      * Update a homepage hero section by ID.
      */
@@ -95,20 +94,24 @@ class HomepageHeroSectionController extends Controller
                 ->update(['status' => Status::Inactive->value]);
         }
 
-        // Get all fillable fields from request - get directly from input to ensure all data is captured
+        // Get all fillable fields from request - check each field individually for form data
         $data = [];
-        $fillableFields = ['title', 'subtitle', 'opacity', 'serial', 'status', 'background_image'];
+        $fillableFields = ['title', 'subtitle', 'opacity', 'serial', 'status'];
+        $requestData = $request->all();
 
         foreach ($fillableFields as $field) {
-            if (array_key_exists($field, $request->all())) {
+            if (array_key_exists($field, $requestData)) {
                 $data[$field] = $request->input($field);
             }
         }
 
-        // Process file uploads and handle background_image
+        // Process file uploads and handle background_image (checks hasFile separately)
         $data = $this->processFileUploads($data, $request, $homepageHeroSection);
 
-        $homepageHeroSection->update($data);
+        // Only update if we have data to update
+        if (! empty($data)) {
+            $homepageHeroSection->update($data);
+        }
 
         return response()->json([
             'message' => 'Homepage hero section updated successfully',
@@ -162,11 +165,12 @@ class HomepageHeroSectionController extends Controller
      *
      * @param  array<string, mixed>  $data
      * @param  CreateHomepageHeroSectionRequest|UpdateHomepageHeroSectionRequest  $request
-     * @param  HomepageHeroSection|null  $heroSection
      * @return array<string, mixed>
      */
     protected function processFileUploads(array $data, $request, ?HomepageHeroSection $heroSection = null): array
     {
+        $requestData = $request->all();
+
         // Handle background_image upload
         if ($request->hasFile('background_image')) {
             // Delete old file if updating
@@ -180,16 +184,13 @@ class HomepageHeroSectionController extends Controller
             $file = $request->file('background_image');
             $path = $file->store('homepage-hero-sections', 'public');
             $data['background_image'] = '/storage/'.$path;
-        } elseif (isset($data['background_image']) && is_string($data['background_image'])) {
-            // If background_image is provided as a string URL, use it as is
-            // No need to change it
-        } elseif (! isset($data['background_image']) && $heroSection) {
+        } elseif (array_key_exists('background_image', $requestData) && is_string($request->input('background_image'))) {
+            // If background_image is provided as a string URL in form data, use it
+            $data['background_image'] = $request->input('background_image');
+        } elseif (! array_key_exists('background_image', $requestData) && ! $request->hasFile('background_image') && $heroSection) {
             // Only preserve existing background_image if not provided at all
             $data['background_image'] = $heroSection->background_image;
         }
-
-        // All other fields from validated() will be updated directly
-        // No need to preserve them - update all inputted data
 
         return $data;
     }

@@ -94,12 +94,13 @@ class HomepageAboutUsSectionController extends Controller
      */
     public function update(UpdateHomepageAboutUsSectionRequest $request, HomepageAboutUsSection $homepageAboutUsSection): JsonResponse
     {
-        // Get all fillable fields from request - get directly from input to ensure all data is captured
+        // Get all fillable fields from request - check each field individually for form data
         $data = [];
         $fillableFields = ['title', 'sub_title', 'content', 'image_1', 'image_2', 'image_3', 'status'];
+        $requestData = $request->all();
 
         foreach ($fillableFields as $field) {
-            if (array_key_exists($field, $request->all())) {
+            if (array_key_exists($field, $requestData)) {
                 $data[$field] = $request->input($field);
             }
         }
@@ -107,7 +108,10 @@ class HomepageAboutUsSectionController extends Controller
         // Process file uploads and handle images
         $data = $this->processFileUploads($data, $request, $homepageAboutUsSection);
 
-        $homepageAboutUsSection->update($data);
+        // Only update if we have data to update
+        if (! empty($data)) {
+            $homepageAboutUsSection->update($data);
+        }
 
         return response()->json([
             'message' => 'Homepage about us section updated successfully',
@@ -154,7 +158,6 @@ class HomepageAboutUsSectionController extends Controller
      *
      * @param  array<string, mixed>  $data
      * @param  CreateHomepageAboutUsSectionRequest|UpdateHomepageAboutUsSectionRequest  $request
-     * @param  HomepageAboutUsSection|null  $aboutUsSection
      * @return array<string, mixed>
      */
     protected function processFileUploads(array $data, $request, ?HomepageAboutUsSection $aboutUsSection = null): array

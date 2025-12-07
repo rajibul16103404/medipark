@@ -93,17 +93,21 @@ class HomepageCtaSectionController extends Controller
      */
     public function update(UpdateHomepageCtaSectionRequest $request, HomepageCtaSection $homepageCtaSection): JsonResponse
     {
-        // Get all fillable fields from request - get directly from input to ensure all data is captured
+        // Get all fillable fields from request - check each field individually for form data
         $data = [];
         $fillableFields = ['title', 'sub_title', 'content', 'button_text', 'button_link', 'status'];
+        $requestData = $request->all();
 
         foreach ($fillableFields as $field) {
-            if (array_key_exists($field, $request->all())) {
+            if (array_key_exists($field, $requestData)) {
                 $data[$field] = $request->input($field);
             }
         }
 
-        $homepageCtaSection->update($data);
+        // Only update if we have data to update
+        if (! empty($data)) {
+            $homepageCtaSection->update($data);
+        }
 
         return response()->json([
             'message' => 'Homepage CTA section updated successfully',

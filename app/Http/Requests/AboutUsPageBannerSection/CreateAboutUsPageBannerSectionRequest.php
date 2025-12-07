@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\HomepageHeroSection;
+namespace App\Http\Requests\AboutUsPageBannerSection;
 
 use App\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateHomepageHeroSectionRequest extends FormRequest
+class CreateAboutUsPageBannerSectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class CreateHomepageHeroSectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'subtitle' => ['required', 'string', 'max:255'],
             'background_image' => [
-                'required',
+                'nullable',
                 function ($attribute, $value, $fail) {
                     // Allow string URLs
                     if (is_string($value) && ! $this->hasFile($attribute)) {
@@ -104,9 +102,8 @@ class CreateHomepageHeroSectionRequest extends FormRequest
                     }
                 },
             ],
-            'opacity' => ['required', 'string', 'max:255'],
-            'serial' => ['required', 'integer', 'min:1'],
-            'status' => ['required', Rule::enum(Status::class)],
+            'opacity' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', Rule::enum(Status::class)],
         ];
     }
 }
