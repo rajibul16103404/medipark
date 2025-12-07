@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AboutUsPageAfterOurVisionSectionController;
 use App\Http\Controllers\Api\AboutUsPageBannerSectionController;
 use App\Http\Controllers\Api\AboutUsPageOurMissionSectionController;
 use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
@@ -43,6 +44,7 @@ Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionCon
 Route::get('/about-us-page-who-we-are-sections/active', [AboutUsPageWhoWeAreSectionController::class, 'show']);
 Route::get('/about-us-page-our-mission-sections/active', [AboutUsPageOurMissionSectionController::class, 'show']);
 Route::get('/about-us-page-our-vision-sections/active', [AboutUsPageOurVisionSectionController::class, 'show']);
+Route::get('/about-us-page-after-our-vision-sections/active', [AboutUsPageAfterOurVisionSectionController::class, 'show']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -150,5 +152,16 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
         Route::delete('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-our-vision-sections');
         Route::post('/{aboutUsPageOurVisionSection}/set-active', [AboutUsPageOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-our-vision-sections');
+    });
+
+    // About Us Page After Our Vision Section routes (Admin)
+    Route::prefix('about-us-page-after-our-vision-sections')->group(function () {
+        Route::get('/', [AboutUsPageAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        Route::get('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        Route::post('/', [AboutUsPageAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-after-our-vision-sections');
+        Route::post('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
+        Route::patch('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
+        Route::delete('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-after-our-vision-sections');
+        Route::post('/{aboutUsPageAfterOurVisionSection}/set-active', [AboutUsPageAfterOurVisionSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
     });
 });
