@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 class AboutUsPageAfterOurVisionSectionController extends Controller
 {
     use ApiResponse;
-{
+
     /**
      * Get the single about us page after our vision section.
      */
