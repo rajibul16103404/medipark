@@ -8,11 +8,14 @@ use App\Http\Requests\AboutUsPage2ndAfterOurVisionSection\UpdateAboutUsPage2ndAf
 use App\Http\Resources\AboutUsPage2ndAfterOurVisionSectionResource;
 use App\Models\AboutUsPage2ndAfterOurVisionSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPage2ndAfterOurVisionSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single about us page 2nd after our vision section.
      */

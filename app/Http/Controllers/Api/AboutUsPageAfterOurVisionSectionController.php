@@ -8,10 +8,13 @@ use App\Http\Requests\AboutUsPageAfterOurVisionSection\UpdateAboutUsPageAfterOur
 use App\Http\Resources\AboutUsPageAfterOurVisionSectionResource;
 use App\Models\AboutUsPageAfterOurVisionSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPageAfterOurVisionSectionController extends Controller
+{
+    use ApiResponse;
 {
     /**
      * Get the single about us page after our vision section.

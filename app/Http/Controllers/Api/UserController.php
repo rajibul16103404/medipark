@@ -6,19 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SuspendUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
+    use ApiResponse;
+
     /**
      * List all users.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles')->paginate(10);
+        $resourceCollection = UserResource::collection($users);
 
-        return UserResource::collection($users);
+        return $this->paginatedResponse('Users retrieved successfully', $users, $resourceCollection);
     }
 
     /**
@@ -28,9 +31,7 @@ class UserController extends Controller
     {
         $user->load('roles');
 
-        return response()->json([
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('User retrieved successfully', new UserResource($user));
     }
 
     /**
@@ -39,9 +40,7 @@ class UserController extends Controller
     public function suspend(SuspendUserRequest $request, User $user): JsonResponse
     {
         if ($user->isSuspended()) {
-            return response()->json([
-                'message' => 'User is already suspended',
-            ], 400);
+            return $this->errorResponse('User is already suspended', 400);
         }
 
         $user->update([
@@ -51,10 +50,7 @@ class UserController extends Controller
 
         $user->load('roles');
 
-        return response()->json([
-            'message' => 'User suspended successfully',
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('User suspended successfully', new UserResource($user));
     }
 
     /**
@@ -63,9 +59,7 @@ class UserController extends Controller
     public function unsuspend(User $user): JsonResponse
     {
         if (! $user->isSuspended()) {
-            return response()->json([
-                'message' => 'User is not suspended',
-            ], 400);
+            return $this->errorResponse('User is not suspended', 400);
         }
 
         $user->update([
@@ -75,9 +69,6 @@ class UserController extends Controller
 
         $user->load('roles');
 
-        return response()->json([
-            'message' => 'User unsuspended successfully',
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('User unsuspended successfully', new UserResource($user));
     }
 }

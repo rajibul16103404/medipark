@@ -8,11 +8,14 @@ use App\Http\Requests\AboutUsPageBannerSection\UpdateAboutUsPageBannerSectionReq
 use App\Http\Resources\AboutUsPageBannerSectionResource;
 use App\Models\AboutUsPageBannerSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPageBannerSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single about us page banner section.
      */
@@ -21,15 +24,10 @@ class AboutUsPageBannerSectionController extends Controller
         $bannerSection = AboutUsPageBannerSection::first();
 
         if (! $bannerSection) {
-            return response()->json([
-                'message' => 'No about us page banner section found. You can create one using POST /api/about-us-page-banner-sections',
-                'data' => null,
-            ]);
+            return $this->errorResponse('No about us page banner section found. You can create one using POST /api/about-us-page-banner-sections', 404);
         }
 
-        return response()->json([
-            'data' => new AboutUsPageBannerSectionResource($bannerSection),
-        ]);
+        return $this->successResponse('About us page banner section retrieved successfully', new AboutUsPageBannerSectionResource($bannerSection));
     }
 
     /**
@@ -40,14 +38,10 @@ class AboutUsPageBannerSectionController extends Controller
         $bannerSection = AboutUsPageBannerSection::active();
 
         if (! $bannerSection) {
-            return response()->json([
-                'message' => 'No active about us page banner section found',
-            ], 404);
+            return $this->errorResponse('No active about us page banner section found', 404);
         }
 
-        return response()->json([
-            'banner_section' => new AboutUsPageBannerSectionResource($bannerSection),
-        ]);
+        return $this->successResponse('About us page banner section retrieved successfully', new AboutUsPageBannerSectionResource($bannerSection));
     }
 
     /**
@@ -55,9 +49,7 @@ class AboutUsPageBannerSectionController extends Controller
      */
     public function showById(AboutUsPageBannerSection $aboutUsPageBannerSection): JsonResponse
     {
-        return response()->json([
-            'banner_section' => new AboutUsPageBannerSectionResource($aboutUsPageBannerSection),
-        ]);
+        return $this->successResponse('About us page banner section retrieved successfully', new AboutUsPageBannerSectionResource($aboutUsPageBannerSection));
     }
 
     /**
@@ -74,19 +66,13 @@ class AboutUsPageBannerSectionController extends Controller
             // Update existing record
             $bannerSection->update($data);
 
-            return response()->json([
-                'message' => 'About us page banner section updated successfully',
-                'banner_section' => new AboutUsPageBannerSectionResource($bannerSection->fresh()),
-            ]);
+            return $this->successResponse('About us page banner section updated successfully', new AboutUsPageBannerSectionResource($bannerSection->fresh()));
         }
 
         // Create new record
         $bannerSection = AboutUsPageBannerSection::create($data);
 
-        return response()->json([
-            'message' => 'About us page banner section created successfully',
-            'banner_section' => new AboutUsPageBannerSectionResource($bannerSection),
-        ], 201);
+        return $this->successResponse('About us page banner section created successfully', new AboutUsPageBannerSectionResource($bannerSection), 201);
     }
 
     /**
@@ -113,10 +99,7 @@ class AboutUsPageBannerSectionController extends Controller
             $aboutUsPageBannerSection->update($data);
         }
 
-        return response()->json([
-            'message' => 'About us page banner section updated successfully',
-            'banner_section' => new AboutUsPageBannerSectionResource($aboutUsPageBannerSection->fresh()),
-        ]);
+        return $this->successResponse('About us page banner section updated successfully', new AboutUsPageBannerSectionResource($aboutUsPageBannerSection->fresh()));
     }
 
     /**
@@ -126,9 +109,7 @@ class AboutUsPageBannerSectionController extends Controller
     {
         $aboutUsPageBannerSection->delete();
 
-        return response()->json([
-            'message' => 'About us page banner section deleted successfully',
-        ]);
+        return $this->successResponse('About us page banner section deleted successfully');
     }
 
     /**
@@ -147,10 +128,7 @@ class AboutUsPageBannerSectionController extends Controller
             ? 'About us page banner section set as active successfully'
             : 'About us page banner section set as inactive successfully';
 
-        return response()->json([
-            'message' => $statusMessage,
-            'banner_section' => new AboutUsPageBannerSectionResource($aboutUsPageBannerSection->fresh()),
-        ]);
+        return $this->successResponse($statusMessage, new AboutUsPageBannerSectionResource($aboutUsPageBannerSection->fresh()));
     }
 
     /**

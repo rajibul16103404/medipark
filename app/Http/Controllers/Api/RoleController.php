@@ -9,19 +9,22 @@ use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Privilege;
 use App\Models\Role;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class RoleController extends Controller
 {
+    use ApiResponse;
+
     /**
      * List all roles.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $roles = Role::with('privileges')->get();
+        $roles = Role::with('privileges')->paginate(10);
+        $resourceCollection = RoleResource::collection($roles);
 
-        return RoleResource::collection($roles);
+        return $this->paginatedResponse('Roles retrieved successfully', $roles, $resourceCollection);
     }
 
     /**
@@ -31,9 +34,7 @@ class RoleController extends Controller
     {
         $role->load('privileges');
 
-        return response()->json([
-            'role' => new RoleResource($role),
-        ]);
+        return $this->successResponse('Role retrieved successfully', new RoleResource($role));
     }
 
     /**
@@ -48,10 +49,7 @@ class RoleController extends Controller
 
         $role->load('privileges');
 
-        return response()->json([
-            'message' => 'Role created successfully',
-            'role' => new RoleResource($role),
-        ], 201);
+        return $this->successResponse('Role created successfully', new RoleResource($role), 201);
     }
 
     /**
@@ -60,18 +58,13 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
         if ($role->isAdmin()) {
-            return response()->json([
-                'message' => 'The admin role cannot be modified',
-            ], 403);
+            return $this->errorResponse('The admin role cannot be modified', 403);
         }
 
         $role->update($request->only(['name', 'slug']));
         $role->load('privileges');
 
-        return response()->json([
-            'message' => 'Role updated successfully',
-            'role' => new RoleResource($role),
-        ]);
+        return $this->successResponse('Role updated successfully', new RoleResource($role));
     }
 
     /**
@@ -80,16 +73,12 @@ class RoleController extends Controller
     public function destroy(Role $role): JsonResponse
     {
         if ($role->isAdmin()) {
-            return response()->json([
-                'message' => 'The admin role cannot be deleted',
-            ], 403);
+            return $this->errorResponse('The admin role cannot be deleted', 403);
         }
 
         $role->delete();
 
-        return response()->json([
-            'message' => 'Role deleted successfully',
-        ]);
+        return $this->successResponse('Role deleted successfully');
     }
 
     /**
@@ -98,9 +87,7 @@ class RoleController extends Controller
     public function assignPrivileges(AssignPrivilegesRequest $request, Role $role): JsonResponse
     {
         if ($role->isAdmin()) {
-            return response()->json([
-                'message' => 'Cannot assign privileges to the admin role. Admin role automatically has all privileges.',
-            ], 403);
+            return $this->errorResponse('Cannot assign privileges to the admin role. Admin role automatically has all privileges.', 403);
         }
 
         $privilegeIds = $request->privilege_ids;
@@ -109,10 +96,7 @@ class RoleController extends Controller
 
         $role->load('privileges');
 
-        return response()->json([
-            'message' => 'Privileges assigned to role successfully',
-            'role' => new RoleResource($role),
-        ]);
+        return $this->successResponse('Privileges assigned to role successfully', new RoleResource($role));
     }
 
     /**
@@ -121,19 +105,14 @@ class RoleController extends Controller
     public function removePrivileges(Role $role): JsonResponse
     {
         if ($role->isAdmin()) {
-            return response()->json([
-                'message' => 'Cannot remove privileges from the admin role. Admin role automatically has all privileges.',
-            ], 403);
+            return $this->errorResponse('Cannot remove privileges from the admin role. Admin role automatically has all privileges.', 403);
         }
 
         $role->privileges()->detach();
 
         $role->load('privileges');
 
-        return response()->json([
-            'message' => 'All privileges removed from role successfully',
-            'role' => new RoleResource($role),
-        ]);
+        return $this->successResponse('All privileges removed from role successfully', new RoleResource($role));
     }
 
     /**
@@ -142,24 +121,17 @@ class RoleController extends Controller
     public function removePrivilege(Role $role, Privilege $privilege): JsonResponse
     {
         if ($role->isAdmin()) {
-            return response()->json([
-                'message' => 'Cannot remove privileges from the admin role. Admin role automatically has all privileges.',
-            ], 403);
+            return $this->errorResponse('Cannot remove privileges from the admin role. Admin role automatically has all privileges.', 403);
         }
 
         if (! $role->privileges()->where('privileges.id', $privilege->id)->exists()) {
-            return response()->json([
-                'message' => 'This privilege is not assigned to the role',
-            ], 400);
+            return $this->errorResponse('This privilege is not assigned to the role', 400);
         }
 
         $role->privileges()->detach($privilege->id);
 
         $role->load('privileges');
 
-        return response()->json([
-            'message' => 'Privilege removed from role successfully',
-            'role' => new RoleResource($role),
-        ]);
+        return $this->successResponse('Privilege removed from role successfully', new RoleResource($role));
     }
 }

@@ -8,11 +8,14 @@ use App\Http\Requests\AboutUsPageOurMissionSection\UpdateAboutUsPageOurMissionSe
 use App\Http\Resources\AboutUsPageOurMissionSectionResource;
 use App\Models\AboutUsPageOurMissionSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPageOurMissionSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single about us page our mission section.
      */

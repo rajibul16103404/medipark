@@ -8,29 +8,23 @@ use App\Http\Requests\HomepageHeroSection\UpdateHomepageHeroSectionRequest;
 use App\Http\Resources\HomepageHeroSectionResource;
 use App\Models\HomepageHeroSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 
 class HomepageHeroSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * List all homepage hero sections.
      */
-    public function index(): JsonResponse|AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $heroSections = HomepageHeroSection::all();
+        $heroSections = HomepageHeroSection::paginate(10);
+        $resourceCollection = HomepageHeroSectionResource::collection($heroSections);
 
-        if ($heroSections->isEmpty()) {
-            return response()->json([
-                'message' => 'No homepage hero sections found. You can create one using POST /api/homepage-hero-sections',
-                'data' => [],
-            ]);
-        }
-
-        return response()->json([
-            'data' => HomepageHeroSectionResource::collection($heroSections),
-        ]);
+        return $this->paginatedResponse('Homepage hero sections retrieved successfully', $heroSections, $resourceCollection);
     }
 
     /**
@@ -41,14 +35,10 @@ class HomepageHeroSectionController extends Controller
         $heroSection = HomepageHeroSection::active();
 
         if (! $heroSection) {
-            return response()->json([
-                'message' => 'No active homepage hero section found',
-            ], 404);
+            return $this->errorResponse('No active homepage hero section found', 404);
         }
 
-        return response()->json([
-            'hero_section' => new HomepageHeroSectionResource($heroSection),
-        ]);
+        return $this->successResponse('Homepage hero section retrieved successfully', new HomepageHeroSectionResource($heroSection));
     }
 
     /**
@@ -56,9 +46,7 @@ class HomepageHeroSectionController extends Controller
      */
     public function showById(HomepageHeroSection $homepageHeroSection): JsonResponse
     {
-        return response()->json([
-            'hero_section' => new HomepageHeroSectionResource($homepageHeroSection),
-        ]);
+        return $this->successResponse('Homepage hero section retrieved successfully', new HomepageHeroSectionResource($homepageHeroSection));
     }
 
     /**
@@ -76,10 +64,7 @@ class HomepageHeroSectionController extends Controller
 
         $heroSection = HomepageHeroSection::create($data);
 
-        return response()->json([
-            'message' => 'Homepage hero section created successfully',
-            'hero_section' => new HomepageHeroSectionResource($heroSection),
-        ], 201);
+        return $this->successResponse('Homepage hero section created successfully', new HomepageHeroSectionResource($heroSection), 201);
     }
 
     /**
@@ -113,10 +98,7 @@ class HomepageHeroSectionController extends Controller
             $homepageHeroSection->update($data);
         }
 
-        return response()->json([
-            'message' => 'Homepage hero section updated successfully',
-            'hero_section' => new HomepageHeroSectionResource($homepageHeroSection->fresh()),
-        ]);
+        return $this->successResponse('Homepage hero section updated successfully', new HomepageHeroSectionResource($homepageHeroSection->fresh()));
     }
 
     /**
@@ -126,9 +108,7 @@ class HomepageHeroSectionController extends Controller
     {
         $homepageHeroSection->delete();
 
-        return response()->json([
-            'message' => 'Homepage hero section deleted successfully',
-        ]);
+        return $this->successResponse('Homepage hero section deleted successfully');
     }
 
     /**
@@ -154,10 +134,7 @@ class HomepageHeroSectionController extends Controller
             ? 'Homepage hero section set as active successfully'
             : 'Homepage hero section set as inactive successfully';
 
-        return response()->json([
-            'message' => $statusMessage,
-            'hero_section' => new HomepageHeroSectionResource($homepageHeroSection->fresh()),
-        ]);
+        return $this->successResponse($statusMessage, new HomepageHeroSectionResource($homepageHeroSection->fresh()));
     }
 
     /**

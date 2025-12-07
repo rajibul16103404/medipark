@@ -8,11 +8,14 @@ use App\Http\Requests\AboutUsPageOurVisionSection\UpdateAboutUsPageOurVisionSect
 use App\Http\Resources\AboutUsPageOurVisionSectionResource;
 use App\Models\AboutUsPageOurVisionSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPageOurVisionSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single about us page our vision section.
      */

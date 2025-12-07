@@ -8,11 +8,14 @@ use App\Http\Requests\AboutUsPageWhoWeAreSection\UpdateAboutUsPageWhoWeAreSectio
 use App\Http\Resources\AboutUsPageWhoWeAreSectionResource;
 use App\Models\AboutUsPageWhoWeAreSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsPageWhoWeAreSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single about us page who we are section.
      */

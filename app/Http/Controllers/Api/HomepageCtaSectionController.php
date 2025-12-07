@@ -8,10 +8,13 @@ use App\Http\Requests\HomepageCtaSection\UpdateHomepageCtaSectionRequest;
 use App\Http\Resources\HomepageCtaSectionResource;
 use App\Models\HomepageCtaSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class HomepageCtaSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single homepage CTA section.
      */
@@ -20,15 +23,10 @@ class HomepageCtaSectionController extends Controller
         $ctaSection = HomepageCtaSection::first();
 
         if (! $ctaSection) {
-            return response()->json([
-                'message' => 'No homepage CTA section found. You can create one using POST /api/homepage-cta-sections',
-                'data' => null,
-            ]);
+            return $this->errorResponse('No homepage CTA section found. You can create one using POST /api/homepage-cta-sections', 404);
         }
 
-        return response()->json([
-            'data' => new HomepageCtaSectionResource($ctaSection),
-        ]);
+        return $this->successResponse('Homepage CTA section retrieved successfully', new HomepageCtaSectionResource($ctaSection));
     }
 
     /**
@@ -39,14 +37,10 @@ class HomepageCtaSectionController extends Controller
         $ctaSection = HomepageCtaSection::active();
 
         if (! $ctaSection) {
-            return response()->json([
-                'message' => 'No active homepage CTA section found',
-            ], 404);
+            return $this->errorResponse('No active homepage CTA section found', 404);
         }
 
-        return response()->json([
-            'cta_section' => new HomepageCtaSectionResource($ctaSection),
-        ]);
+        return $this->successResponse('Homepage CTA section retrieved successfully', new HomepageCtaSectionResource($ctaSection));
     }
 
     /**
@@ -54,9 +48,7 @@ class HomepageCtaSectionController extends Controller
      */
     public function showById(HomepageCtaSection $homepageCtaSection): JsonResponse
     {
-        return response()->json([
-            'cta_section' => new HomepageCtaSectionResource($homepageCtaSection),
-        ]);
+        return $this->successResponse('Homepage CTA section retrieved successfully', new HomepageCtaSectionResource($homepageCtaSection));
     }
 
     /**
@@ -73,19 +65,13 @@ class HomepageCtaSectionController extends Controller
             // Update existing record
             $ctaSection->update($data);
 
-            return response()->json([
-                'message' => 'Homepage CTA section updated successfully',
-                'cta_section' => new HomepageCtaSectionResource($ctaSection->fresh()),
-            ]);
+            return $this->successResponse('Homepage CTA section updated successfully', new HomepageCtaSectionResource($ctaSection->fresh()));
         }
 
         // Create new record
         $ctaSection = HomepageCtaSection::create($data);
 
-        return response()->json([
-            'message' => 'Homepage CTA section created successfully',
-            'cta_section' => new HomepageCtaSectionResource($ctaSection),
-        ], 201);
+        return $this->successResponse('Homepage CTA section created successfully', new HomepageCtaSectionResource($ctaSection), 201);
     }
 
     /**
@@ -109,10 +95,7 @@ class HomepageCtaSectionController extends Controller
             $homepageCtaSection->update($data);
         }
 
-        return response()->json([
-            'message' => 'Homepage CTA section updated successfully',
-            'cta_section' => new HomepageCtaSectionResource($homepageCtaSection->fresh()),
-        ]);
+        return $this->successResponse('Homepage CTA section updated successfully', new HomepageCtaSectionResource($homepageCtaSection->fresh()));
     }
 
     /**
@@ -122,9 +105,7 @@ class HomepageCtaSectionController extends Controller
     {
         $homepageCtaSection->delete();
 
-        return response()->json([
-            'message' => 'Homepage CTA section deleted successfully',
-        ]);
+        return $this->successResponse('Homepage CTA section deleted successfully');
     }
 
     /**
@@ -143,9 +124,6 @@ class HomepageCtaSectionController extends Controller
             ? 'Homepage CTA section set as active successfully'
             : 'Homepage CTA section set as inactive successfully';
 
-        return response()->json([
-            'message' => $statusMessage,
-            'cta_section' => new HomepageCtaSectionResource($homepageCtaSection->fresh()),
-        ]);
+        return $this->successResponse($statusMessage, new HomepageCtaSectionResource($homepageCtaSection->fresh()));
     }
 }

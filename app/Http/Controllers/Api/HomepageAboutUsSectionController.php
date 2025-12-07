@@ -8,11 +8,14 @@ use App\Http\Requests\HomepageAboutUsSection\UpdateHomepageAboutUsSectionRequest
 use App\Http\Resources\HomepageAboutUsSectionResource;
 use App\Models\HomepageAboutUsSection;
 use App\Status;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
 class HomepageAboutUsSectionController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the single homepage about us section.
      */
@@ -21,15 +24,10 @@ class HomepageAboutUsSectionController extends Controller
         $aboutUsSection = HomepageAboutUsSection::first();
 
         if (! $aboutUsSection) {
-            return response()->json([
-                'message' => 'No homepage about us section found. You can create one using POST /api/homepage-about-us-sections',
-                'data' => null,
-            ]);
+            return $this->errorResponse('No homepage about us section found. You can create one using POST /api/homepage-about-us-sections', 404);
         }
 
-        return response()->json([
-            'data' => new HomepageAboutUsSectionResource($aboutUsSection),
-        ]);
+        return $this->successResponse('Homepage about us section retrieved successfully', new HomepageAboutUsSectionResource($aboutUsSection));
     }
 
     /**
@@ -40,14 +38,10 @@ class HomepageAboutUsSectionController extends Controller
         $aboutUsSection = HomepageAboutUsSection::active();
 
         if (! $aboutUsSection) {
-            return response()->json([
-                'message' => 'No active homepage about us section found',
-            ], 404);
+            return $this->errorResponse('No active homepage about us section found', 404);
         }
 
-        return response()->json([
-            'about_us_section' => new HomepageAboutUsSectionResource($aboutUsSection),
-        ]);
+        return $this->successResponse('Homepage about us section retrieved successfully', new HomepageAboutUsSectionResource($aboutUsSection));
     }
 
     /**
@@ -55,9 +49,7 @@ class HomepageAboutUsSectionController extends Controller
      */
     public function showById(HomepageAboutUsSection $homepageAboutUsSection): JsonResponse
     {
-        return response()->json([
-            'about_us_section' => new HomepageAboutUsSectionResource($homepageAboutUsSection),
-        ]);
+        return $this->successResponse('Homepage about us section retrieved successfully', new HomepageAboutUsSectionResource($homepageAboutUsSection));
     }
 
     /**
@@ -74,19 +66,13 @@ class HomepageAboutUsSectionController extends Controller
             // Update existing record
             $aboutUsSection->update($data);
 
-            return response()->json([
-                'message' => 'Homepage about us section updated successfully',
-                'about_us_section' => new HomepageAboutUsSectionResource($aboutUsSection->fresh()),
-            ]);
+            return $this->successResponse('Homepage about us section updated successfully', new HomepageAboutUsSectionResource($aboutUsSection->fresh()));
         }
 
         // Create new record
         $aboutUsSection = HomepageAboutUsSection::create($data);
 
-        return response()->json([
-            'message' => 'Homepage about us section created successfully',
-            'about_us_section' => new HomepageAboutUsSectionResource($aboutUsSection),
-        ], 201);
+        return $this->successResponse('Homepage about us section created successfully', new HomepageAboutUsSectionResource($aboutUsSection), 201);
     }
 
     /**
@@ -113,10 +99,7 @@ class HomepageAboutUsSectionController extends Controller
             $homepageAboutUsSection->update($data);
         }
 
-        return response()->json([
-            'message' => 'Homepage about us section updated successfully',
-            'about_us_section' => new HomepageAboutUsSectionResource($homepageAboutUsSection->fresh()),
-        ]);
+        return $this->successResponse('Homepage about us section updated successfully', new HomepageAboutUsSectionResource($homepageAboutUsSection->fresh()));
     }
 
     /**
@@ -126,9 +109,7 @@ class HomepageAboutUsSectionController extends Controller
     {
         $homepageAboutUsSection->delete();
 
-        return response()->json([
-            'message' => 'Homepage about us section deleted successfully',
-        ]);
+        return $this->successResponse('Homepage about us section deleted successfully');
     }
 
     /**
@@ -147,10 +128,7 @@ class HomepageAboutUsSectionController extends Controller
             ? 'Homepage about us section set as active successfully'
             : 'Homepage about us section set as inactive successfully';
 
-        return response()->json([
-            'message' => $statusMessage,
-            'about_us_section' => new HomepageAboutUsSectionResource($homepageAboutUsSection->fresh()),
-        ]);
+        return $this->successResponse($statusMessage, new HomepageAboutUsSectionResource($homepageAboutUsSection->fresh()));
     }
 
     /**

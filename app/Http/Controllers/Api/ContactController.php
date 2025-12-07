@@ -6,31 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\CreateContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class ContactController extends Controller
 {
+    use ApiResponse;
+
     /**
      * List all contacts (Admin only).
      */
     public function index(): JsonResponse
     {
         $contacts = Contact::latest()->paginate(10);
+        $resourceCollection = ContactResource::collection($contacts);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Contacts retrieved successfully',
-            'pagination' => [
-                'per_page' => $contacts->perPage(),
-                'total_count' => $contacts->total(),
-                'total_page' => $contacts->lastPage(),
-                'current_page' => $contacts->currentPage(),
-                'current_page_count' => $contacts->count(),
-                'next_page' => $contacts->hasMorePages() ? $contacts->currentPage() + 1 : null,
-                'previous_page' => $contacts->currentPage() > 1 ? $contacts->currentPage() - 1 : null,
-            ],
-            'data' => ContactResource::collection($contacts)->resolve(),
-        ]);
+        return $this->paginatedResponse('Contacts retrieved successfully', $contacts, $resourceCollection);
     }
 
     /**
@@ -38,9 +29,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact): JsonResponse
     {
-        return response()->json([
-            'contact' => new ContactResource($contact),
-        ]);
+        return $this->successResponse('Contact retrieved successfully', new ContactResource($contact));
     }
 
     /**
@@ -50,10 +39,7 @@ class ContactController extends Controller
     {
         $contact = Contact::create($request->validated());
 
-        return response()->json([
-            'message' => 'Contact submitted successfully',
-            'contact' => new ContactResource($contact),
-        ], 201);
+        return $this->successResponse('Contact submitted successfully', new ContactResource($contact), 201);
     }
 
     /**
@@ -63,8 +49,6 @@ class ContactController extends Controller
     {
         $contact->delete();
 
-        return response()->json([
-            'message' => 'Contact deleted successfully',
-        ]);
+        return $this->successResponse('Contact deleted successfully');
     }
 }

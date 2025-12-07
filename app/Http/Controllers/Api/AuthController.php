@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\WelcomeMail;
 use App\Models\User;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Register a new user.
      */
@@ -36,10 +39,13 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
+            'success' => true,
             'message' => 'User registered successfully',
-            'user' => new UserResource($user),
-            'token' => $token,
-            'token_type' => 'bearer',
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token,
+                'token_type' => 'bearer',
+            ],
         ], 201);
     }
 
@@ -54,16 +60,11 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if ($user && $user->isSuspended()) {
-            return response()->json([
-                'message' => 'Your account has been suspended',
-                'suspension_reason' => $user->suspension_reason,
-            ], 403);
+            return $this->errorResponse('Your account has been suspended', 403, ['suspension_reason' => $user->suspension_reason]);
         }
 
         if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json([
-                'message' => 'Invalid email or password',
-            ], 401);
+            return $this->errorResponse('Invalid email or password', 401);
         }
 
         /** @var User|null $user */
@@ -74,9 +75,7 @@ class AuthController extends Controller
             // Invalidate the token if somehow it was created
             JWTAuth::invalidate($token);
 
-            return response()->json([
-                'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
-            ], 403);
+            return $this->errorResponse('Your account has been suspended. Reason: '.$user->suspension_reason, 403);
         }
 
         // Load roles for the response
@@ -96,23 +95,17 @@ class AuthController extends Controller
         $user = auth('api')->user();
 
         if (! $user) {
-            return response()->json([
-                'message' => 'Unauthenticated',
-            ], 401);
+            return $this->errorResponse('Unauthenticated', 401);
         }
 
         if ($user->isSuspended()) {
-            return response()->json([
-                'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
-            ], 403);
+            return $this->errorResponse('Your account has been suspended. Reason: '.$user->suspension_reason, 403);
         }
 
         // Load roles for the response
         $user->load('roles');
 
-        return response()->json([
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('User retrieved successfully', new UserResource($user));
     }
 
     /**
@@ -122,9 +115,7 @@ class AuthController extends Controller
     {
         JWTAuth::invalidate(JWTAuth::getToken());
 
-        return response()->json([
-            'message' => 'Successfully logged out',
-        ]);
+        return $this->successResponse('Successfully logged out');
     }
 
     /**
@@ -136,17 +127,13 @@ class AuthController extends Controller
         $user = auth('api')->user();
 
         if (! $user) {
-            return response()->json([
-                'message' => 'Unauthenticated',
-            ], 401);
+            return $this->errorResponse('Unauthenticated', 401);
         }
 
         if ($user->isSuspended()) {
             JWTAuth::invalidate(JWTAuth::getToken());
 
-            return response()->json([
-                'message' => 'Your account has been suspended. Reason: '.$user->suspension_reason,
-            ], 403);
+            return $this->errorResponse('Your account has been suspended. Reason: '.$user->suspension_reason, 403);
         }
 
         return $this->respondWithToken(JWTAuth::refresh(JWTAuth::getToken()));
@@ -161,20 +148,21 @@ class AuthController extends Controller
         $user = auth('api')->user();
 
         if (! $user) {
-            return response()->json([
-                'message' => 'Unauthenticated',
-            ], 401);
+            return $this->errorResponse('Unauthenticated', 401);
         }
 
         // Load roles for the response
         $user->load('roles');
 
         return response()->json([
+            'success' => true,
             'message' => 'Login successful',
-            'user' => new UserResource($user),
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'data' => [
+                'user' => new UserResource($user),
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            ],
         ]);
     }
 }

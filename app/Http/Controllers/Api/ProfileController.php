@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the authenticated user's profile.
      */
@@ -17,9 +20,7 @@ class ProfileController extends Controller
     {
         $user = auth('api')->user()->load('roles');
 
-        return response()->json([
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('Profile retrieved successfully', new UserResource($user));
     }
 
     /**
@@ -60,9 +61,6 @@ class ProfileController extends Controller
         // Reload user with roles
         $user = $user->fresh()->load('roles');
 
-        return response()->json([
-            'message' => 'Profile updated successfully',
-            'user' => new UserResource($user),
-        ]);
+        return $this->successResponse('Profile updated successfully', new UserResource($user));
     }
 }
