@@ -30,6 +30,8 @@ trait ApiResponse
      */
     protected function paginatedResponse(string $message, LengthAwarePaginator $paginator, ResourceCollection $resourceCollection): JsonResponse
     {
+        // Use toArray() instead of resolve() to properly handle resource transformations
+        // toArray() respects all resource transformations including conditional fields, relationships, etc.
         return response()->json([
             'success' => true,
             'message' => $message,
@@ -42,7 +44,7 @@ trait ApiResponse
                 'next_page' => $paginator->hasMorePages() ? $paginator->currentPage() + 1 : null,
                 'previous_page' => $paginator->currentPage() > 1 ? $paginator->currentPage() - 1 : null,
             ],
-            'data' => $resourceCollection->resolve(),
+            'data' => $resourceCollection->toArray(request()),
         ]);
     }
 
