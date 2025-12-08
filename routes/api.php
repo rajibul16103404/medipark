@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
 use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
@@ -216,5 +217,15 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::patch('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::delete('/{investor}', [InvestorController::class, 'destroy'])->middleware('privilege:delete-investors');
+    });
+
+    // Doctor routes (Admin)
+    Route::prefix('doctors')->group(function () {
+        Route::get('/', [DoctorController::class, 'index'])->middleware('privilege:read-doctors');
+        Route::get('/{doctor}', [DoctorController::class, 'show'])->middleware('privilege:read-doctors');
+        Route::post('/', [DoctorController::class, 'store'])->middleware('privilege:create-doctors');
+        Route::put('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
+        Route::patch('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
+        Route::delete('/{doctor}', [DoctorController::class, 'destroy'])->middleware('privilege:delete-doctors');
     });
 });

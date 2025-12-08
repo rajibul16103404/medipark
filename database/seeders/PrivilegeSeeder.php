@@ -346,6 +346,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-investors',
                 'description' => 'Can delete investors',
             ],
+            // Doctor privileges
+            [
+                'name' => 'Read Doctors',
+                'slug' => 'read-doctors',
+                'description' => 'Can view doctor list and details',
+            ],
+            [
+                'name' => 'Create Doctors',
+                'slug' => 'create-doctors',
+                'description' => 'Can create new doctors',
+            ],
+            [
+                'name' => 'Update Doctors',
+                'slug' => 'update-doctors',
+                'description' => 'Can modify doctor information',
+            ],
+            [
+                'name' => 'Delete Doctors',
+                'slug' => 'delete-doctors',
+                'description' => 'Can delete doctors',
+            ],
         ];
 
         foreach ($privileges as $privilege) {
