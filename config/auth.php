@@ -44,6 +44,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+        'investor' => [
+            'driver' => 'jwt',
+            'provider' => 'investors',
+        ],
     ],
 
     /*
@@ -67,6 +71,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'investors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Investor::class,
         ],
 
         // 'users' => [

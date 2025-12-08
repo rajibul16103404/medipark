@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'privilege' => \App\Http\Middleware\PrivilegeMiddleware::class,
             'check.suspended' => \App\Http\Middleware\CheckSuspendedUser::class,
+            'auth.investor' => \App\Http\Middleware\AuthenticateInvestor::class,
         ]);
 
         $middleware->api(append: [

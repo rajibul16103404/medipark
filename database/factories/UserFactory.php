@@ -24,10 +24,19 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'identity_number' => 'STF'.str_pad((string) fake()->unique()->numberBetween(1, 999999), 6, '0', STR_PAD_LEFT),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'mobile_number' => fake()->phoneNumber(),
+            'gender' => fake()->randomElement(['male', 'female', 'other']),
+            'date_of_birth' => fake()->date('Y-m-d', '-18 years'),
+            'present_address' => fake()->address(),
+            'permanent_address' => fake()->address(),
+            'salary' => fake()->randomFloat(2, 20000, 200000),
+            'blood_group' => fake()->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+            'joining_date' => fake()->date('Y-m-d', '-5 years'),
             'remember_token' => Str::random(10),
         ];
     }

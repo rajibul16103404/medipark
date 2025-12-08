@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('about_us_page_our_mission_sections')) {
+            return;
+        }
+
         Schema::create('about_us_page_our_mission_sections', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
@@ -27,6 +31,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('about_us_page_our_mission_sections');
+        if (! Schema::hasTable('about_us_page_our_mission_sections')) {
+            return;
+        }
+
+        Schema::drop('about_us_page_our_mission_sections');
     }
 };

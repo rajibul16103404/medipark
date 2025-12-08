@@ -2,13 +2,14 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OtpMail extends Mailable
+class EmailVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +17,8 @@ class OtpMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public string $otp,
-        public string $type = 'general',
-        public int $expiresInMinutes = 10
+        public User $user,
+        public string $otp
     ) {}
 
     /**
@@ -26,15 +26,8 @@ class OtpMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $subject = match ($this->type) {
-            'password_reset' => 'Password Reset OTP',
-            'email_verification' => 'Email Verification OTP',
-            'investor_login' => 'Investor Login OTP',
-            default => 'Your OTP Code',
-        };
-
         return new Envelope(
-            subject: $subject,
+            subject: 'Verify Your Email Address - '.config('app.name'),
         );
     }
 
@@ -44,11 +37,11 @@ class OtpMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.otp',
+            view: 'emails.verify-email',
             with: [
+                'user' => $this->user,
                 'otp' => $this->otp,
-                'type' => $this->type,
-                'expiresInMinutes' => $this->expiresInMinutes,
+                'appName' => config('app.name'),
             ],
         );
     }

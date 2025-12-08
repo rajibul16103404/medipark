@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
+use App\Http\Controllers\Api\InvestorController;
 use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
@@ -31,10 +32,24 @@ Route::prefix('auth')->group(function () {
     Route::post('/send-otp', [OtpController::class, 'sendOtp']);
     Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 
+    Route::post('/resend-verification-email', [AuthController::class, 'resendVerificationEmail']);
+    Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
+
+    // Investor login routes (public)
+    Route::post('/investor/request-login', [AuthController::class, 'requestInvestorLogin']);
+    Route::post('/investor/login', [AuthController::class, 'investorLogin']);
+
     Route::middleware('auth:api')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
+    });
+
+    // Investor authenticated routes
+    Route::middleware('auth.investor')->prefix('investor')->group(function () {
+        Route::get('/me', [AuthController::class, 'investorMe']);
+        Route::post('/logout', [AuthController::class, 'investorLogout']);
+        Route::post('/refresh', [AuthController::class, 'investorRefresh']);
     });
 });
 
@@ -82,6 +97,10 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->middleware('privilege:read-users');
         Route::get('/{user}', [UserController::class, 'show'])->middleware('privilege:read-users');
+        Route::post('/', [UserController::class, 'store'])->middleware('privilege:create-users');
+        Route::put('/{user}', [UserController::class, 'update'])->middleware('privilege:update-users');
+        Route::patch('/{user}', [UserController::class, 'update'])->middleware('privilege:update-users');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->middleware('privilege:delete-users');
         Route::post('/{user}/suspend', [UserController::class, 'suspend'])->middleware('privilege:suspend-users');
         Route::post('/{user}/unsuspend', [UserController::class, 'unsuspend'])->middleware('privilege:suspend-users');
     });
@@ -187,5 +206,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
         Route::get('/{contact}', [ContactController::class, 'show'])->middleware('privilege:read-contacts');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->middleware('privilege:delete-contacts');
+    });
+
+    // Investor routes (Admin)
+    Route::prefix('investors')->group(function () {
+        Route::post('/', [InvestorController::class, 'store'])->middleware('privilege:create-investors');
+        Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
+        Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
+        Route::put('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
+        Route::patch('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
+        Route::delete('/{investor}', [InvestorController::class, 'destroy'])->middleware('privilege:delete-investors');
     });
 });

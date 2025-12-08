@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Privilege;
 use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PrivilegeSeeder extends Seeder
@@ -325,6 +324,27 @@ class PrivilegeSeeder extends Seeder
                 'name' => 'Delete Contacts',
                 'slug' => 'delete-contacts',
                 'description' => 'Can delete contacts',
+            ],
+            // Investor privileges
+            [
+                'name' => 'Read Investors',
+                'slug' => 'read-investors',
+                'description' => 'Can view investor list and details',
+            ],
+            [
+                'name' => 'Create Investors',
+                'slug' => 'create-investors',
+                'description' => 'Can create new investors',
+            ],
+            [
+                'name' => 'Update Investors',
+                'slug' => 'update-investors',
+                'description' => 'Can modify investor information',
+            ],
+            [
+                'name' => 'Delete Investors',
+                'slug' => 'delete-investors',
+                'description' => 'Can delete investors',
             ],
         ];
 
