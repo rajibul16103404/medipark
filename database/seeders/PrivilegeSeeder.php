@@ -483,6 +483,48 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-video-links',
                 'description' => 'Can delete video links',
             ],
+            // Gallery privileges
+            [
+                'name' => 'Read Galleries',
+                'slug' => 'read-galleries',
+                'description' => 'Can view gallery list and details',
+            ],
+            [
+                'name' => 'Create Galleries',
+                'slug' => 'create-galleries',
+                'description' => 'Can create galleries',
+            ],
+            [
+                'name' => 'Update Galleries',
+                'slug' => 'update-galleries',
+                'description' => 'Can update galleries',
+            ],
+            [
+                'name' => 'Delete Galleries',
+                'slug' => 'delete-galleries',
+                'description' => 'Can delete galleries',
+            ],
+            // News privileges
+            [
+                'name' => 'Read News',
+                'slug' => 'read-news',
+                'description' => 'Can view news list and details',
+            ],
+            [
+                'name' => 'Create News',
+                'slug' => 'create-news',
+                'description' => 'Can create news',
+            ],
+            [
+                'name' => 'Update News',
+                'slug' => 'update-news',
+                'description' => 'Can update news',
+            ],
+            [
+                'name' => 'Delete News',
+                'slug' => 'delete-news',
+                'description' => 'Can delete news',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

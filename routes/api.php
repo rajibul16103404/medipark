@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VideoLinkController;
+use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\NewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -75,6 +77,9 @@ Route::get('/contact-page-banner-sections/active', [ContactPageBannerSectionCont
 Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'index']);
 Route::get('/video-links', [VideoLinkController::class, 'index']);
 Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
+Route::get('/galleries', [GalleryController::class, 'index']);
+Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/{news}', [NewsController::class, 'show']);
 
 // Contact routes (Public submission)
 Route::post('/contacts', [ContactController::class, 'store']);
@@ -154,7 +159,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
         Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
         Route::post('/', [HomepageCtaSectionController::class, 'store'])->middleware('privilege:create-homepage-cta-sections');
-        Route::put('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
+        Route::post('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
         Route::delete('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-cta-sections');
         Route::post('/{homepageCtaSection}/set-active', [HomepageCtaSectionController::class, 'setActive'])->middleware('privilege:update-homepage-cta-sections');
     });
@@ -237,6 +242,25 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('video-links')->group(function () {
         Route::post('/', [VideoLinkController::class, 'store'])->middleware('privilege:create-video-links');
         Route::post('/set-active', [VideoLinkController::class, 'setActive'])->middleware('privilege:update-video-links');
+    });
+
+    // Gallery routes (Admin)
+    Route::prefix('galleries')->group(function () {
+        Route::get('/{gallery}', [GalleryController::class, 'show'])->middleware('privilege:read-galleries');
+        Route::post('/', [GalleryController::class, 'store'])->middleware('privilege:create-galleries');
+        Route::post('/{gallery}', [GalleryController::class, 'update'])->middleware('privilege:update-galleries');
+        Route::patch('/{gallery}', [GalleryController::class, 'update'])->middleware('privilege:update-galleries');
+        Route::delete('/{gallery}', [GalleryController::class, 'destroy'])->middleware('privilege:delete-galleries');
+        Route::post('/{gallery}/set-active', [GalleryController::class, 'setActive'])->middleware('privilege:update-galleries');
+    });
+
+    // News routes (Admin)
+    Route::prefix('news')->group(function () {
+        Route::post('/', [NewsController::class, 'store'])->middleware('privilege:create-news');
+        Route::post('/{news}', [NewsController::class, 'update'])->middleware('privilege:update-news');
+        Route::patch('/{news}', [NewsController::class, 'update'])->middleware('privilege:update-news');
+        Route::delete('/{news}', [NewsController::class, 'destroy'])->middleware('privilege:delete-news');
+        Route::post('/{news}/set-active', [NewsController::class, 'setActive'])->middleware('privilege:update-news');
     });
 
     // Investor routes (Admin)
