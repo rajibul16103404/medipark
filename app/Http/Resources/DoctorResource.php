@@ -33,8 +33,6 @@ class DoctorResource extends JsonResource
             'image' => $this->getFullImageUrl($this->image),
             'present_address' => $this->present_address,
             'permanent_address' => $this->permanent_address,
-            'display_name' => $this->display_name,
-            'user_name' => $this->user_name,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

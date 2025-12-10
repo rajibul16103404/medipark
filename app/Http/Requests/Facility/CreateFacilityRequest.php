@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Doctor;
+namespace App\Http\Requests\Facility;
 
+use App\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateDoctorRequest extends FormRequest
+class CreateFacilityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,40 +23,11 @@ class UpdateDoctorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $doctorId = $this->route('doctor')?->id;
-
         return [
-            'doctor_name' => ['sometimes', 'required', 'string', 'min:2', 'max:255'],
-            'department' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'specialist' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'email_address' => ['sometimes', 'required', 'string', 'email:rfc', 'max:255', Rule::unique('doctors', 'email_address')->ignore($doctorId)],
-            'mobile_number' => ['sometimes', 'nullable', 'string', 'max:20'],
-            'gender' => ['sometimes', 'nullable', Rule::in(['male', 'female', 'other'])],
-            'date_of_birth' => ['sometimes', 'nullable', 'date', 'before:today'],
-            'known_languages' => ['sometimes', 'nullable', 'array'],
-            'known_languages.*' => ['string', 'max:100'],
-            'registration_number' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'about' => ['sometimes', 'nullable', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'short_description' => ['nullable', 'string', 'max:500'],
             'image' => $this->imageOrUrlRule(),
-            'present_address' => ['sometimes', 'nullable', 'string'],
-            'permanent_address' => ['sometimes', 'nullable', 'string'],
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'doctor_name.required' => 'The doctor name field is required.',
-            'doctor_name.min' => 'The doctor name must be at least 2 characters.',
-            'email_address.required' => 'The email address field is required.',
-            'email_address.email' => 'The email address must be a valid email.',
-            'email_address.unique' => 'The email address has already been taken.',
-            'date_of_birth.before' => 'The date of birth must be a date before today.',
+            'status' => ['nullable', Rule::enum(Status::class)],
         ];
     }
 
@@ -67,10 +39,8 @@ class UpdateDoctorRequest extends FormRequest
     private function imageOrUrlRule(): array
     {
         return [
-            'sometimes',
             'nullable',
             function (string $attribute, mixed $value, $fail): void {
-                // Allow string URLs
                 if (is_string($value) && ! $this->hasFile($attribute)) {
                     if (strlen($value) > 500) {
                         $fail('The '.$attribute.' URL must not exceed 500 characters.');
@@ -79,11 +49,9 @@ class UpdateDoctorRequest extends FormRequest
                     return;
                 }
 
-                // If it's a file upload, validate it
                 if ($this->hasFile($attribute)) {
                     $file = $this->file($attribute);
 
-                    // Check if file upload was successful
                     if (! $file->isValid()) {
                         $errorCode = $file->getError();
                         $errorMessages = [
@@ -105,16 +73,13 @@ class UpdateDoctorRequest extends FormRequest
                     $mimeType = $file->getMimeType();
                     $size = $file->getSize();
 
-                    // Check if it's an image
                     if (str_starts_with($mimeType, 'image/')) {
-                        // Validate image size (20MB = 20971520 bytes)
                         if ($size > 20971520) {
                             $fail('The '.$attribute.' must not be larger than 20MB.');
 
                             return;
                         }
 
-                        // Validate image type
                         $allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
                         if (! in_array($mimeType, $allowedImageTypes, true)) {
                             $fail('The '.$attribute.' must be a valid image file (JPEG, PNG, GIF, WebP, or SVG).');

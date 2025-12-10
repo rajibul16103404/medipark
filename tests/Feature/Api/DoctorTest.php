@@ -47,10 +47,6 @@ test('admin can create a doctor', function () {
         'about' => 'Experienced cardiologist with 10 years of practice.',
         'present_address' => '123 Main Street, Dhaka',
         'permanent_address' => '123 Main Street, Dhaka',
-        'display_name' => 'Dr. John',
-        'user_name' => 'johndoe',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
     ];
 
     $response = $this->postJson('/api/doctors', $payload);
@@ -64,7 +60,6 @@ test('admin can create a doctor', function () {
     $this->assertDatabaseHas('doctors', [
         'doctor_name' => 'Dr. John Doe',
         'email_address' => 'johndoe@example.com',
-        'user_name' => 'johndoe',
     ]);
 });
 
@@ -204,9 +199,6 @@ test('doctor identity number is auto-generated if not provided', function () {
     $payload = [
         'doctor_name' => 'Dr. Test Doctor',
         'email_address' => 'test@example.com',
-        'user_name' => 'testdoctor',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
     ];
 
     $response = $this->postJson('/api/doctors', $payload);

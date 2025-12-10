@@ -9,7 +9,6 @@ use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class DoctorController extends Controller
@@ -48,14 +47,6 @@ class DoctorController extends Controller
             $data['doctor_identity_number'] = $this->generateDoctorIdentityNumber();
         }
 
-        // Hash password
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        // Remove password_confirmation from data
-        unset($data['password_confirmation']);
-
         // Create doctor
         $doctor = Doctor::create($data);
 
@@ -69,14 +60,6 @@ class DoctorController extends Controller
     {
         $validated = $request->validated();
         $data = $this->processFileUploads($request, $validated, $doctor);
-
-        // Hash password if provided
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        // Remove password_confirmation from data
-        unset($data['password_confirmation']);
 
         // Only update fillable fields
         $updateData = [];

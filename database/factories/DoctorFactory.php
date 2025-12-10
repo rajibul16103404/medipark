@@ -3,18 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Doctor>
  */
 class DoctorFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
     /**
      * Define the model's default state.
      *
@@ -36,9 +30,6 @@ class DoctorFactory extends Factory
             'about' => fake()->paragraph(),
             'present_address' => fake()->address(),
             'permanent_address' => fake()->address(),
-            'display_name' => fake()->name(),
-            'user_name' => fake()->unique()->userName(),
-            'password' => static::$password ??= Hash::make('password'),
         ];
     }
 }

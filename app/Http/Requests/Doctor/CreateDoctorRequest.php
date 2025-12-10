@@ -4,7 +4,6 @@ namespace App\Http\Requests\Doctor;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class CreateDoctorRequest extends FormRequest
 {
@@ -38,10 +37,6 @@ class CreateDoctorRequest extends FormRequest
             'image' => $this->imageOrUrlRule(),
             'present_address' => ['nullable', 'string'],
             'permanent_address' => ['nullable', 'string'],
-            'display_name' => ['nullable', 'string', 'max:255'],
-            'user_name' => ['required', 'string', 'max:255', 'unique:doctors,user_name'],
-            'password' => ['required', 'string', 'min:8', Password::defaults(), 'confirmed'],
-            'password_confirmation' => ['required', 'string'],
         ];
     }
 
@@ -58,11 +53,6 @@ class CreateDoctorRequest extends FormRequest
             'email_address.required' => 'The email address field is required.',
             'email_address.email' => 'The email address must be a valid email.',
             'email_address.unique' => 'The email address has already been taken.',
-            'user_name.required' => 'The user name field is required.',
-            'user_name.unique' => 'The user name has already been taken.',
-            'password.required' => 'The password field is required.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password.confirmed' => 'The password confirmation does not match.',
             'date_of_birth.before' => 'The date of birth must be a date before today.',
         ];
     }

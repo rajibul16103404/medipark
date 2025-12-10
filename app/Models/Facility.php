@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Doctor extends Model
+class Facility extends Model
 {
-    /** @use HasFactory<\Database\Factories\DoctorFactory> */
+    /** @use HasFactory<\Database\Factories\FacilityFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -17,20 +18,10 @@ class Doctor extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'doctor_identity_number',
-        'doctor_name',
-        'department',
-        'specialist',
-        'email_address',
-        'mobile_number',
-        'gender',
-        'date_of_birth',
-        'known_languages',
-        'registration_number',
-        'about',
+        'title',
+        'short_description',
         'image',
-        'present_address',
-        'permanent_address',
+        'status',
     ];
 
     /**
@@ -41,8 +32,7 @@ class Doctor extends Model
     protected function casts(): array
     {
         return [
-            'date_of_birth' => 'date',
-            'known_languages' => 'array',
+            'status' => Status::class,
             'deleted_at' => 'datetime',
         ];
     }

@@ -35,8 +35,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Load roles for the response
-        $user->load('roles');
+        // Load roles with privileges for the response
+        $user->load('roles.privileges');
 
         // Generate and send email verification OTP
         $this->sendVerificationEmail($user);
@@ -125,7 +125,7 @@ class AuthController extends Controller
 
         // Refresh the user model to get updated data
         $user->refresh();
-        $user->load('roles');
+        $user->load('roles.privileges');
 
         return $this->successResponse('Email verified successfully. Now you can successfully login.');
     }
@@ -296,9 +296,9 @@ class AuthController extends Controller
             return $this->errorResponse('Unauthenticated', 401);
         }
 
-        // Load roles for the response
+        // Load roles with privileges for the response
         /** @var User $user */
-        $user->load('roles');
+        $user->load('roles.privileges');
 
         return response()->json([
             'success' => true,
@@ -345,8 +345,8 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        // Check if user exists and load roles before attempting authentication
-        $user = User::with('roles')->where('email', $credentials['email'])->first();
+        // Check if user exists and load roles with privileges before attempting authentication
+        $user = User::with('roles.privileges')->where('email', $credentials['email'])->first();
 
         if (! $user) {
             return $this->errorResponse('Invalid email or password', 401);
@@ -358,7 +358,7 @@ class AuthController extends Controller
 
         // Check email verification for non-admin users
         // Query fresh from database to ensure we have the latest email_verified_at value
-        $freshUser = User::with('roles')->find($user->id);
+        $freshUser = User::with('roles.privileges')->find($user->id);
         if ($freshUser && ! $freshUser->hasRole('admin')) {
             if (! $freshUser->email_verified_at) {
                 return $this->errorResponse('Please verify your email address before logging in', 403);
@@ -380,9 +380,9 @@ class AuthController extends Controller
             return $this->errorResponse('Your account has been suspended. Reason: '.$user->suspension_reason, 403);
         }
 
-        // Load roles for the response
+        // Load roles with privileges for the response
         if ($user) {
-            $user->load('roles');
+            $user->load('roles.privileges');
         }
 
         return $this->respondWithToken($token);
@@ -404,8 +404,8 @@ class AuthController extends Controller
             return $this->errorResponse('Your account has been suspended. Reason: '.$user->suspension_reason, 403);
         }
 
-        // Load roles for the response
-        $user->load('roles');
+        // Load roles with privileges for the response
+        $user->load('roles.privileges');
 
         return $this->successResponse('User retrieved successfully', new UserResource($user));
     }
@@ -455,8 +455,8 @@ class AuthController extends Controller
             return $this->errorResponse('Unauthenticated', 401);
         }
 
-        // Load roles for the response
-        $user->load('roles');
+        // Load roles with privileges for the response
+        $user->load('roles.privileges');
 
         return response()->json([
             'success' => true,

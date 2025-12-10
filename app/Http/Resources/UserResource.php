@@ -17,9 +17,12 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Ensure roles are loaded
+        // Ensure roles are loaded with privileges
         if (! $this->relationLoaded('roles')) {
-            $this->load('roles');
+            $this->load('roles.privileges');
+        } elseif ($this->relationLoaded('roles')) {
+            // If roles are loaded but privileges aren't, load them
+            $this->loadMissing('roles.privileges');
         }
 
         return [
@@ -40,11 +43,20 @@ class UserResource extends JsonResource
             'suspended_at' => $this->suspended_at?->toIso8601String(),
             'suspension_reason' => $this->suspension_reason,
             'is_suspended' => $this->isSuspended(),
-            'roles' => $this->roles->map(fn ($role) => [
-                'id' => $role->id,
-                'name' => $role->name,
-                'slug' => $role->slug,
-            ]),
+            'roles' => $this->roles->map(function ($role) {
+                $roleData = [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'slug' => $role->slug,
+                ];
+
+                // Include privileges if loaded
+                if ($role->relationLoaded('privileges')) {
+                    $roleData['privileges'] = PrivilegeResource::collection($role->privileges);
+                }
+
+                return $roleData;
+            }),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

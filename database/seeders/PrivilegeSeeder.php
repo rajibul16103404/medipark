@@ -367,6 +367,59 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-doctors',
                 'description' => 'Can delete doctors',
             ],
+            // Facility privileges
+            [
+                'name' => 'Read Facilities',
+                'slug' => 'read-facilities',
+                'description' => 'Can view facility list and details',
+            ],
+            [
+                'name' => 'Create Facilities',
+                'slug' => 'create-facilities',
+                'description' => 'Can create new facilities',
+            ],
+            [
+                'name' => 'Update Facilities',
+                'slug' => 'update-facilities',
+                'description' => 'Can modify facility information',
+            ],
+            [
+                'name' => 'Delete Facilities',
+                'slug' => 'delete-facilities',
+                'description' => 'Can delete facilities',
+            ],
+            // Footer Contact privileges
+            [
+                'name' => 'Read Footer Contact',
+                'slug' => 'read-footer-contact',
+                'description' => 'Can view footer contact information',
+            ],
+            [
+                'name' => 'Update Footer Contact',
+                'slug' => 'update-footer-contact',
+                'description' => 'Can create or update footer contact information',
+            ],
+            // Social Link privileges
+            [
+                'name' => 'Read Social Links',
+                'slug' => 'read-social-links',
+                'description' => 'Can view social link list and details',
+            ],
+            [
+                'name' => 'Create Social Links',
+                'slug' => 'create-social-links',
+                'description' => 'Can create new social links',
+            ],
+            [
+                'name' => 'Update Social Links',
+                'slug' => 'update-social-links',
+                'description' => 'Can modify social link information',
+            ],
+            [
+                'name' => 'Delete Social Links',
+                'slug' => 'delete-social-links',
+                'description' => 'Can delete social links',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

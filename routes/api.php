@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\FacilityController;
+use App\Http\Controllers\Api\FooterContactController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +70,15 @@ Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2n
 
 // Contact routes (Public submission)
 Route::post('/contacts', [ContactController::class, 'store']);
+
+// Public Footer Contact route
+Route::get('/footer-contact', [FooterContactController::class, 'show']);
+
+// Public Facilities route
+Route::get('/facilities', [FacilityController::class, 'index']);
+
+// Public Social Links route
+Route::get('/social-links', [SocialLinkController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -141,7 +153,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [AboutUsPageBannerSectionController::class, 'index'])->middleware('privilege:read-about-us-page-banner-sections');
         Route::get('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-banner-sections');
         Route::post('/', [AboutUsPageBannerSectionController::class, 'store'])->middleware('privilege:create-about-us-page-banner-sections');
-        Route::put('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
+        Route::post('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
         Route::patch('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
         Route::delete('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-banner-sections');
         Route::post('/{aboutUsPageBannerSection}/set-active', [AboutUsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-banner-sections');
@@ -214,7 +226,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [InvestorController::class, 'store'])->middleware('privilege:create-investors');
         Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
         Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
-        Route::put('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
+        Route::post('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::patch('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::delete('/{investor}', [InvestorController::class, 'destroy'])->middleware('privilege:delete-investors');
     });
@@ -224,8 +236,33 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [DoctorController::class, 'index'])->middleware('privilege:read-doctors');
         Route::get('/{doctor}', [DoctorController::class, 'show'])->middleware('privilege:read-doctors');
         Route::post('/', [DoctorController::class, 'store'])->middleware('privilege:create-doctors');
-        Route::put('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
+        Route::post('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::patch('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::delete('/{doctor}', [DoctorController::class, 'destroy'])->middleware('privilege:delete-doctors');
+    });
+
+    // Facility routes (Admin)
+    Route::prefix('facilities')->group(function () {
+        Route::get('/{facility}', [FacilityController::class, 'show'])->middleware('privilege:read-facilities');
+        Route::post('/', [FacilityController::class, 'store'])->middleware('privilege:create-facilities');
+        Route::post('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
+        Route::patch('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
+        Route::delete('/{facility}', [FacilityController::class, 'destroy'])->middleware('privilege:delete-facilities');
+        Route::post('/{facility}/set-active', [FacilityController::class, 'setActive'])->middleware('privilege:update-facilities');
+    });
+
+    // Footer Contact routes (Admin) - Singleton (only one record)
+    Route::prefix('footer-contact')->group(function () {
+        Route::post('/', [FooterContactController::class, 'store'])->middleware('privilege:update-footer-contact');
+    });
+
+    // Social Link routes (Admin)
+    Route::prefix('social-links')->group(function () {
+        Route::get('/{socialLink}', [SocialLinkController::class, 'show'])->middleware('privilege:read-social-links');
+        Route::post('/', [SocialLinkController::class, 'store'])->middleware('privilege:create-social-links');
+        Route::post('/{socialLink}', [SocialLinkController::class, 'update'])->middleware('privilege:update-social-links');
+        Route::patch('/{socialLink}', [SocialLinkController::class, 'update'])->middleware('privilege:update-social-links');
+        Route::delete('/{socialLink}', [SocialLinkController::class, 'destroy'])->middleware('privilege:delete-social-links');
+        Route::post('/{socialLink}/set-active', [SocialLinkController::class, 'setActive'])->middleware('privilege:update-social-links');
     });
 });
