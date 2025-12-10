@@ -24,10 +24,10 @@ class CreateBranchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'address' => ['nullable', 'string', 'max:1000'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'name' => ['required', 'string', 'min:2', 'max:255', 'unique:branches,name'],
+            'address' => ['required', 'string', 'max:1000'],
+            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:branches,email'],
             'status' => ['nullable', Rule::enum(Status::class)],
         ];
     }

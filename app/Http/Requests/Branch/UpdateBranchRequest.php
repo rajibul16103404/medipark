@@ -25,9 +25,9 @@ class UpdateBranchRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'required', 'string', 'min:2', 'max:255'],
-            'address' => ['sometimes', 'nullable', 'string', 'max:1000'],
-            'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
-            'email' => ['sometimes', 'nullable', 'string', 'email', 'max:255'],
+            'address' => ['sometimes', 'required', 'string', 'max:1000'],
+            'phone' => ['sometimes', 'required', 'string', 'max:20'],
+            'email' => ['sometimes', 'required', 'string', 'email', 'max:255', ],
             'status' => ['sometimes', 'nullable', Rule::enum(Status::class)],
         ];
     }

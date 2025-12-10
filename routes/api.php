@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ContactPageBannerSectionController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\FacilityController;
 use App\Http\Controllers\Api\FooterContactController;
@@ -68,6 +69,10 @@ Route::get('/about-us-page-our-mission-sections/active', [AboutUsPageOurMissionS
 Route::get('/about-us-page-our-vision-sections/active', [AboutUsPageOurVisionSectionController::class, 'show']);
 Route::get('/about-us-page-after-our-vision-sections/active', [AboutUsPageAfterOurVisionSectionController::class, 'show']);
 Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'show']);
+Route::get('/contact-page-banner-sections', [ContactPageBannerSectionController::class, 'index']);
+Route::get('/contact-page-banner-sections/active', [ContactPageBannerSectionController::class, 'show']);
+Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'index']);
+Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
 
 // Contact routes (Public submission)
 Route::post('/contacts', [ContactController::class, 'store']);
@@ -152,15 +157,10 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{homepageCtaSection}/set-active', [HomepageCtaSectionController::class, 'setActive'])->middleware('privilege:update-homepage-cta-sections');
     });
 
-    // About Us Page Banner Section routes (Admin)
+    // About Us Page Banner Section routes (Admin) - Singleton pattern
     Route::prefix('about-us-page-banner-sections')->group(function () {
-        Route::get('/', [AboutUsPageBannerSectionController::class, 'index'])->middleware('privilege:read-about-us-page-banner-sections');
-        Route::get('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-banner-sections');
         Route::post('/', [AboutUsPageBannerSectionController::class, 'store'])->middleware('privilege:create-about-us-page-banner-sections');
-        Route::post('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
-        Route::patch('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'update'])->middleware('privilege:update-about-us-page-banner-sections');
-        Route::delete('/{aboutUsPageBannerSection}', [AboutUsPageBannerSectionController::class, 'destroy'])->middleware('privilege:delete-about-us-page-banner-sections');
-        Route::post('/{aboutUsPageBannerSection}/set-active', [AboutUsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-banner-sections');
+        Route::post('/set-active', [AboutUsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-banner-sections');
     });
 
     // About Us Page Who We Are Section routes (Admin)
@@ -223,6 +223,12 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
         Route::get('/{contact}', [ContactController::class, 'show'])->middleware('privilege:read-contacts');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->middleware('privilege:delete-contacts');
+    });
+
+    // Contact Page Banner Section routes (Admin) - Singleton pattern
+    Route::prefix('contact-page-banner-sections')->group(function () {
+        Route::post('/', [ContactPageBannerSectionController::class, 'store'])->middleware('privilege:create-contact-page-banner-sections');
+        Route::post('/set-active', [ContactPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-contact-page-banner-sections');
     });
 
     // Investor routes (Admin)

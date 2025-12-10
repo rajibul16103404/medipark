@@ -441,6 +441,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-branches',
                 'description' => 'Can delete branches',
             ],
+            // Contact Page Banner Section privileges
+            [
+                'name' => 'Read Contact Page Banner Sections',
+                'slug' => 'read-contact-page-banner-sections',
+                'description' => 'Can view contact page banner section list and details',
+            ],
+            [
+                'name' => 'Create Contact Page Banner Sections',
+                'slug' => 'create-contact-page-banner-sections',
+                'description' => 'Can create contact page banner sections',
+            ],
+            [
+                'name' => 'Update Contact Page Banner Sections',
+                'slug' => 'update-contact-page-banner-sections',
+                'description' => 'Can update contact page banner sections',
+            ],
+            [
+                'name' => 'Delete Contact Page Banner Sections',
+                'slug' => 'delete-contact-page-banner-sections',
+                'description' => 'Can delete contact page banner sections',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

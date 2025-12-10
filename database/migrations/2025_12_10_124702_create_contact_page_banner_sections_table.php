@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('contact_page_banner_sections', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->text('address');
-            $table->string('phone');
-            $table->string('email')->unique();
+            $table->string('background_image')->nullable();
+            $table->string('opacity')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('contact_page_banner_sections');
     }
 };
