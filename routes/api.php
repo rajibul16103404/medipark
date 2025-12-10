@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VideoLinkController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\BlogController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -80,6 +81,8 @@ Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionCon
 Route::get('/galleries', [GalleryController::class, 'index']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
+Route::get('/blogs', [BlogController::class, 'index']);
+Route::get('/blogs/{blog}', [BlogController::class, 'show']);
 
 // Contact routes (Public submission)
 Route::post('/contacts', [ContactController::class, 'store']);
@@ -261,6 +264,15 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{news}', [NewsController::class, 'update'])->middleware('privilege:update-news');
         Route::delete('/{news}', [NewsController::class, 'destroy'])->middleware('privilege:delete-news');
         Route::post('/{news}/set-active', [NewsController::class, 'setActive'])->middleware('privilege:update-news');
+    });
+
+    // Blog routes (Admin)
+    Route::prefix('blogs')->group(function () {
+        Route::post('/', [BlogController::class, 'store'])->middleware('privilege:create-blogs');
+        Route::post('/{blog}', [BlogController::class, 'update'])->middleware('privilege:update-blogs');
+        Route::patch('/{blog}', [BlogController::class, 'update'])->middleware('privilege:update-blogs');
+        Route::delete('/{blog}', [BlogController::class, 'destroy'])->middleware('privilege:delete-blogs');
+        Route::post('/{blog}/set-active', [BlogController::class, 'setActive'])->middleware('privilege:update-blogs');
     });
 
     // Investor routes (Admin)

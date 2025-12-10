@@ -525,6 +525,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-news',
                 'description' => 'Can delete news',
             ],
+            // Blog privileges
+            [
+                'name' => 'Read Blogs',
+                'slug' => 'read-blogs',
+                'description' => 'Can view blog list and details',
+            ],
+            [
+                'name' => 'Create Blogs',
+                'slug' => 'create-blogs',
+                'description' => 'Can create blogs',
+            ],
+            [
+                'name' => 'Update Blogs',
+                'slug' => 'update-blogs',
+                'description' => 'Can update blogs',
+            ],
+            [
+                'name' => 'Delete Blogs',
+                'slug' => 'delete-blogs',
+                'description' => 'Can delete blogs',
+            ],
         ];
 
         foreach ($privileges as $privilege) {
