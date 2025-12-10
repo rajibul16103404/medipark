@@ -28,6 +28,9 @@ use App\Http\Controllers\Api\VideoLinkController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\GalleryPageBannerSectionController;
+use App\Http\Controllers\Api\NewsPageBannerSectionController;
+use App\Http\Controllers\Api\BlogPageBannerSectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -76,8 +79,11 @@ Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2n
 Route::get('/contact-page-banner-sections', [ContactPageBannerSectionController::class, 'index']);
 Route::get('/contact-page-banner-sections/active', [ContactPageBannerSectionController::class, 'show']);
 Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'index']);
-Route::get('/video-links', [VideoLinkController::class, 'index']);
 Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
+Route::get('/gallery-page-banner-sections', [GalleryPageBannerSectionController::class, 'index']);
+Route::get('/news-page-banner-sections', [NewsPageBannerSectionController::class, 'index']);
+Route::get('/blog-page-banner-sections', [BlogPageBannerSectionController::class, 'index']);
+Route::get('/video-links', [VideoLinkController::class, 'index']);
 Route::get('/galleries', [GalleryController::class, 'index']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
@@ -171,6 +177,24 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('about-us-page-banner-sections')->group(function () {
         Route::post('/', [AboutUsPageBannerSectionController::class, 'store'])->middleware('privilege:create-about-us-page-banner-sections');
         Route::post('/set-active', [AboutUsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-about-us-page-banner-sections');
+    });
+
+    // Gallery Page Banner Section routes (Admin) - Singleton pattern
+    Route::prefix('gallery-page-banner-sections')->group(function () {
+        Route::post('/', [GalleryPageBannerSectionController::class, 'store'])->middleware('privilege:create-gallery-page-banner-sections');
+        Route::post('/set-active', [GalleryPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-gallery-page-banner-sections');
+    });
+
+    // News Page Banner Section routes (Admin) - Singleton pattern
+    Route::prefix('news-page-banner-sections')->group(function () {
+        Route::post('/', [NewsPageBannerSectionController::class, 'store'])->middleware('privilege:create-news-page-banner-sections');
+        Route::post('/set-active', [NewsPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-news-page-banner-sections');
+    });
+
+    // Blog Page Banner Section routes (Admin) - Singleton pattern
+    Route::prefix('blog-page-banner-sections')->group(function () {
+        Route::post('/', [BlogPageBannerSectionController::class, 'store'])->middleware('privilege:create-blog-page-banner-sections');
+        Route::post('/set-active', [BlogPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-blog-page-banner-sections');
     });
 
     // About Us Page Who We Are Section routes (Admin)

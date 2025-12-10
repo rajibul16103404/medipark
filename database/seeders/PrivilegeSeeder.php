@@ -546,6 +546,69 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-blogs',
                 'description' => 'Can delete blogs',
             ],
+            // Gallery Page Banner Section privileges
+            [
+                'name' => 'Read Gallery Page Banner Sections',
+                'slug' => 'read-gallery-page-banner-sections',
+                'description' => 'Can view gallery page banner section list and details',
+            ],
+            [
+                'name' => 'Create Gallery Page Banner Sections',
+                'slug' => 'create-gallery-page-banner-sections',
+                'description' => 'Can create gallery page banner sections',
+            ],
+            [
+                'name' => 'Update Gallery Page Banner Sections',
+                'slug' => 'update-gallery-page-banner-sections',
+                'description' => 'Can update gallery page banner sections',
+            ],
+            [
+                'name' => 'Delete Gallery Page Banner Sections',
+                'slug' => 'delete-gallery-page-banner-sections',
+                'description' => 'Can delete gallery page banner sections',
+            ],
+            // News Page Banner Section privileges
+            [
+                'name' => 'Read News Page Banner Sections',
+                'slug' => 'read-news-page-banner-sections',
+                'description' => 'Can view news page banner section list and details',
+            ],
+            [
+                'name' => 'Create News Page Banner Sections',
+                'slug' => 'create-news-page-banner-sections',
+                'description' => 'Can create news page banner sections',
+            ],
+            [
+                'name' => 'Update News Page Banner Sections',
+                'slug' => 'update-news-page-banner-sections',
+                'description' => 'Can update news page banner sections',
+            ],
+            [
+                'name' => 'Delete News Page Banner Sections',
+                'slug' => 'delete-news-page-banner-sections',
+                'description' => 'Can delete news page banner sections',
+            ],
+            // Blog Page Banner Section privileges
+            [
+                'name' => 'Read Blog Page Banner Sections',
+                'slug' => 'read-blog-page-banner-sections',
+                'description' => 'Can view blog page banner section list and details',
+            ],
+            [
+                'name' => 'Create Blog Page Banner Sections',
+                'slug' => 'create-blog-page-banner-sections',
+                'description' => 'Can create blog page banner sections',
+            ],
+            [
+                'name' => 'Update Blog Page Banner Sections',
+                'slug' => 'update-blog-page-banner-sections',
+                'description' => 'Can update blog page banner sections',
+            ],
+            [
+                'name' => 'Delete Blog Page Banner Sections',
+                'slug' => 'delete-blog-page-banner-sections',
+                'description' => 'Can delete blog page banner sections',
+            ],
         ];
 
         foreach ($privileges as $privilege) {
