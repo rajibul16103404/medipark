@@ -420,6 +420,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-social-links',
                 'description' => 'Can delete social links',
             ],
+            // Branch privileges
+            [
+                'name' => 'Read Branches',
+                'slug' => 'read-branches',
+                'description' => 'Can view branch list and details',
+            ],
+            [
+                'name' => 'Create Branches',
+                'slug' => 'create-branches',
+                'description' => 'Can create new branches',
+            ],
+            [
+                'name' => 'Update Branches',
+                'slug' => 'update-branches',
+                'description' => 'Can modify branch information',
+            ],
+            [
+                'name' => 'Delete Branches',
+                'slug' => 'delete-branches',
+                'description' => 'Can delete branches',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

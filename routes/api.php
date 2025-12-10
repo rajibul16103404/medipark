@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AboutUsPageOurMissionSectionController;
 use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
 use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\FacilityController;
@@ -79,6 +80,9 @@ Route::get('/facilities', [FacilityController::class, 'index']);
 
 // Public Social Links route
 Route::get('/social-links', [SocialLinkController::class, 'index']);
+
+// Public Branches route
+Route::get('/branches', [BranchController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -264,5 +268,15 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{socialLink}', [SocialLinkController::class, 'update'])->middleware('privilege:update-social-links');
         Route::delete('/{socialLink}', [SocialLinkController::class, 'destroy'])->middleware('privilege:delete-social-links');
         Route::post('/{socialLink}/set-active', [SocialLinkController::class, 'setActive'])->middleware('privilege:update-social-links');
+    });
+
+    // Branch routes (Admin)
+    Route::prefix('branches')->group(function () {
+        Route::get('/{branch}', [BranchController::class, 'show'])->middleware('privilege:read-branches');
+        Route::post('/', [BranchController::class, 'store'])->middleware('privilege:create-branches');
+        Route::post('/{branch}', [BranchController::class, 'update'])->middleware('privilege:update-branches');
+        Route::patch('/{branch}', [BranchController::class, 'update'])->middleware('privilege:update-branches');
+        Route::delete('/{branch}', [BranchController::class, 'destroy'])->middleware('privilege:delete-branches');
+        Route::post('/{branch}/set-active', [BranchController::class, 'setActive'])->middleware('privilege:update-branches');
     });
 });
