@@ -462,6 +462,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-contact-page-banner-sections',
                 'description' => 'Can delete contact page banner sections',
             ],
+            // Video Link privileges
+            [
+                'name' => 'Read Video Links',
+                'slug' => 'read-video-links',
+                'description' => 'Can view video link list and details',
+            ],
+            [
+                'name' => 'Create Video Links',
+                'slug' => 'create-video-links',
+                'description' => 'Can create video links',
+            ],
+            [
+                'name' => 'Update Video Links',
+                'slug' => 'update-video-links',
+                'description' => 'Can update video links',
+            ],
+            [
+                'name' => 'Delete Video Links',
+                'slug' => 'delete-video-links',
+                'description' => 'Can delete video links',
+            ],
         ];
 
         foreach ($privileges as $privilege) {

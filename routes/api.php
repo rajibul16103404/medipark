@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VideoLinkController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -72,6 +73,7 @@ Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2n
 Route::get('/contact-page-banner-sections', [ContactPageBannerSectionController::class, 'index']);
 Route::get('/contact-page-banner-sections/active', [ContactPageBannerSectionController::class, 'show']);
 Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'index']);
+Route::get('/video-links', [VideoLinkController::class, 'index']);
 Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
 
 // Contact routes (Public submission)
@@ -229,6 +231,12 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('contact-page-banner-sections')->group(function () {
         Route::post('/', [ContactPageBannerSectionController::class, 'store'])->middleware('privilege:create-contact-page-banner-sections');
         Route::post('/set-active', [ContactPageBannerSectionController::class, 'setActive'])->middleware('privilege:update-contact-page-banner-sections');
+    });
+
+    // Video Link routes (Admin) - Singleton pattern
+    Route::prefix('video-links')->group(function () {
+        Route::post('/', [VideoLinkController::class, 'store'])->middleware('privilege:create-video-links');
+        Route::post('/set-active', [VideoLinkController::class, 'setActive'])->middleware('privilege:update-video-links');
     });
 
     // Investor routes (Admin)
