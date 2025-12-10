@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
 use App\Http\Controllers\Api\InvestorController;
+use App\Http\Controllers\Api\InvestorInstallmentController;
 use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
@@ -307,6 +308,16 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::patch('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::delete('/{investor}', [InvestorController::class, 'destroy'])->middleware('privilege:delete-investors');
+    });
+
+    // Investor Installment routes (Admin)
+    Route::prefix('investor-installments')->group(function () {
+        Route::post('/', [InvestorInstallmentController::class, 'store'])->middleware('privilege:create-investor-installments');
+        Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
+        Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        Route::post('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
+        Route::patch('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
+        Route::delete('/{investorInstallment}', [InvestorInstallmentController::class, 'destroy'])->middleware('privilege:delete-investor-installments');
     });
 
     // Doctor routes (Admin)

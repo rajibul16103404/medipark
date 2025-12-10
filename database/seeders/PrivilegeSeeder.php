@@ -346,6 +346,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-investors',
                 'description' => 'Can delete investors',
             ],
+            // Investor Installment privileges
+            [
+                'name' => 'Read Investor Installments',
+                'slug' => 'read-investor-installments',
+                'description' => 'Can view investor installment list and details',
+            ],
+            [
+                'name' => 'Create Investor Installments',
+                'slug' => 'create-investor-installments',
+                'description' => 'Can create new investor installments',
+            ],
+            [
+                'name' => 'Update Investor Installments',
+                'slug' => 'update-investor-installments',
+                'description' => 'Can modify investor installment information',
+            ],
+            [
+                'name' => 'Delete Investor Installments',
+                'slug' => 'delete-investor-installments',
+                'description' => 'Can delete investor installments',
+            ],
             // Doctor privileges
             [
                 'name' => 'Read Doctors',
