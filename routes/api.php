@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\FooterContactController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
+use App\Http\Controllers\Api\InstallmentRuleController;
 use App\Http\Controllers\Api\InvestorController;
 use App\Http\Controllers\Api\InvestorInstallmentController;
 use App\Http\Controllers\Api\OtpController;
@@ -363,5 +364,16 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{branch}', [BranchController::class, 'update'])->middleware('privilege:update-branches');
         Route::delete('/{branch}', [BranchController::class, 'destroy'])->middleware('privilege:delete-branches');
         Route::post('/{branch}/set-active', [BranchController::class, 'setActive'])->middleware('privilege:update-branches');
+    });
+
+    // Installment Rule routes (Admin)
+    Route::prefix('installment-rules')->group(function () {
+        Route::get('/', [InstallmentRuleController::class, 'index'])->middleware('privilege:read-installment-rules');
+        Route::get('/{installmentRule}', [InstallmentRuleController::class, 'show'])->middleware('privilege:read-installment-rules');
+        Route::post('/', [InstallmentRuleController::class, 'store'])->middleware('privilege:create-installment-rules');
+        Route::post('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
+        Route::patch('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
+        Route::delete('/{installmentRule}', [InstallmentRuleController::class, 'destroy'])->middleware('privilege:delete-installment-rules');
+        Route::post('/{installmentRule}/set-active', [InstallmentRuleController::class, 'setActive'])->middleware('privilege:update-installment-rules');
     });
 });

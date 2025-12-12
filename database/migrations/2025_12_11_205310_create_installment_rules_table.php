@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('installment_rules', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->text('address');
-            $table->string('phone');
-            $table->string('email')->unique();
-            $table->boolean('is_main')->default(false);
+            $table->string('name'); // e.g., "6 Month EMI", "12 Month EMI"
+            $table->unsignedInteger('duration_months'); // Number of months for the installment plan
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['name', 'duration_months']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::dropIfExists('installment_rules');
     }
 };

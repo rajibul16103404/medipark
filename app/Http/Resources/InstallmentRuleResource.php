@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BranchResource extends JsonResource
+class InstallmentRuleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +17,11 @@ class BranchResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'is_main' => $this->is_main,
-            'status' => $this->status?->value,
-            'created_at' => $this->created_at?->toIso8601String(),
-            'updated_at' => $this->updated_at?->toIso8601String(),
+            'duration_months' => $this->duration_months,
+            'status' => $this->status,
+            'description' => $this->description,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

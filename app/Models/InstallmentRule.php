@@ -7,30 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Branch extends Model
+class InstallmentRule extends Model
 {
-    /** @use HasFactory<\Database\Factories\BranchFactory> */
     use HasFactory, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
-        'address',
-        'phone',
-        'email',
-        'is_main',
+        'duration_months',
         'status',
+        'description',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [

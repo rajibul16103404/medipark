@@ -367,6 +367,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-investor-installments',
                 'description' => 'Can delete investor installments',
             ],
+            // Installment Rule privileges
+            [
+                'name' => 'Read Installment Rules',
+                'slug' => 'read-installment-rules',
+                'description' => 'Can view installment rule list and details',
+            ],
+            [
+                'name' => 'Create Installment Rules',
+                'slug' => 'create-installment-rules',
+                'description' => 'Can create new installment rules',
+            ],
+            [
+                'name' => 'Update Installment Rules',
+                'slug' => 'update-installment-rules',
+                'description' => 'Can modify installment rule information',
+            ],
+            [
+                'name' => 'Delete Installment Rules',
+                'slug' => 'delete-installment-rules',
+                'description' => 'Can delete installment rules',
+            ],
             // Doctor privileges
             [
                 'name' => 'Read Doctors',
