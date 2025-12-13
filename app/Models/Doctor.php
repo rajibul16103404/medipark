@@ -26,6 +26,11 @@ class Doctor extends Model
         'gender',
         'date_of_birth',
         'known_languages',
+        'education',
+        'experience',
+        'social_media',
+        'membership',
+        'awards',
         'registration_number',
         'about',
         'image',
@@ -43,6 +48,11 @@ class Doctor extends Model
         return [
             'date_of_birth' => 'date',
             'known_languages' => 'array',
+            'education' => 'array',
+            'experience' => 'array',
+            'social_media' => 'array',
+            'membership' => 'array',
+            'awards' => 'array',
             'deleted_at' => 'datetime',
         ];
     }
