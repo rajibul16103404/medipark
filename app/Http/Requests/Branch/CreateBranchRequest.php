@@ -28,6 +28,7 @@ class CreateBranchRequest extends FormRequest
             'address' => ['required', 'string', 'max:1000'],
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:branches,email'],
+            'is_main' => ['required', 'boolean'],
             'status' => ['nullable', Rule::enum(Status::class)],
         ];
     }

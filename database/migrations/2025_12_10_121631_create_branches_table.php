@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('phone');
             $table->string('email')->unique();
+            $table->boolean('is_main')->default(false);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();

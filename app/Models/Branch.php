@@ -22,6 +22,7 @@ class Branch extends Model
         'address',
         'phone',
         'email',
+        'is_main',
         'status',
     ];
 

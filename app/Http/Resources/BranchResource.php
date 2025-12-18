@@ -20,6 +20,7 @@ class BranchResource extends JsonResource
             'address' => $this->address,
             'phone' => $this->phone,
             'email' => $this->email,
+            'is_main' => $this->is_main,
             'status' => $this->status?->value,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
