@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestorInstallment\CreateInvestorInstallmentRequest;
+use App\Http\Requests\InvestorInstallment\ProcessPaymentRequest;
 use App\Http\Requests\InvestorInstallment\UpdateInvestorInstallmentRequest;
 use App\Http\Resources\InvestorInstallmentResource;
+use App\InstallmentStatus;
 use App\Models\InvestorInstallment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -77,5 +79,43 @@ class InvestorInstallmentController extends Controller
         $investorInstallment->delete();
 
         return $this->successResponse('Investor installment deleted successfully');
+    }
+
+    /**
+     * Process payment for an investor installment.
+     */
+    public function processPayment(ProcessPaymentRequest $request, InvestorInstallment $investorInstallment): JsonResponse
+    {
+        // Check if installment is already fully paid
+        if ($investorInstallment->status === InstallmentStatus::Paid) {
+            return $this->errorResponse('This installment has already been fully paid.', 422);
+        }
+
+        $validated = $request->validated();
+        $paymentAmount = (float) $validated['amount'];
+        $installmentAmount = (float) $investorInstallment->amount;
+
+        // Determine payment status
+        $status = InstallmentStatus::Paid;
+        if ($paymentAmount < $installmentAmount) {
+            $status = InstallmentStatus::Partial;
+        }
+
+        // Update installment with payment details
+        $updateData = [
+            'paid_date' => $validated['paid_date'] ?? now()->toDateString(),
+            'payment_method' => $validated['payment_method'],
+            'transaction_reference' => $validated['transaction_reference'] ?? null,
+            'notes' => $validated['notes'] ?? null,
+            'status' => $status,
+        ];
+
+        $investorInstallment->update($updateData);
+
+        $message = $status === InstallmentStatus::Paid
+            ? 'Payment processed successfully. Installment fully paid.'
+            : 'Partial payment processed successfully.';
+
+        return $this->successResponse($message, new InvestorInstallmentResource($investorInstallment->fresh()->load('investor')));
     }
 }

@@ -7,18 +7,24 @@ use App\Http\Controllers\Api\AboutUsPageOurMissionSectionController;
 use App\Http\Controllers\Api\AboutUsPageOurVisionSectionController;
 use App\Http\Controllers\Api\AboutUsPageWhoWeAreSectionController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\BlogPageBannerSectionController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactPageBannerSectionController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\FacilityController;
 use App\Http\Controllers\Api\FooterContactController;
+use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\GalleryPageBannerSectionController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
 use App\Http\Controllers\Api\HomepageCtaSectionController;
 use App\Http\Controllers\Api\HomepageHeroSectionController;
 use App\Http\Controllers\Api\InstallmentRuleController;
 use App\Http\Controllers\Api\InvestorController;
 use App\Http\Controllers\Api\InvestorInstallmentController;
+use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\NewsPageBannerSectionController;
 use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PrivilegeController;
@@ -27,12 +33,6 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VideoLinkController;
-use App\Http\Controllers\Api\GalleryController;
-use App\Http\Controllers\Api\NewsController;
-use App\Http\Controllers\Api\BlogController;
-use App\Http\Controllers\Api\GalleryPageBannerSectionController;
-use App\Http\Controllers\Api\NewsPageBannerSectionController;
-use App\Http\Controllers\Api\BlogPageBannerSectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -318,8 +318,9 @@ Route::middleware('auth:api')->group(function () {
     // Investor Installment routes (Admin)
     Route::prefix('investor-installments')->group(function () {
         Route::post('/', [InvestorInstallmentController::class, 'store'])->middleware('privilege:create-investor-installments');
-        // Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
-        // Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
+        Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        Route::post('/{investorInstallment}/process-payment', [InvestorInstallmentController::class, 'processPayment'])->middleware('privilege:update-investor-installments');
         Route::post('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::patch('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::delete('/{investorInstallment}', [InvestorInstallmentController::class, 'destroy'])->middleware('privilege:delete-investor-installments');
