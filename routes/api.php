@@ -69,19 +69,19 @@ Route::prefix('auth')->group(function () {
 });
 
 // Public Routes
-Route::get('/homepage-hero-sections', [HomepageHeroSectionController::class, 'show']);
-Route::get('/homepage-about-us-sections', [HomepageAboutUsSectionController::class, 'show']);
-Route::get('/homepage-cta-sections', [HomepageCtaSectionController::class, 'show']);
-Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'show']);
-Route::get('/about-us-page-who-we-are-sections', [AboutUsPageWhoWeAreSectionController::class, 'show']);
-Route::get('/about-us-page-our-mission-sections', [AboutUsPageOurMissionSectionController::class, 'show']);
-Route::get('/about-us-page-our-vision-sections', [AboutUsPageOurVisionSectionController::class, 'show']);
-Route::get('/about-us-page-after-our-vision-sections', [AboutUsPageAfterOurVisionSectionController::class, 'show']);
-Route::get('/about-us-page-2nd-after-our-vision-sections', [AboutUsPage2ndAfterOurVisionSectionController::class, 'show']);
+Route::get('/homepage-hero-sections/active', [HomepageHeroSectionController::class, 'show']);
+Route::get('/homepage-about-us-sections/active', [HomepageAboutUsSectionController::class, 'show']);
+Route::get('/homepage-cta-sections/active', [HomepageCtaSectionController::class, 'show']);
+Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
+Route::get('/about-us-page-who-we-are-sections/active', [AboutUsPageWhoWeAreSectionController::class, 'show']);
+Route::get('/about-us-page-our-mission-sections/active', [AboutUsPageOurMissionSectionController::class, 'show']);
+Route::get('/about-us-page-our-vision-sections/active', [AboutUsPageOurVisionSectionController::class, 'show']);
+Route::get('/about-us-page-after-our-vision-sections/active', [AboutUsPageAfterOurVisionSectionController::class, 'show']);
+Route::get('/about-us-page-2nd-after-our-vision-sections/active', [AboutUsPage2ndAfterOurVisionSectionController::class, 'show']);
 Route::get('/contact-page-banner-sections', [ContactPageBannerSectionController::class, 'index']);
-Route::get('/contact-page-banner-sections', [ContactPageBannerSectionController::class, 'show']);
+Route::get('/contact-page-banner-sections/active', [ContactPageBannerSectionController::class, 'show']);
 Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'index']);
-Route::get('/about-us-page-banner-sections', [AboutUsPageBannerSectionController::class, 'show']);
+Route::get('/about-us-page-banner-sections/active', [AboutUsPageBannerSectionController::class, 'show']);
 Route::get('/gallery-page-banner-sections', [GalleryPageBannerSectionController::class, 'index']);
 Route::get('/news-page-banner-sections', [NewsPageBannerSectionController::class, 'index']);
 Route::get('/blog-page-banner-sections', [BlogPageBannerSectionController::class, 'index']);
