@@ -147,8 +147,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Homepage Hero Section routes (Admin)
     Route::prefix('homepage-hero-sections')->group(function () {
-        Route::get('/', [HomepageHeroSectionController::class, 'index'])->middleware('privilege:read-homepage-hero-sections');
-        Route::get('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'showById'])->middleware('privilege:read-homepage-hero-sections');
+        // Route::get('/', [HomepageHeroSectionController::class, 'index'])->middleware('privilege:read-homepage-hero-sections');
+        // Route::get('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'showById'])->middleware('privilege:read-homepage-hero-sections');
         Route::post('/', [HomepageHeroSectionController::class, 'store'])->middleware('privilege:create-homepage-hero-sections');
         Route::post('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'update'])->middleware('privilege:update-homepage-hero-sections');
         Route::delete('/{homepageHeroSection}', [HomepageHeroSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-hero-sections');
@@ -157,8 +157,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Homepage About Us Section routes (Admin)
     Route::prefix('homepage-about-us-sections')->group(function () {
-        Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
-        Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
+        // Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
+        // Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
         Route::post('/', [HomepageAboutUsSectionController::class, 'store'])->middleware('privilege:create-homepage-about-us-sections');
         Route::post('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'update'])->middleware('privilege:update-homepage-about-us-sections');
         Route::delete('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-about-us-sections');
@@ -167,8 +167,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Homepage CTA Section routes (Admin)
     Route::prefix('homepage-cta-sections')->group(function () {
-        Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
-        Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
+        // Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
+        // Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
         Route::post('/', [HomepageCtaSectionController::class, 'store'])->middleware('privilege:create-homepage-cta-sections');
         Route::post('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
         Route::delete('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-cta-sections');
@@ -201,8 +201,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Who We Are Section routes (Admin)
     Route::prefix('about-us-page-who-we-are-sections')->group(function () {
-        Route::get('/', [AboutUsPageWhoWeAreSectionController::class, 'index'])->middleware('privilege:read-about-us-page-who-we-are-sections');
-        Route::get('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        // Route::get('/', [AboutUsPageWhoWeAreSectionController::class, 'index'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        // Route::get('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-who-we-are-sections');
         Route::post('/', [AboutUsPageWhoWeAreSectionController::class, 'store'])->middleware('privilege:create-about-us-page-who-we-are-sections');
         Route::post('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
         Route::patch('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
@@ -212,8 +212,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Our Mission Section routes (Admin)
     Route::prefix('about-us-page-our-mission-sections')->group(function () {
-        Route::get('/', [AboutUsPageOurMissionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-mission-sections');
-        Route::get('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        // Route::get('/', [AboutUsPageOurMissionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        // Route::get('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-mission-sections');
         Route::post('/', [AboutUsPageOurMissionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-mission-sections');
         Route::post('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
         Route::patch('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
@@ -223,8 +223,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Our Vision Section routes (Admin)
     Route::prefix('about-us-page-our-vision-sections')->group(function () {
-        Route::get('/', [AboutUsPageOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-vision-sections');
-        Route::get('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        // Route::get('/', [AboutUsPageOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        // Route::get('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-vision-sections');
         Route::post('/', [AboutUsPageOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-vision-sections');
         Route::post('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
         Route::patch('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
@@ -234,8 +234,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page After Our Vision Section routes (Admin)
     Route::prefix('about-us-page-after-our-vision-sections')->group(function () {
-        Route::get('/', [AboutUsPageAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
-        Route::get('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        // Route::get('/', [AboutUsPageAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        // Route::get('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
         Route::post('/', [AboutUsPageAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-after-our-vision-sections');
         Route::post('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
         Route::patch('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
@@ -245,8 +245,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page 2nd After Our Vision Section routes (Admin)
     Route::prefix('about-us-page-2nd-after-our-vision-sections')->group(function () {
-        Route::get('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
-        Route::get('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
+        // Route::get('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
+        // Route::get('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
         Route::post('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-2nd-after-our-vision-sections');
         Route::post('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
         Route::patch('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
@@ -256,7 +256,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Contact routes (Admin)
     Route::prefix('contacts')->group(function () {
-        Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
+        // Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
         Route::get('/{contact}', [ContactController::class, 'show'])->middleware('privilege:read-contacts');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->middleware('privilege:delete-contacts');
     });
@@ -275,7 +275,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Gallery routes (Admin)
     Route::prefix('galleries')->group(function () {
-        Route::get('/{gallery}', [GalleryController::class, 'show'])->middleware('privilege:read-galleries');
+        // Route::get('/{gallery}', [GalleryController::class, 'show'])->middleware('privilege:read-galleries');
         Route::post('/', [GalleryController::class, 'store'])->middleware('privilege:create-galleries');
         Route::post('/{gallery}', [GalleryController::class, 'update'])->middleware('privilege:update-galleries');
         Route::patch('/{gallery}', [GalleryController::class, 'update'])->middleware('privilege:update-galleries');
@@ -304,8 +304,8 @@ Route::middleware('auth:api')->group(function () {
     // Investor routes (Admin)
     Route::prefix('investors')->group(function () {
         Route::post('/', [InvestorController::class, 'store'])->middleware('privilege:create-investors');
-        Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
-        Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
+        // Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
+        // Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
         Route::post('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::patch('/{investor}', [InvestorController::class, 'update'])->middleware('privilege:update-investors');
         Route::delete('/{investor}', [InvestorController::class, 'destroy'])->middleware('privilege:delete-investors');
@@ -314,8 +314,8 @@ Route::middleware('auth:api')->group(function () {
     // Investor Installment routes (Admin)
     Route::prefix('investor-installments')->group(function () {
         Route::post('/', [InvestorInstallmentController::class, 'store'])->middleware('privilege:create-investor-installments');
-        Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
-        Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        // Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
+        // Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
         Route::post('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::patch('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::delete('/{investorInstallment}', [InvestorInstallmentController::class, 'destroy'])->middleware('privilege:delete-investor-installments');
@@ -323,8 +323,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Doctor routes (Admin)
     Route::prefix('doctors')->group(function () {
-        Route::get('/', [DoctorController::class, 'index'])->middleware('privilege:read-doctors');
-        Route::get('/{doctor}', [DoctorController::class, 'show'])->middleware('privilege:read-doctors');
+        // Route::get('/', [DoctorController::class, 'index'])->middleware('privilege:read-doctors');
+        // Route::get('/{doctor}', [DoctorController::class, 'show'])->middleware('privilege:read-doctors');
         Route::post('/', [DoctorController::class, 'store'])->middleware('privilege:create-doctors');
         Route::post('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::patch('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
@@ -333,7 +333,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Facility routes (Admin)
     Route::prefix('facilities')->group(function () {
-        Route::get('/{facility}', [FacilityController::class, 'show'])->middleware('privilege:read-facilities');
+        // Route::get('/{facility}', [FacilityController::class, 'show'])->middleware('privilege:read-facilities');
         Route::post('/', [FacilityController::class, 'store'])->middleware('privilege:create-facilities');
         Route::post('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
         Route::patch('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
@@ -348,7 +348,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Social Link routes (Admin)
     Route::prefix('social-links')->group(function () {
-        Route::get('/{socialLink}', [SocialLinkController::class, 'show'])->middleware('privilege:read-social-links');
+        // Route::get('/{socialLink}', [SocialLinkController::class, 'show'])->middleware('privilege:read-social-links');
         Route::post('/', [SocialLinkController::class, 'store'])->middleware('privilege:create-social-links');
         Route::post('/{socialLink}', [SocialLinkController::class, 'update'])->middleware('privilege:update-social-links');
         Route::patch('/{socialLink}', [SocialLinkController::class, 'update'])->middleware('privilege:update-social-links');
@@ -358,7 +358,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Branch routes (Admin)
     Route::prefix('branches')->group(function () {
-        Route::get('/{branch}', [BranchController::class, 'show'])->middleware('privilege:read-branches');
+        // Route::get('/{branch}', [BranchController::class, 'show'])->middleware('privilege:read-branches');
         Route::post('/', [BranchController::class, 'store'])->middleware('privilege:create-branches');
         Route::post('/{branch}', [BranchController::class, 'update'])->middleware('privilege:update-branches');
         Route::patch('/{branch}', [BranchController::class, 'update'])->middleware('privilege:update-branches');
@@ -368,8 +368,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Installment Rule routes (Admin)
     Route::prefix('installment-rules')->group(function () {
-        Route::get('/', [InstallmentRuleController::class, 'index'])->middleware('privilege:read-installment-rules');
-        Route::get('/{installmentRule}', [InstallmentRuleController::class, 'show'])->middleware('privilege:read-installment-rules');
+        // Route::get('/', [InstallmentRuleController::class, 'index'])->middleware('privilege:read-installment-rules');
+        // Route::get('/{installmentRule}', [InstallmentRuleController::class, 'show'])->middleware('privilege:read-installment-rules');
         Route::post('/', [InstallmentRuleController::class, 'store'])->middleware('privilege:create-installment-rules');
         Route::post('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
         Route::patch('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
