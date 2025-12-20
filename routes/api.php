@@ -107,6 +107,10 @@ Route::get('/social-links', [SocialLinkController::class, 'index']);
 // Public Branches route
 Route::get('/branches', [BranchController::class, 'index']);
 
+// Public Doctors route (Public)
+Route::get('/doctors', [DoctorController::class, 'index']);
+Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
+
 Route::middleware('auth:api')->group(function () {
     // Profile routes
     Route::prefix('profile')->group(function () {
