@@ -373,8 +373,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Installment Rule routes (Admin)
     Route::prefix('installment-rules')->group(function () {
-        // Route::get('/', [InstallmentRuleController::class, 'index'])->middleware('privilege:read-installment-rules');
-        // Route::get('/{installmentRule}', [InstallmentRuleController::class, 'show'])->middleware('privilege:read-installment-rules');
+        Route::get('/', [InstallmentRuleController::class, 'index'])->middleware('privilege:read-installment-rules');
+        Route::get('/{installmentRule}', [InstallmentRuleController::class, 'show'])->middleware('privilege:read-installment-rules');
         Route::post('/', [InstallmentRuleController::class, 'store'])->middleware('privilege:create-installment-rules');
         Route::post('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
         Route::patch('/{installmentRule}', [InstallmentRuleController::class, 'update'])->middleware('privilege:update-installment-rules');
