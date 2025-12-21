@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\InstallmentRule;
 
+use App\Models\InstallmentRule;
 use App\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class UpdateInstallmentRuleRequest extends FormRequest
 {
@@ -32,6 +34,41 @@ class UpdateInstallmentRuleRequest extends FormRequest
             'status' => ['sometimes', Rule::enum(Status::class)],
             'description' => ['nullable', 'string'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $installmentRule = $this->route('installmentRule');
+            $name = $this->input('name');
+            $durationMonths = $this->input('duration_months');
+
+            // Use existing values if not provided in update
+            if (! $name) {
+                $name = $installmentRule?->name;
+            }
+            if ($durationMonths === null) {
+                $durationMonths = $installmentRule?->duration_months;
+            }
+
+            if ($name && $durationMonths !== null && $installmentRule) {
+                // Check if an active (non-deleted) record exists with the same name and duration
+                // Exclude the current rule being updated and only check active records (deleted_at is NULL)
+                $activeRecordExists = InstallmentRule::where('name', $name)
+                    ->where('duration_months', $durationMonths)
+                    ->where('id', '!=', $installmentRule->id)
+                    ->whereNull('deleted_at')
+                    ->exists();
+
+                // If an active record exists (deleted_at is NULL), prevent update
+                if ($activeRecordExists) {
+                    $validator->errors()->add(
+                        'name',
+                        'An installment rule with the name "'.$name.'" and duration of '.$durationMonths.' months already exists. Please use a different name or duration.'
+                    );
+                }
+            }
+        });
     }
 
     public function messages(): array

@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\InstallmentRule;
 
+use App\Models\InstallmentRule;
 use App\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class CreateInstallmentRuleRequest extends FormRequest
 {
@@ -32,6 +34,32 @@ class CreateInstallmentRuleRequest extends FormRequest
             'status' => ['nullable', Rule::enum(Status::class)],
             'description' => ['nullable', 'string'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $name = $this->input('name');
+            $durationMonths = $this->input('duration_months');
+
+            // Only validate uniqueness when both name and duration_months are provided
+            if ($name && $durationMonths !== null) {
+                // Check if an active (non-deleted) record exists with the same name and duration
+                // Only check for records where deleted_at is NULL (active records)
+                $activeRecordExists = InstallmentRule::where('name', $name)
+                    ->where('duration_months', $durationMonths)
+                    ->whereNull('deleted_at')
+                    ->exists();
+
+                // If an active record exists (deleted_at is NULL), prevent insertion
+                if ($activeRecordExists) {
+                    $validator->errors()->add(
+                        'name',
+                        'An installment rule with the name "'.$name.'" and duration of '.$durationMonths.' months already exists. Please use a different name or duration.'
+                    );
+                }
+            }
+        });
     }
 
     public function messages(): array

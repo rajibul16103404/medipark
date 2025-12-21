@@ -9,6 +9,7 @@ use App\Http\Resources\InstallmentRuleResource;
 use App\Models\InstallmentRule;
 use App\Status;
 use App\Traits\ApiResponse;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 
 class InstallmentRuleController extends Controller
@@ -39,9 +40,32 @@ class InstallmentRuleController extends Controller
      */
     public function store(CreateInstallmentRuleRequest $request): JsonResponse
     {
-        $installmentRule = InstallmentRule::create($request->validated());
+        try {
+            $installmentRule = InstallmentRule::create($request->validated());
 
-        return $this->successResponse('Installment rule created successfully', new InstallmentRuleResource($installmentRule), 201);
+            return $this->successResponse('Installment rule created successfully', new InstallmentRuleResource($installmentRule), 201);
+        } catch (QueryException $e) {
+            // Handle any database constraint violations that might slip through
+            // MySQL error code 23000 is for integrity constraint violation
+            if ($e->getCode() === 23000 && str_contains($e->getMessage(), 'Duplicate entry')) {
+                $name = $request->input('name');
+                $durationMonths = $request->input('duration_months');
+
+                // Check if there's an active (non-deleted) record
+                $existing = InstallmentRule::where('name', $name)
+                    ->where('duration_months', $durationMonths)
+                    ->first();
+
+                if ($existing) {
+                    return $this->errorResponse(
+                        'An installment rule with the name "'.$name.'" and duration of '.$durationMonths.' months already exists. Please use a different name or duration.',
+                        422
+                    );
+                }
+            }
+
+            throw $e;
+        }
     }
 
     /**
