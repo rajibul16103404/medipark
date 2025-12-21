@@ -28,17 +28,17 @@ class HomepageHeroSectionController extends Controller
     }
 
     /**
-     * Show the active homepage hero section.
+     * Show all active homepage hero sections.
      */
     public function show(): JsonResponse
     {
-        $heroSection = HomepageHeroSection::active();
+        $heroSections = HomepageHeroSection::where('status', Status::Active->value)->get();
 
-        if (! $heroSection) {
-            return $this->errorResponse('No active homepage hero section found', 404);
+        if ($heroSections->isEmpty()) {
+            return $this->errorResponse('No active homepage hero sections found', 404);
         }
 
-        return $this->successResponse('Homepage hero section retrieved successfully', new HomepageHeroSectionResource($heroSection));
+        return $this->successResponse('Active homepage hero sections retrieved successfully', HomepageHeroSectionResource::collection($heroSections));
     }
 
     /**
@@ -54,12 +54,6 @@ class HomepageHeroSectionController extends Controller
      */
     public function store(CreateHomepageHeroSectionRequest $request): JsonResponse
     {
-        // If setting as active, deactivate all other hero sections
-        if ($request->input('status') === Status::Active->value) {
-            HomepageHeroSection::where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
-
         $data = $this->processFileUploads($request->validated(), $request);
 
         $heroSection = HomepageHeroSection::create($data);
@@ -72,13 +66,6 @@ class HomepageHeroSectionController extends Controller
      */
     public function update(UpdateHomepageHeroSectionRequest $request, HomepageHeroSection $homepageHeroSection): JsonResponse
     {
-        // If setting as active, deactivate all other hero sections
-        if ($request->input('status') === Status::Active->value && $homepageHeroSection->status !== Status::Active) {
-            HomepageHeroSection::where('id', '!=', $homepageHeroSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
-
         // Get all fillable fields from request - check each field individually for form data
         $data = [];
         $fillableFields = ['title', 'subtitle', 'opacity', 'serial', 'status'];
@@ -120,13 +107,6 @@ class HomepageHeroSectionController extends Controller
         $newStatus = $homepageHeroSection->status === Status::Active
             ? Status::Inactive
             : Status::Active;
-
-        // If setting as active, deactivate all other hero sections
-        if ($newStatus === Status::Active) {
-            HomepageHeroSection::where('id', '!=', $homepageHeroSection->id)
-                ->where('status', Status::Active->value)
-                ->update(['status' => Status::Inactive->value]);
-        }
 
         $homepageHeroSection->update(['status' => $newStatus->value]);
 
