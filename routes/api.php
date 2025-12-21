@@ -108,12 +108,7 @@ Route::get('/social-links', [SocialLinkController::class, 'index']);
 Route::get('/branches', [BranchController::class, 'index']);
 
 // Public Doctors route (Public)
-Route::get('/doctors', [DoctorController::class, 'index']);
-Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
-// Public Investors route
-Route::get('/investors', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
-Route::get('/investors/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
@@ -386,3 +381,9 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{installmentRule}/set-active', [InstallmentRuleController::class, 'setActive'])->middleware('privilege:update-installment-rules');
     });
 });
+
+
+Route::get('/doctors', [DoctorController::class, 'index']);
+Route::get('/investors', [InvestorController::class, 'index']);
+Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
+Route::get('/investors/{investor}', [InvestorController::class, 'show']);
