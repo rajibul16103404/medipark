@@ -112,8 +112,8 @@ Route::get('/doctors', [DoctorController::class, 'index']);
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
 // Public Investors route
-Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
-Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
+Route::get('/investors', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
+Route::get('/investors/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
 
 Route::middleware('auth:api')->group(function () {
     // Profile routes
