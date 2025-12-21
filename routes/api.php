@@ -111,6 +111,10 @@ Route::get('/branches', [BranchController::class, 'index']);
 Route::get('/doctors', [DoctorController::class, 'index']);
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
+// Public Investors route
+Route::get('/', [InvestorController::class, 'index'])->middleware('privilege:read-investors');
+Route::get('/{investor}', [InvestorController::class, 'show'])->middleware('privilege:read-investors');
+
 Route::middleware('auth:api')->group(function () {
     // Profile routes
     Route::prefix('profile')->group(function () {
@@ -318,8 +322,8 @@ Route::middleware('auth:api')->group(function () {
     // Investor Installment routes (Admin)
     Route::prefix('investor-installments')->group(function () {
         Route::post('/', [InvestorInstallmentController::class, 'store'])->middleware('privilege:create-investor-installments');
-        Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
-        Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        // Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
+        // Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
         Route::post('/{investorInstallment}/process-payment', [InvestorInstallmentController::class, 'processPayment'])->middleware('privilege:update-investor-installments');
         Route::post('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::patch('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
