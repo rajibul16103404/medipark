@@ -204,8 +204,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Who We Are Section routes (Admin)
     Route::prefix('about-us-page-who-we-are-sections')->group(function () {
-        // Route::get('/', [AboutUsPageWhoWeAreSectionController::class, 'index'])->middleware('privilege:read-about-us-page-who-we-are-sections');
-        // Route::get('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        Route::get('/', [AboutUsPageWhoWeAreSectionController::class, 'index'])->middleware('privilege:read-about-us-page-who-we-are-sections');
+        Route::get('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-who-we-are-sections');
         Route::post('/', [AboutUsPageWhoWeAreSectionController::class, 'store'])->middleware('privilege:create-about-us-page-who-we-are-sections');
         Route::post('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
         Route::patch('/{aboutUsPageWhoWeAreSection}', [AboutUsPageWhoWeAreSectionController::class, 'update'])->middleware('privilege:update-about-us-page-who-we-are-sections');
@@ -215,8 +215,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Our Mission Section routes (Admin)
     Route::prefix('about-us-page-our-mission-sections')->group(function () {
-        // Route::get('/', [AboutUsPageOurMissionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-mission-sections');
-        // Route::get('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        Route::get('/', [AboutUsPageOurMissionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-mission-sections');
+        Route::get('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-mission-sections');
         Route::post('/', [AboutUsPageOurMissionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-mission-sections');
         Route::post('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
         Route::patch('/{aboutUsPageOurMissionSection}', [AboutUsPageOurMissionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-mission-sections');
@@ -226,8 +226,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page Our Vision Section routes (Admin)
     Route::prefix('about-us-page-our-vision-sections')->group(function () {
-        // Route::get('/', [AboutUsPageOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-vision-sections');
-        // Route::get('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        Route::get('/', [AboutUsPageOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-our-vision-sections');
+        Route::get('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-our-vision-sections');
         Route::post('/', [AboutUsPageOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-our-vision-sections');
         Route::post('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
         Route::patch('/{aboutUsPageOurVisionSection}', [AboutUsPageOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-our-vision-sections');
@@ -237,8 +237,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page After Our Vision Section routes (Admin)
     Route::prefix('about-us-page-after-our-vision-sections')->group(function () {
-        // Route::get('/', [AboutUsPageAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
-        // Route::get('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        Route::get('/', [AboutUsPageAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
+        Route::get('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-after-our-vision-sections');
         Route::post('/', [AboutUsPageAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-after-our-vision-sections');
         Route::post('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
         Route::patch('/{aboutUsPageAfterOurVisionSection}', [AboutUsPageAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-after-our-vision-sections');
@@ -248,8 +248,8 @@ Route::middleware('auth:api')->group(function () {
 
     // About Us Page 2nd After Our Vision Section routes (Admin)
     Route::prefix('about-us-page-2nd-after-our-vision-sections')->group(function () {
-        // Route::get('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
-        // Route::get('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
+        Route::get('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'index'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
+        Route::get('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'showById'])->middleware('privilege:read-about-us-page-2nd-after-our-vision-sections');
         Route::post('/', [AboutUsPage2ndAfterOurVisionSectionController::class, 'store'])->middleware('privilege:create-about-us-page-2nd-after-our-vision-sections');
         Route::post('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
         Route::patch('/{section}', [AboutUsPage2ndAfterOurVisionSectionController::class, 'update'])->middleware('privilege:update-about-us-page-2nd-after-our-vision-sections');
