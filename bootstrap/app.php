@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'privilege' => \App\Http\Middleware\PrivilegeMiddleware::class,
             'check.suspended' => \App\Http\Middleware\CheckSuspendedUser::class,
             'auth.investor' => \App\Http\Middleware\AuthenticateInvestor::class,
+            'cache.images' => \App\Http\Middleware\CacheImages::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\CacheImages::class,
         ]);
 
         $middleware->api(append: [
