@@ -160,8 +160,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Homepage About Us Section routes (Admin)
     Route::prefix('homepage-about-us-sections')->group(function () {
-        // Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
-        // Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
+        Route::get('/', [HomepageAboutUsSectionController::class, 'index'])->middleware('privilege:read-homepage-about-us-sections');
+        Route::get('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'showById'])->middleware('privilege:read-homepage-about-us-sections');
         Route::post('/', [HomepageAboutUsSectionController::class, 'store'])->middleware('privilege:create-homepage-about-us-sections');
         Route::post('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'update'])->middleware('privilege:update-homepage-about-us-sections');
         Route::delete('/{homepageAboutUsSection}', [HomepageAboutUsSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-about-us-sections');
@@ -170,8 +170,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Homepage CTA Section routes (Admin)
     Route::prefix('homepage-cta-sections')->group(function () {
-        // Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
-        // Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
+        Route::get('/', [HomepageCtaSectionController::class, 'index'])->middleware('privilege:read-homepage-cta-sections');
+        Route::get('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'showById'])->middleware('privilege:read-homepage-cta-sections');
         Route::post('/', [HomepageCtaSectionController::class, 'store'])->middleware('privilege:create-homepage-cta-sections');
         Route::post('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'update'])->middleware('privilege:update-homepage-cta-sections');
         Route::delete('/{homepageCtaSection}', [HomepageCtaSectionController::class, 'destroy'])->middleware('privilege:delete-homepage-cta-sections');
