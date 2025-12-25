@@ -153,7 +153,7 @@ class BlogController extends Controller
             'facility_id' => $request->facility_id,
         ]);
 
-        $blog->load('facility');
+        $blog = Blog::with('facility')->findOrFail($blog->id);
 
         return $this->successResponse('Facility assigned to blog successfully', new BlogResource($blog));
     }

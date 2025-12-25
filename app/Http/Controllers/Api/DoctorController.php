@@ -103,7 +103,7 @@ class DoctorController extends Controller
             'facility_id' => $request->facility_id,
         ]);
 
-        $doctor->load('facility');
+        $doctor = Doctor::with('facility')->findOrFail($doctor->id);
 
         return $this->successResponse('Facility assigned to doctor successfully', new DoctorResource($doctor));
     }
