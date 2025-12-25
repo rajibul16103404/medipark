@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Doctor\AssignFacilityRequest;
 use App\Http\Requests\Doctor\CreateDoctorRequest;
 use App\Http\Requests\Doctor\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
@@ -20,7 +21,7 @@ class DoctorController extends Controller
      */
     public function index(): JsonResponse
     {
-        $doctors = Doctor::paginate(10);
+        $doctors = Doctor::with('facility')->paginate(10);
         $resourceCollection = DoctorResource::collection($doctors);
 
         return $this->paginatedResponse('Doctors retrieved successfully', $doctors, $resourceCollection);
@@ -31,6 +32,8 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor): JsonResponse
     {
+        $doctor->load('facility');
+
         return $this->successResponse('Doctor retrieved successfully', new DoctorResource($doctor));
     }
 
@@ -89,6 +92,20 @@ class DoctorController extends Controller
         $doctor->delete();
 
         return $this->successResponse('Doctor deleted successfully');
+    }
+
+    /**
+     * Assign a facility to a doctor.
+     */
+    public function assignFacility(AssignFacilityRequest $request, Doctor $doctor): JsonResponse
+    {
+        $doctor->update([
+            'facility_id' => $request->facility_id,
+        ]);
+
+        $doctor->load('facility');
+
+        return $this->successResponse('Facility assigned to doctor successfully', new DoctorResource($doctor));
     }
 
     /**

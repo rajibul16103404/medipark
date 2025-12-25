@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Facility extends Model
@@ -35,5 +36,21 @@ class Facility extends Model
             'status' => Status::class,
             'deleted_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the doctors for this facility.
+     */
+    public function doctors(): HasMany
+    {
+        return $this->hasMany(Doctor::class);
+    }
+
+    /**
+     * Get the blogs for this facility.
+     */
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class);
     }
 }

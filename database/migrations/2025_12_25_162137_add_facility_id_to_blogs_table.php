@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('specialities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->foreignId('facility_id')->nullable()->after('status')->constrained('facilities')->nullOnDelete();
         });
     }
 
@@ -25,6 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('specialities');
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->dropForeign(['facility_id']);
+            $table->dropColumn('facility_id');
+        });
     }
 };

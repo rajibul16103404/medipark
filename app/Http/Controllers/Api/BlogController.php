@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Blog\AssignFacilityRequest;
 use App\Http\Requests\Blog\CreateBlogRequest;
 use App\Http\Requests\Blog\UpdateBlogRequest;
 use App\Http\Resources\BlogResource;
@@ -21,7 +22,7 @@ class BlogController extends Controller
      */
     public function index(): JsonResponse
     {
-        $blogs = Blog::paginate(10);
+        $blogs = Blog::with('facility')->paginate(10);
         $resourceCollection = BlogResource::collection($blogs);
 
         return $this->paginatedResponse('Blogs retrieved successfully', $blogs, $resourceCollection);
@@ -32,6 +33,8 @@ class BlogController extends Controller
      */
     public function show(Blog $blog): JsonResponse
     {
+        $blog->load('facility');
+
         return $this->successResponse('Blog retrieved successfully', new BlogResource($blog));
     }
 
@@ -139,5 +142,19 @@ class BlogController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * Assign a facility to a blog.
+     */
+    public function assignFacility(AssignFacilityRequest $request, Blog $blog): JsonResponse
+    {
+        $blog->update([
+            'facility_id' => $request->facility_id,
+        ]);
+
+        $blog->load('facility');
+
+        return $this->successResponse('Facility assigned to blog successfully', new BlogResource($blog));
     }
 }

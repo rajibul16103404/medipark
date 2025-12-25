@@ -23,6 +23,16 @@ class DoctorResource extends JsonResource
             'doctor_name' => $this->doctor_name,
             'department' => $this->department,
             'specialist' => $this->specialist,
+            'facility_id' => $this->facility_id,
+            'facility' => $this->whenLoaded('facility', function () {
+                return [
+                    'id' => $this->facility->id,
+                    'title' => $this->facility->title,
+                    'short_description' => $this->facility->short_description,
+                    'image' => $this->getFullImageUrl($this->facility->image),
+                    'status' => $this->facility->status?->value,
+                ];
+            }),
             'email_address' => $this->email_address,
             'mobile_number' => $this->mobile_number,
             'gender' => $this->gender,

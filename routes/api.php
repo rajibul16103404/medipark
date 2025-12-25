@@ -109,7 +109,6 @@ Route::get('/branches', [BranchController::class, 'index']);
 
 // Public Doctors route (Public)
 
-
 Route::middleware('auth:api')->group(function () {
     // Profile routes
     Route::prefix('profile')->group(function () {
@@ -302,6 +301,7 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{blog}', [BlogController::class, 'update'])->middleware('privilege:update-blogs');
         Route::delete('/{blog}', [BlogController::class, 'destroy'])->middleware('privilege:delete-blogs');
         Route::post('/{blog}/set-active', [BlogController::class, 'setActive'])->middleware('privilege:update-blogs');
+        Route::post('/{blog}/assign-facility', [BlogController::class, 'assignFacility'])->middleware('privilege:update-blogs');
     });
 
     // Investor routes (Admin)
@@ -333,6 +333,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::patch('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::delete('/{doctor}', [DoctorController::class, 'destroy'])->middleware('privilege:delete-doctors');
+        Route::post('/{doctor}/assign-facility', [DoctorController::class, 'assignFacility'])->middleware('privilege:update-doctors');
     });
 
     // Facility routes (Admin)
@@ -381,7 +382,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{installmentRule}/set-active', [InstallmentRuleController::class, 'setActive'])->middleware('privilege:update-installment-rules');
     });
 });
-
 
 Route::get('/doctors', [DoctorController::class, 'index']);
 Route::get('/investors', [InvestorController::class, 'index']);
