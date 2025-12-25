@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('feature_image')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('author_name');
