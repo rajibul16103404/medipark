@@ -8,9 +8,11 @@ use App\Http\Requests\InvestorInstallment\ProcessPaymentRequest;
 use App\Http\Requests\InvestorInstallment\UpdateInvestorInstallmentRequest;
 use App\Http\Resources\InvestorInstallmentResource;
 use App\InstallmentStatus;
+use App\Models\Investor;
 use App\Models\InvestorInstallment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class InvestorInstallmentController extends Controller
 {
@@ -86,36 +88,115 @@ class InvestorInstallmentController extends Controller
      */
     public function processPayment(ProcessPaymentRequest $request, InvestorInstallment $investorInstallment): JsonResponse
     {
-        // Check if installment is already fully paid
-        if ($investorInstallment->status === InstallmentStatus::Paid) {
-            return $this->errorResponse('This installment has already been fully paid.', 422);
-        }
+        return DB::transaction(function () use ($request, $investorInstallment) {
+            $investor = $investorInstallment->investor;
+            if (! $investor) {
+                return $this->errorResponse('Investor not found for this installment.', 404);
+            }
 
-        $validated = $request->validated();
-        $paymentAmount = (float) $validated['amount'];
-        $installmentAmount = (float) $investorInstallment->amount;
+            // Get installment amount from investor table
+            $installmentAmountPerMonth = (float) ($investor->installment_per_month ?? 0);
+            if ($installmentAmountPerMonth <= 0) {
+                return $this->errorResponse('Installment amount per month is not set for this investor.', 422);
+            }
 
-        // Determine payment status
-        $status = InstallmentStatus::Paid;
-        if ($paymentAmount < $installmentAmount) {
-            $status = InstallmentStatus::Partial;
-        }
+            $validated = $request->validated();
+            $paymentAmount = (float) $validated['amount'];
+            $paidDate = $validated['paid_date'] ?? now()->toDateString();
+            $paymentMethod = $validated['payment_method'];
+            $transactionReference = $validated['transaction_reference'] ?? null;
+            $notes = $validated['notes'] ?? null;
 
-        // Update installment with payment details
-        $updateData = [
-            'paid_date' => $validated['paid_date'] ?? now()->toDateString(),
-            'payment_method' => $validated['payment_method'],
-            'transaction_reference' => $validated['transaction_reference'] ?? null,
-            'notes' => $validated['notes'] ?? null,
-            'status' => $status,
-        ];
+            $remainingPayment = $paymentAmount;
+            $processedInstallments = [];
+            $lastProcessedInstallment = $investorInstallment;
 
-        $investorInstallment->update($updateData);
+            // Start from the current installment
+            $currentInstallmentNumber = $investorInstallment->installment_number;
 
-        $message = $status === InstallmentStatus::Paid
-            ? 'Payment processed successfully. Installment fully paid.'
-            : 'Partial payment processed successfully.';
+            while ($remainingPayment > 0) {
+                // Get or create the current installment
+                $installment = null;
+                if ($currentInstallmentNumber === $investorInstallment->installment_number) {
+                    // Use the provided installment, but refresh it to get latest data
+                    $installment = $investorInstallment->fresh();
+                } else {
+                    // Get existing installment or create new one
+                    $installment = InvestorInstallment::where('investor_id', $investor->id)
+                        ->where('installment_number', $currentInstallmentNumber)
+                        ->first();
+                }
 
-        return $this->successResponse($message, new InvestorInstallmentResource($investorInstallment->fresh()->load('investor')));
+                if (! $installment) {
+                    // Calculate due date for new installment (1 month from previous)
+                    $previousInstallment = InvestorInstallment::where('investor_id', $investor->id)
+                        ->where('installment_number', $currentInstallmentNumber - 1)
+                        ->first();
+
+                    $dueDate = $previousInstallment?->due_date
+                        ? \Carbon\Carbon::parse($previousInstallment->due_date)->addMonth()->toDateString()
+                        : ($investor->installment_start_from?->toDateString() ?? now()->addMonth()->toDateString());
+
+                    // Create new installment
+                    $installment = InvestorInstallment::create([
+                        'investor_id' => $investor->id,
+                        'installment_number' => $currentInstallmentNumber,
+                        'amount' => $installmentAmountPerMonth,
+                        'paid_amount' => 0,
+                        'due_date' => $dueDate,
+                        'status' => InstallmentStatus::Pending,
+                    ]);
+                }
+
+                // Calculate how much to pay for this installment
+                $remainingDue = $installment->amount - ($installment->paid_amount ?? 0);
+                $amountToPay = min($remainingPayment, $remainingDue);
+
+                if ($amountToPay > 0) {
+                    $newPaidAmount = ($installment->paid_amount ?? 0) + $amountToPay;
+                    $newStatus = InstallmentStatus::Partial;
+
+                    if ($newPaidAmount >= $installment->amount) {
+                        $newPaidAmount = $installment->amount;
+                        $newStatus = InstallmentStatus::Paid;
+                    }
+
+                    // Update installment
+                    $installment->update([
+                        'paid_amount' => $newPaidAmount,
+                        'status' => $newStatus,
+                        'paid_date' => $paidDate,
+                        'payment_method' => $paymentMethod,
+                        'transaction_reference' => $transactionReference,
+                        'notes' => $notes,
+                    ]);
+
+                    $remainingPayment -= $amountToPay;
+                    $processedInstallments[] = $installment;
+                    $lastProcessedInstallment = $installment;
+                }
+
+                $currentInstallmentNumber++;
+            }
+
+            // Update investor paid_amount
+            $investor->paid_amount = ($investor->paid_amount ?? 0) + $paymentAmount;
+            $investor->save();
+
+            // Calculate and update next installment date (first unpaid installment)
+            $nextInstallment = InvestorInstallment::where('investor_id', $investor->id)
+                ->where('status', '!=', InstallmentStatus::Paid)
+                ->orderBy('due_date', 'asc')
+                ->first();
+
+            $investor->next_installment_date = $nextInstallment?->due_date;
+            $investor->save();
+
+            $message = count($processedInstallments) > 1
+                ? "Payment processed successfully. {$paymentAmount} applied across ".count($processedInstallments).' installments.'
+                : 'Payment processed successfully.';
+
+            return $this->successResponse($message, new InvestorInstallmentResource($lastProcessedInstallment->fresh()->load('investor')));
+        });
     }
 }

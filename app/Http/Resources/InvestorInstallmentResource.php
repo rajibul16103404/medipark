@@ -14,12 +14,19 @@ class InvestorInstallmentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $paidAmount = (float) ($this->paid_amount ?? 0);
+        $totalAmount = (float) $this->amount;
+        $dueAmount = max(0, $totalAmount - $paidAmount);
+
         return [
             'id' => $this->id,
             'investor_id' => $this->investor_id,
             'investor' => $this->whenLoaded('investor', fn () => new InvestorResource($this->investor)),
             'installment_number' => $this->installment_number,
-            'amount' => $this->amount,
+            'total_amount' => $totalAmount,
+            'paid_amount' => $paidAmount,
+            'due_amount' => $dueAmount,
+            'amount' => $totalAmount, // Keep for backward compatibility
             'due_date' => $this->due_date?->toDateString(),
             'paid_date' => $this->paid_date?->toDateString(),
             'status' => $this->status?->value,

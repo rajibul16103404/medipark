@@ -16,6 +16,7 @@ class InvestorInstallment extends Model
         'investor_id',
         'installment_number',
         'amount',
+        'paid_amount',
         'due_date',
         'paid_date',
         'status',
@@ -28,6 +29,7 @@ class InvestorInstallment extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'paid_amount' => 'decimal:2',
             'due_date' => 'date',
             'paid_date' => 'date',
             'status' => InstallmentStatus::class,

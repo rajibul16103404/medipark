@@ -317,8 +317,8 @@ Route::middleware('auth:api')->group(function () {
     // Investor Installment routes (Admin)
     Route::prefix('investor-installments')->group(function () {
         Route::post('/', [InvestorInstallmentController::class, 'store'])->middleware('privilege:create-investor-installments');
-        // Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
-        // Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
+        Route::get('/', [InvestorInstallmentController::class, 'index'])->middleware('privilege:read-investor-installments');
+        Route::get('/{investorInstallment}', [InvestorInstallmentController::class, 'show'])->middleware('privilege:read-investor-installments');
         Route::post('/{investorInstallment}/process-payment', [InvestorInstallmentController::class, 'processPayment'])->middleware('privilege:update-investor-installments');
         Route::post('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');
         Route::patch('/{investorInstallment}', [InvestorInstallmentController::class, 'update'])->middleware('privilege:update-investor-installments');

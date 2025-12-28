@@ -74,6 +74,8 @@ class Investor extends Authenticatable implements JWTSubject
         'reference_name_b',
         'rest_amount',
         'rest_amount_in_words',
+        'paid_amount',
+        'next_installment_date',
     ];
 
     /**
@@ -104,6 +106,8 @@ class Investor extends Authenticatable implements JWTSubject
             'booking_money' => 'decimal:2',
             'down_payment' => 'decimal:2',
             'rest_amount' => 'decimal:2',
+            'paid_amount' => 'decimal:2',
+            'next_installment_date' => 'date',
             'deleted_at' => 'datetime',
         ];
     }

@@ -26,6 +26,12 @@ class UpdateFacilityRequest extends FormRequest
         return [
             'title' => ['sometimes', 'required', 'string', 'max:255'],
             'short_description' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'description1' => ['sometimes', 'nullable', 'string'],
+            'accordions' => ['sometimes', 'nullable', 'array'],
+            'accordions.*.title' => ['required_with:accordions', 'string', 'max:255'],
+            'accordions.*.description' => ['required_with:accordions', 'string'],
+            'description2' => ['sometimes', 'nullable', 'string'],
+            'footer' => ['sometimes', 'nullable', 'string'],
             'image' => $this->imageOrUrlRule(),
             'status' => ['sometimes', 'nullable', Rule::enum(Status::class)],
         ];

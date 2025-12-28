@@ -13,11 +13,8 @@ class ProcessPaymentRequest extends FormRequest
 
     public function rules(): array
     {
-        $installment = $this->route('investorInstallment');
-        $maxAmount = $installment?->amount ?? 999999999.99;
-
         return [
-            'amount' => ['required', 'numeric', 'min:0.01', "max:{$maxAmount}"],
+            'amount' => ['required', 'numeric', 'min:0.01'],
             'payment_method' => ['required', 'string', 'max:100'],
             'transaction_reference' => ['nullable', 'string', 'max:255'],
             'paid_date' => ['nullable', 'date'],
@@ -31,7 +28,6 @@ class ProcessPaymentRequest extends FormRequest
             'amount.required' => 'The payment amount is required.',
             'amount.numeric' => 'The payment amount must be a number.',
             'amount.min' => 'The payment amount must be at least 0.01.',
-            'amount.max' => 'The payment amount cannot exceed the installment amount.',
             'payment_method.required' => 'The payment method is required.',
             'payment_method.string' => 'The payment method must be a string.',
             'payment_method.max' => 'The payment method must not exceed 100 characters.',

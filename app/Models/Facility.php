@@ -21,6 +21,10 @@ class Facility extends Model
     protected $fillable = [
         'title',
         'short_description',
+        'description1',
+        'accordions',
+        'description2',
+        'footer',
         'image',
         'status',
     ];
@@ -33,6 +37,7 @@ class Facility extends Model
     protected function casts(): array
     {
         return [
+            'accordions' => 'array',
             'status' => Status::class,
             'deleted_at' => 'datetime',
         ];

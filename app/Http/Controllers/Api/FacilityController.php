@@ -21,7 +21,7 @@ class FacilityController extends Controller
      */
     public function index(): JsonResponse
     {
-        $facilities = Facility::paginate(10);
+        $facilities = Facility::with(['doctors', 'blogs'])->paginate(10);
         $resourceCollection = FacilityResource::collection($facilities);
 
         return $this->paginatedResponse('Facilities retrieved successfully', $facilities, $resourceCollection);
@@ -32,6 +32,8 @@ class FacilityController extends Controller
      */
     public function show(Facility $facility): JsonResponse
     {
+        $facility->load(['doctors', 'blogs']);
+
         return $this->successResponse('Facility retrieved successfully', new FacilityResource($facility));
     }
 
@@ -40,7 +42,28 @@ class FacilityController extends Controller
      */
     public function store(CreateFacilityRequest $request): JsonResponse
     {
-        $data = $this->processFileUploads($request, $request->validated());
+        $validated = $request->validated();
+        $data = $this->processFileUploads($request, $validated);
+
+        // Accordions should be in validated data, but ensure it's properly formatted
+        if (isset($data['accordions']) && is_array($data['accordions']) && ! empty($data['accordions'])) {
+            // Filter out any invalid entries
+            $accordions = array_filter($data['accordions'], function ($accordion) {
+                return isset($accordion) && is_array($accordion) && (! empty($accordion['title']) || ! empty($accordion['description']));
+            });
+            $data['accordions'] = ! empty($accordions) ? array_values($accordions) : null;
+        } else {
+            // If not in validated or empty, check raw input as fallback
+            $rawAccordions = $request->input('accordions');
+            if (! empty($rawAccordions) && is_array($rawAccordions)) {
+                $accordions = array_filter($rawAccordions, function ($accordion) {
+                    return isset($accordion) && is_array($accordion) && (! empty($accordion['title']) || ! empty($accordion['description']));
+                });
+                $data['accordions'] = ! empty($accordions) ? array_values($accordions) : null;
+            } else {
+                $data['accordions'] = null;
+            }
+        }
 
         $facility = Facility::create($data);
 
@@ -52,12 +75,27 @@ class FacilityController extends Controller
      */
     public function update(UpdateFacilityRequest $request, Facility $facility): JsonResponse
     {
-        $data = $this->processFileUploads($request, $request->validated(), $facility);
+        $validated = $request->validated();
+        $data = $this->processFileUploads($request, $validated, $facility);
 
         $updateData = [];
         foreach ($facility->getFillable() as $field) {
             if (array_key_exists($field, $data)) {
                 $updateData[$field] = $data[$field];
+            }
+        }
+
+        // Handle accordions from request input (form data like accordions[0][title])
+        if ($request->has('accordions')) {
+            $accordions = $request->input('accordions');
+            if (is_array($accordions)) {
+                // Filter out empty accordion entries
+                $accordions = array_filter($accordions, function ($accordion) {
+                    return ! empty($accordion['title']) || ! empty($accordion['description']);
+                });
+                $updateData['accordions'] = array_values($accordions); // Re-index array
+            } else {
+                $updateData['accordions'] = null;
             }
         }
 

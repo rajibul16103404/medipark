@@ -26,6 +26,12 @@ class CreateFacilityRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'short_description' => ['nullable', 'string', 'max:500'],
+            'description1' => ['nullable', 'string'],
+            'accordions' => ['nullable', 'array'],
+            'accordions.*.title' => ['required_with:accordions', 'string', 'max:255'],
+            'accordions.*.description' => ['required_with:accordions', 'string'],
+            'description2' => ['nullable', 'string'],
+            'footer' => ['nullable', 'string'],
             'image' => $this->imageOrUrlRule(),
             'status' => ['nullable', Rule::enum(Status::class)],
         ];
