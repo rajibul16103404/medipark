@@ -22,6 +22,7 @@ class DepartmentFactory extends Factory
             'short_description' => fake()->sentence(10),
             'image' => fake()->imageUrl(),
             'status' => fake()->randomElement([Status::Active->value, Status::Inactive->value]),
+            'is_specialized' => fake()->boolean(),
         ];
     }
 }

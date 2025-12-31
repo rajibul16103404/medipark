@@ -60,6 +60,7 @@ class DepartmentResource extends JsonResource
             'footer' => $this->footer,
             'image' => $this->getFullImageUrl($this->image),
             'status' => $this->status,
+            'is_specialized' => $this->is_specialized ?? false,
             'doctors' => $doctors,
             'blogs' => $blogs,
             'created_at' => $this->created_at?->toIso8601String(),

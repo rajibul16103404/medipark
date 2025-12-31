@@ -26,6 +26,7 @@ class Department extends Model
         'footer',
         'image',
         'status',
+        'is_specialized',
         'doctors',
         'blogs',
     ];
@@ -41,6 +42,7 @@ class Department extends Model
             'accordions' => 'array',
             'doctors' => 'array',
             'blogs' => 'array',
+            'is_specialized' => 'boolean',
             'status' => Status::class,
             'deleted_at' => 'datetime',
         ];

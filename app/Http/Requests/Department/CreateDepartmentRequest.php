@@ -38,6 +38,7 @@ class CreateDepartmentRequest extends FormRequest
             'blogs.*' => ['integer', Rule::exists('blogs', 'id')],
             'image' => $this->imageOrUrlRule(),
             'status' => ['nullable', Rule::enum(Status::class)],
+            'is_specialized' => ['nullable', 'boolean'],
         ];
     }
 
