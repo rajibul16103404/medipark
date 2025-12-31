@@ -10,6 +10,7 @@ use App\Models\Branch;
 use App\Status;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class BranchController extends Controller
 {
@@ -39,9 +40,18 @@ class BranchController extends Controller
      */
     public function store(CreateBranchRequest $request): JsonResponse
     {
-        $branch = Branch::create($request->validated());
+        $validated = $request->validated();
 
-        return $this->successResponse('Branch created successfully', new BranchResource($branch), 201);
+        return DB::transaction(function () use ($validated) {
+            // If setting this branch as main, remove main status from all other branches
+            if (! empty($validated['is_main']) && $validated['is_main']) {
+                Branch::where('is_main', true)->update(['is_main' => false]);
+            }
+
+            $branch = Branch::create($validated);
+
+            return $this->successResponse('Branch created successfully', new BranchResource($branch), 201);
+        });
     }
 
     /**
@@ -56,11 +66,20 @@ class BranchController extends Controller
             }
         }
 
-        if (! empty($updateData)) {
-            $branch->update($updateData);
-        }
+        return DB::transaction(function () use ($updateData, $branch) {
+            // If setting this branch as main, remove main status from all other branches
+            if (isset($updateData['is_main']) && $updateData['is_main']) {
+                Branch::where('id', '!=', $branch->id)
+                    ->where('is_main', true)
+                    ->update(['is_main' => false]);
+            }
 
-        return $this->successResponse('Branch updated successfully', new BranchResource($branch));
+            if (! empty($updateData)) {
+                $branch->update($updateData);
+            }
+
+            return $this->successResponse('Branch updated successfully', new BranchResource($branch->fresh()));
+        });
     }
 
     /**

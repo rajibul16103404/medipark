@@ -34,6 +34,7 @@ class Branch extends Model
     protected function casts(): array
     {
         return [
+            'is_main' => 'boolean',
             'status' => Status::class,
             'deleted_at' => 'datetime',
         ];
