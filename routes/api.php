@@ -262,7 +262,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Contact routes (Admin)
     Route::prefix('contacts')->group(function () {
-        // Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
+        Route::get('/', [ContactController::class, 'index'])->middleware('privilege:read-contacts');
         Route::get('/{contact}', [ContactController::class, 'show'])->middleware('privilege:read-contacts');
         Route::delete('/{contact}', [ContactController::class, 'destroy'])->middleware('privilege:delete-contacts');
     });
@@ -305,6 +305,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{futureVenture}', [FutureVentureController::class, 'update'])->middleware('privilege:update-future-ventures');
         Route::patch('/{futureVenture}', [FutureVentureController::class, 'update'])->middleware('privilege:update-future-ventures');
         Route::delete('/{futureVenture}', [FutureVentureController::class, 'destroy'])->middleware('privilege:delete-future-ventures');
+        Route::post('/{futureVenture}/change-status', [FutureVentureController::class, 'changeStatus'])->middleware('privilege:update-future-ventures');
     });
 
     // Blog routes (Admin)

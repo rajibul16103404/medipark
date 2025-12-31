@@ -25,6 +25,7 @@ class FutureVentureResource extends JsonResource
             'image' => $this->getFullImageUrl($this->image),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
+            'status' => $this->status,
         ];
     }
 }

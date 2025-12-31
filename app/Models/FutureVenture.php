@@ -21,6 +21,7 @@ class FutureVenture extends Model
         'short_description',
         'image',
         'description',
+        'status'
     ];
 
     /**

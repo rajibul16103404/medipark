@@ -82,6 +82,17 @@ class FutureVentureController extends Controller
     }
 
     /**
+     * Change the status of a future venture.
+     */
+    public function changeStatus(FutureVenture $futureVenture): JsonResponse
+    {
+        $newStatus = $futureVenture->status === 'active' ? 'inactive' : 'active';
+        $futureVenture->update(['status' => $newStatus]);
+
+        return $this->successResponse('Future venture status updated successfully', new FutureVentureResource($futureVenture->fresh()));
+    }
+
+    /**
      * Handle image upload.
      */
     private function processFileUploads(CreateFutureVentureRequest|UpdateFutureVentureRequest $request, array $data, ?FutureVenture $futureVenture = null): array
