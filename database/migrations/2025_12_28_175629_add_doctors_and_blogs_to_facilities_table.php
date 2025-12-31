@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('departments', function (Blueprint $table) {
+            $table->json('doctors')->nullable()->after('status');
+            $table->json('blogs')->nullable()->after('doctors');
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::table('departments', function (Blueprint $table) {
+            $table->dropColumn(['doctors', 'blogs']);
+        });
     }
 };

@@ -12,8 +12,8 @@ use App\Http\Controllers\Api\BlogPageBannerSectionController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactPageBannerSectionController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DoctorController;
-use App\Http\Controllers\Api\FacilityController;
 use App\Http\Controllers\Api\FooterContactController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\GalleryPageBannerSectionController;
@@ -98,8 +98,9 @@ Route::post('/contacts', [ContactController::class, 'store']);
 // Public Footer Contact route
 Route::get('/footer-contact', [FooterContactController::class, 'show']);
 
-// Public Facilities route
-Route::get('/facilities', [FacilityController::class, 'index']);
+// Public Departments route
+Route::get('/departments', [DepartmentController::class, 'index']);
+Route::get('/departments/{department}', [DepartmentController::class, 'show']);
 
 // Public Social Links route
 Route::get('/social-links', [SocialLinkController::class, 'index']);
@@ -301,7 +302,6 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{blog}', [BlogController::class, 'update'])->middleware('privilege:update-blogs');
         Route::delete('/{blog}', [BlogController::class, 'destroy'])->middleware('privilege:delete-blogs');
         Route::post('/{blog}/set-active', [BlogController::class, 'setActive'])->middleware('privilege:update-blogs');
-        Route::post('/{blog}/assign-facility', [BlogController::class, 'assignFacility'])->middleware('privilege:update-blogs');
     });
 
     // Investor routes (Admin)
@@ -333,17 +333,17 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::patch('/{doctor}', [DoctorController::class, 'update'])->middleware('privilege:update-doctors');
         Route::delete('/{doctor}', [DoctorController::class, 'destroy'])->middleware('privilege:delete-doctors');
-        Route::post('/{doctor}/assign-facility', [DoctorController::class, 'assignFacility'])->middleware('privilege:update-doctors');
     });
 
-    // Facility routes (Admin)
-    Route::prefix('facilities')->group(function () {
-        // Route::get('/{facility}', [FacilityController::class, 'show'])->middleware('privilege:read-facilities');
-        Route::post('/', [FacilityController::class, 'store'])->middleware('privilege:create-facilities');
-        Route::post('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
-        Route::patch('/{facility}', [FacilityController::class, 'update'])->middleware('privilege:update-facilities');
-        Route::delete('/{facility}', [FacilityController::class, 'destroy'])->middleware('privilege:delete-facilities');
-        Route::post('/{facility}/set-active', [FacilityController::class, 'setActive'])->middleware('privilege:update-facilities');
+    // Department routes (Admin)
+    Route::prefix('departments')->group(function () {
+        Route::post('/', [DepartmentController::class, 'store'])->middleware('privilege:create-departments');
+        Route::post('/{department}', [DepartmentController::class, 'update'])->middleware('privilege:update-departments');
+        Route::patch('/{department}', [DepartmentController::class, 'update'])->middleware('privilege:update-departments');
+        Route::delete('/{department}', [DepartmentController::class, 'destroy'])->middleware('privilege:delete-departments');
+        Route::post('/{department}/set-active', [DepartmentController::class, 'setActive'])->middleware('privilege:update-departments');
+        Route::post('/{department}/assign-doctors', [DepartmentController::class, 'assignDoctors'])->middleware('privilege:update-departments');
+        Route::post('/{department}/assign-blogs', [DepartmentController::class, 'assignBlogs'])->middleware('privilege:update-departments');
     });
 
     // Footer Contact routes (Admin) - Singleton (only one record)

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Doctor;
+namespace App\Http\Requests\Department;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AssignFacilityRequest extends FormRequest
+class AssignDoctorsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,8 @@ class AssignFacilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'facility_id' => ['nullable', 'integer', Rule::exists('facilities', 'id')],
+            'doctor_ids' => ['nullable', 'array'],
+            'doctor_ids.*' => ['required', 'integer', Rule::exists('doctors', 'id')],
         ];
     }
 
@@ -35,8 +36,10 @@ class AssignFacilityRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'facility_id.integer' => 'The facility_id must be an integer.',
-            'facility_id.exists' => 'The selected facility does not exist.',
+            'doctor_ids.array' => 'The doctor_ids must be an array.',
+            'doctor_ids.*.required' => 'Each doctor ID is required.',
+            'doctor_ids.*.integer' => 'Each doctor ID must be an integer.',
+            'doctor_ids.*.exists' => 'One or more selected doctors do not exist.',
         ];
     }
 }

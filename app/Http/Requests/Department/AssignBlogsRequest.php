@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Blog;
+namespace App\Http\Requests\Department;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AssignFacilityRequest extends FormRequest
+class AssignBlogsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,8 @@ class AssignFacilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'facility_id' => ['nullable', 'integer', Rule::exists('facilities', 'id')],
+            'blog_ids' => ['nullable', 'array'],
+            'blog_ids.*' => ['required', 'integer', Rule::exists('blogs', 'id')],
         ];
     }
 
@@ -35,8 +36,10 @@ class AssignFacilityRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'facility_id.integer' => 'The facility_id must be an integer.',
-            'facility_id.exists' => 'The selected facility does not exist.',
+            'blog_ids.array' => 'The blog_ids must be an array.',
+            'blog_ids.*.required' => 'Each blog ID is required.',
+            'blog_ids.*.integer' => 'Each blog ID must be an integer.',
+            'blog_ids.*.exists' => 'One or more selected blogs do not exist.',
         ];
     }
 }

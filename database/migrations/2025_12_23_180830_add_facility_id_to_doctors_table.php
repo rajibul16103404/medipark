@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('doctors', function (Blueprint $table) {
-            $table->foreignId('facility_id')->nullable()->after('specialist')->constrained('facilities')->nullOnDelete();
+            $table->foreignId('department_id')->nullable()->after('specialist')->constrained('departments')->nullOnDelete();
         });
     }
 
@@ -22,8 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('doctors', function (Blueprint $table) {
-            $table->dropForeign(['facility_id']);
-            $table->dropColumn('facility_id');
+            $table->dropForeign(['department_id']);
+            $table->dropColumn('department_id');
         });
     }
 };

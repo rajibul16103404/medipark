@@ -23,17 +23,6 @@ class BlogResource extends JsonResource
             'description' => $this->description,
             'feature_image' => $this->getFullImageUrl($this->feature_image),
             'status' => $this->status?->value,
-            'facility_id' => $this->facility_id,
-            'facility' => $this->when(
-                $this->relationLoaded('facility') && $this->facility !== null,
-                fn () => [
-                    'id' => $this->facility->id,
-                    'title' => $this->facility->title,
-                    'short_description' => $this->facility->short_description,
-                    'image' => $this->getFullImageUrl($this->facility->image),
-                    'status' => $this->facility->status?->value,
-                ]
-            ),
             'author_name' => $this->author_name,
             'author_image' => $this->getFullImageUrl($this->author_image),
             'author_designation' => $this->author_designation,

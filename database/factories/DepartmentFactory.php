@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->sentence(3),
+            'short_description' => fake()->sentence(10),
+            'image' => fake()->imageUrl(),
+            'status' => fake()->randomElement([Status::Active->value, Status::Inactive->value]),
         ];
     }
 }

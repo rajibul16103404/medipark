@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Doctor extends Model
@@ -22,7 +21,6 @@ class Doctor extends Model
         'doctor_name',
         'department',
         'specialist',
-        'facility_id',
         'email_address',
         'mobile_number',
         'gender',
@@ -39,14 +37,6 @@ class Doctor extends Model
         'present_address',
         'permanent_address',
     ];
-
-    /**
-     * Get the facility that this doctor belongs to.
-     */
-    public function facility(): BelongsTo
-    {
-        return $this->belongsTo(Facility::class);
-    }
 
     /**
      * Get the attributes that should be cast.

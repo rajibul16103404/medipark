@@ -409,26 +409,26 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'delete-doctors',
                 'description' => 'Can delete doctors',
             ],
-            // Facility privileges
+            // Department privileges
             [
-                'name' => 'Read Facilities',
-                'slug' => 'read-facilities',
-                'description' => 'Can view facility list and details',
+                'name' => 'Read Departments',
+                'slug' => 'read-departments',
+                'description' => 'Can view department list and details',
             ],
             [
-                'name' => 'Create Facilities',
-                'slug' => 'create-facilities',
-                'description' => 'Can create new facilities',
+                'name' => 'Create Departments',
+                'slug' => 'create-departments',
+                'description' => 'Can create new departments',
             ],
             [
-                'name' => 'Update Facilities',
-                'slug' => 'update-facilities',
-                'description' => 'Can modify facility information',
+                'name' => 'Update Departments',
+                'slug' => 'update-departments',
+                'description' => 'Can modify department information',
             ],
             [
-                'name' => 'Delete Facilities',
-                'slug' => 'delete-facilities',
-                'description' => 'Can delete facilities',
+                'name' => 'Delete Departments',
+                'slug' => 'delete-departments',
+                'description' => 'Can delete departments',
             ],
             // Footer Contact privileges
             [
