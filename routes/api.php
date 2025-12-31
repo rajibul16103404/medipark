@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ContactPageBannerSectionController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\FooterContactController;
+use App\Http\Controllers\Api\FutureVentureController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\GalleryPageBannerSectionController;
 use App\Http\Controllers\Api\HomepageAboutUsSectionController;
@@ -90,6 +91,8 @@ Route::get('/galleries', [GalleryController::class, 'index']);
 Route::get('/news', [NewsController::class, 'index']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
 Route::get('/blogs', [BlogController::class, 'index']);
+Route::get('/future-ventures', [FutureVentureController::class, 'index']);
+Route::get('/future-ventures/{futureVenture}', [FutureVentureController::class, 'show']);
 Route::get('/blogs/{blog}', [BlogController::class, 'show']);
 
 // Contact routes (Public submission)
@@ -292,7 +295,16 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{news}', [NewsController::class, 'update'])->middleware('privilege:update-news');
         Route::patch('/{news}', [NewsController::class, 'update'])->middleware('privilege:update-news');
         Route::delete('/{news}', [NewsController::class, 'destroy'])->middleware('privilege:delete-news');
+
         Route::post('/{news}/set-active', [NewsController::class, 'setActive'])->middleware('privilege:update-news');
+    });
+
+    // Future Venture routes (Admin)
+    Route::prefix('future-ventures')->group(function () {
+        Route::post('/', [FutureVentureController::class, 'store'])->middleware('privilege:create-future-ventures');
+        Route::post('/{futureVenture}', [FutureVentureController::class, 'update'])->middleware('privilege:update-future-ventures');
+        Route::patch('/{futureVenture}', [FutureVentureController::class, 'update'])->middleware('privilege:update-future-ventures');
+        Route::delete('/{futureVenture}', [FutureVentureController::class, 'destroy'])->middleware('privilege:delete-future-ventures');
     });
 
     // Blog routes (Admin)

@@ -452,6 +452,27 @@ class PrivilegeSeeder extends Seeder
                 'slug' => 'create-social-links',
                 'description' => 'Can create new social links',
             ],
+            // Future Venture privileges
+            [
+                'name' => 'Read Future Ventures',
+                'slug' => 'read-future-ventures',
+                'description' => 'Can view future venture list and details',
+            ],
+            [
+                'name' => 'Create Future Ventures',
+                'slug' => 'create-future-ventures',
+                'description' => 'Can create new future ventures',
+            ],
+            [
+                'name' => 'Update Future Ventures',
+                'slug' => 'update-future-ventures',
+                'description' => 'Can modify future venture information',
+            ],
+            [
+                'name' => 'Delete Future Ventures',
+                'slug' => 'delete-future-ventures',
+                'description' => 'Can delete future ventures',
+            ],
             [
                 'name' => 'Update Social Links',
                 'slug' => 'update-social-links',
